@@ -2,7 +2,7 @@ const path = require('path')
 
 module.exports = {
   chainWebpack: config => {
-    // customize html title: https://cli.vuejs.org/guide/webpack.html#modifying-options-of-a-plugin
+    // 自訂網站標題: https://cli.vuejs.org/guide/webpack.html#modifying-options-of-a-plugin
 
     config
       .plugin('html')
@@ -11,7 +11,7 @@ module.exports = {
         return args
       })
 
-    // svg-sprite-loader works with Vue: https://ithelp.ithome.com.tw/articles/10230334
+    // 在Vue中使用SVG: https://ithelp.ithome.com.tw/articles/10230334
     config.module.rules.delete('svg')
 
     config.module
@@ -29,7 +29,7 @@ module.exports = {
       .exclude.add(path.resolve('src/assets/icons'))
   }
 //   },
-//   // add scss global configuration: https://cli.vuejs.org/guide/css.html#passing-options-to-pre-processor-loaders
+//   // 設定CSS全域變數: https://cli.vuejs.org/guide/css.html#passing-options-to-pre-processor-loaders
 //   css: {
 //     loaderOptions: {
 //       scss: {
