@@ -1,14 +1,14 @@
 <template>
-  <div id="app" />
+  <div id="app">
+    <router-view />
+  </div>
 </template>
 
 <script>
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-export default {
-
-}
+export default {}
 </script>
 
 <style lang="scss">
