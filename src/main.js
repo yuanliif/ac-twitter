@@ -11,7 +11,7 @@ Vue.use(PortalVue)
 
 // svg-sprite-loader works with Vue: https://ithelp.ithome.com.tw/articles/10230334
 // 在Vue中使用SVG
-const requireAll = requireContext => requireContext.keys().map(requireContext)
+const requireAll = (requireContext) => requireContext.keys().map(requireContext)
 const req = require.context('@/assets/icons', true, /\.svg$/)
 requireAll(req)
 
@@ -22,5 +22,5 @@ Vue.config.productionTip = false
 new Vue({
   router,
   store,
-  render: h => h(App)
+  render: (h) => h(App)
 }).$mount('#app')
