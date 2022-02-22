@@ -30,7 +30,7 @@ const routes = [
   {
     path: '/admin',
     name: 'admin-sign-in',
-    component: BlankPage
+    component: () => import('./../views/Admin.vue')
   },
   // 後台推文頁
   {
