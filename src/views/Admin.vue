@@ -52,7 +52,10 @@
 
       <div class="front-login d-flex justify-content-end">
         <p>
-          <router-link class="to-signup" to="/signup">
+          <router-link
+            class="to-signup"
+            to="/signup"
+          >
             前台登入
           </router-link>
         </p>
