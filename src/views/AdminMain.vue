@@ -13,9 +13,6 @@
 
 <script>
 export default {
-  components: {
-    AdminSideBar,
-    AdminTweetsList
-  }
+
 }
 </script>
