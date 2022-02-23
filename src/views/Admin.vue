@@ -122,6 +122,8 @@ export default {
 * {
   font-family: 'Noto Sans TC', sans-serif;
   font-weight: bold;
+  box-sizing: border-box;
+  color: #1C1C1C;
 }
 .container {
   padding-top: 60px;
@@ -167,7 +169,7 @@ form {
         border: none;
         font-weight: 500;
         font-size: 19px;
-        padding-top: 35px;
+        padding-top: 25px;
         &:hover ~ .line,
         &:focus ~ .line {
           background-color: #50b5ff;

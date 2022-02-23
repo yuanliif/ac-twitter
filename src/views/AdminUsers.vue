@@ -15,3 +15,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+* {
+  font-family: 'Noto Sans TC', sans-serif;
+  font-weight: bold;
+  box-sizing: border-box;
+  color: #1c1c1c;
+}
+</style>
