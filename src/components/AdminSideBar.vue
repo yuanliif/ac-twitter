@@ -5,22 +5,29 @@
       src="./../assets/images/Logo_@2x_30.png"
       alt=""
     >
+
     <div class="nav-item-group">
       <div class="nav-item d-flex align-items-center">
-        <icon iconName="home" />
-        <p class="text">
-          推文清單
-        </p>
+        <div class="item d-flex">
+          <icon
+            class="nav-icon"
+            icon-name="home"
+          />
+          <p class="text">
+            推文清單
+          </p>
+        </div>
       </div>
       <div class="nav-item d-flex align-items-center">
-        <img
-          class="nav-icon"
-          src="./../assets/images/User_@2x.png"
-          alt=""
-        >
-        <p class="text">
-          使用者列表
-        </p>
+        <div class="item d-flex">
+          <icon
+            class="nav-icon"
+            icon-name="user"
+          />
+          <p class="text">
+            使用者列表
+          </p>
+        </div>
       </div>
     </div>
     <div class="logout d-flex align-items-center">
@@ -38,6 +45,12 @@ export default {}
 </script>
 
 <style lang="scss" scoped>
+svg {
+  width: 30px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+}
 .sidebar {
   height: 100vh;
   width: 235px;
@@ -51,18 +64,18 @@ export default {}
     width: inherit;
     margin-top: 24px;
     .nav-item {
-      width: 100%;
       height: 56px;
-      .nav-icon {
-        width: 24px;
-        height: 24px;
-        margin: 0 20px 0 10px;
-      }
-      .text {
-        margin: 0;
-        width: 100%;
-        line-height: 26px;
-        font-size: 18px;
+      cursor: default;
+      .item {
+        cursor: pointer;
+        .nav-icon {
+          margin: 0 20px 0 10px;
+        }
+        .text {
+          margin: 0;
+          line-height: 26px;
+          font-size: 18px;
+        }
       }
     }
   }

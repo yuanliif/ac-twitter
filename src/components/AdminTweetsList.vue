@@ -5,21 +5,26 @@
         推文清單
       </div>
     </div>
-    <div class="list-container d-flex">
+    <div
+      v-for="user in users"
+      :key="user.id"
+      class="list-container d-flex"
+    >
       <span class="photo">
         <UserThumbnail :initial-user="user" />
       </span>
       <div class="text-area">
         <div class="info d-flex">
           <div class="name">
-            Apple
+            {{ user.name }}
           </div>
           <div class="account">
-            @apple ‧ 3小時
+            <!-- TODO 加入真實時間 -->
+            {{ user.account | addIcon }} ‧ 3小時
           </div>
         </div>
         <div class="comment">
-          <span> sfwuaehflirhgawenful </span>
+          <span> {{ user.avatar | sliceSentence }} </span>
         </div>
       </div>
       <div class="delete">
@@ -33,10 +38,115 @@
 </template>
 
 <script>
+import { fromNowFilter } from './../utils/mixins'
 import UserThumbnail from './UserThumbnail.vue'
+const dummyList = [
+  // 一般資料
+  {
+    id: 17,
+    account: 'cindy266',
+    name: 'abc',
+    avatar:
+      'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg',
+    introduction: '我是絕對不可以吃的鰻魚燒，不可以吃我會遭天譴的',
+    followed: true
+  },
+  // 帳號下限
+  {
+    id: 18,
+    account: 'c',
+    name: 'abc',
+    avatar:
+      'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg',
+    introduction: '我是絕對不可以吃的鰻魚燒，不可以吃我會遭天譴的',
+    followed: true
+  },
+  // 帳號上限
+  {
+    id: 19,
+    account: 'cindy266cindy266cind',
+    name: 'abc',
+    avatar:
+      'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg',
+    introduction: '我是絕對不可以吃的鰻魚燒，不可以吃我會遭天譴的',
+    followed: true
+  },
+  // 暱稱下限
+  {
+    id: 20,
+    account: 'cindy266',
+    name: 'x',
+    avatar:
+      'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg',
+    introduction: '我是絕對不可以吃的鰻魚燒，不可以吃我會遭天譴的',
+    followed: true
+  },
+  // 暱稱上限
+  {
+    id: 21,
+    account: 'cindy266',
+    name: 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwx',
+    avatar:
+      'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg',
+    introduction: '我是絕對不可以吃的鰻魚燒，不可以吃我會遭天譴的',
+    followed: true
+  },
+  // 沒有暱稱
+  {
+    id: 22,
+    account: 'cindy266',
+    name: '',
+    avatar:
+      'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg',
+    introduction: '我是絕對不可以吃的鰻魚燒，不可以吃我會遭天譴的',
+    followed: true
+  },
+  // 未被跟隨
+  {
+    id: 23,
+    account: 'cindy266',
+    name: 'abc',
+    avatar:
+      'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg',
+    introduction: '我是絕對不可以吃的鰻魚燒，不可以吃我會遭天譴的',
+    followed: false
+  },
+  // 圖片無法載入
+  {
+    id: 25,
+    account: 'cindy266',
+    name: 'abc',
+    avatar: 'https://wwww.google.com',
+    introduction: '我是絕對不可以吃的鰻魚燒，不可以吃我會遭天譴的',
+    followed: false
+  },
+  // 沒有圖
+  {
+    id: 24,
+    account: 'cindy266',
+    name: 'abc',
+    avatar: '',
+    introduction: '我是絕對不可以吃的鰻魚燒，不可以吃我會遭天譴的',
+    followed: false
+  }
+]
 export default {
   components: {
     UserThumbnail
+  },
+  filters: {
+    addIcon (account) {
+      return '@' + account
+    },
+    sliceSentence (comment) {
+      return comment.slice(0, 50) + '...'
+    }
+  },
+  mixins: [fromNowFilter],
+  data () {
+    return {
+      users: dummyList
+    }
   }
 }
 </script>
@@ -61,7 +171,7 @@ export default {
     height: 65px;
     padding: 0 0 15px 15px;
     margin-top: 10px;
-    border-bottom: 1px solid #E6ECF0;
+    border-bottom: 1px solid #e6ecf0;
     .text-area {
       line-height: 22px;
       font-size: 15px;
