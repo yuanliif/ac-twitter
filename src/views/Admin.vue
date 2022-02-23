@@ -2,7 +2,7 @@
   <div class="container">
     <div class="logo d-flex justify-content-center">
       <img
-        src="./../assets/images/Logo_50.png"
+        src="./../assets/images/Logo_@2x_50.png"
         alt="ac-logo"
         style="width: 50px"
       >
@@ -27,6 +27,7 @@
             autofocus
           >
           <label for="account">帳號</label>
+          <span class="line" />
         </div>
 
         <div class="form-label">
@@ -40,6 +41,10 @@
             required
           >
           <label for="password">密碼</label>
+          <span class="line" />
+          <div class="alert">
+            <p />
+          </div>
         </div>
       </div>
 
@@ -99,7 +104,7 @@ export default {
         // if (data.status === 'error') {
         //   throw new Error(data.message);
         // }
-        this.$router.push('/admin_main')
+        this.$router.push('/admin/users')
       } catch (error) {
         Toast.fire({
           icon: 'warning',
@@ -122,10 +127,13 @@ export default {
   padding-top: 60px;
   .logo {
     margin-bottom: 20px;
+    img {
+      width: 50px;
+    }
   }
 }
 form {
-  width: 540px;
+  max-width: 540px;
   h1 {
     font-size: 23px;
     line-height: 33.3px;
@@ -140,14 +148,7 @@ form {
     }
     .form-label {
       position: relative;
-      &::after {
-        content: '';
-        display: block;
-        width: 540px;
-        height: 2px;
-        background-color: #657786;
-        border-radius: 0px 0px 4px 4px;
-      }
+      height: 52px;
       label {
         position: absolute;
         margin: 0;
@@ -165,10 +166,21 @@ form {
         border-radius: 4px;
         border: none;
         font-weight: 500;
-        &:focus ~ label,
-        &:valid ~ label {
-          display: none;
+        font-size: 19px;
+        padding-top: 35px;
+        &:hover ~ .line,
+        &:focus ~ .line {
+          background-color: #50b5ff;
         }
+      }
+      .line {
+        display: block;
+        position: absolute;
+        bottom: 0px;
+        width: 100%;
+        height: 2px;
+        background-color: #657786;
+        border-radius: 0px 0px 4px 4px;
       }
     }
   }
@@ -188,6 +200,7 @@ form {
         color: #0099ff;
         font-size: 18px;
         line-height: 26px;
+        text-decoration: none;
         &::after {
           content: '';
           position: absolute;

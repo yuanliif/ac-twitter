@@ -42,7 +42,7 @@ const routes = [
   {
     path: '/admin/users',
     name: 'admin-users',
-    component: BlankPage
+    component: () => import('./../views/AdminUsers.vue')
   },
   // 使用者設定頁
   {
