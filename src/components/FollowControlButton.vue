@@ -10,7 +10,7 @@
 <template>
   <button
     class="btn-follow"
-    :class="{'followed': user.followed}"
+    :class="{'btn-control': user.followed, 'btn-control-outline': !user.followed}"
     :disabled="isProcessing"
     @click="toggleFollow(user.followed, user.id)"
   >
@@ -98,33 +98,11 @@ export default {
 
 <style lang="scss" scoped>
 .btn-follow {
-  background-color: transparent;
-  border: 1px solid #FF6600;
   border-radius: 100px;
-  color: #FF6600;
   height: inherit;
   font-size: 15px;
   line-height: 15px;
   padding-left: 15px;
   padding-right: 15px;
-
-  &:hover {
-    background-color: #FF6600;
-    color: #FFFFFF
-  }
-
-  &.followed {
-    background-color: #FF6600;
-    border: none;
-    color: #FFFFFF;
-
-    &:hover {
-      background-color: #b14700;
-    }
-  }
-
-  &[disabled] {
-    opacity: 0.4;
-  }
 }
 </style>
