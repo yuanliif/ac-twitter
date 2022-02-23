@@ -196,6 +196,15 @@ export default {
         const { data } = await usersAPI.updateUserSetting({ userId: dummyUser.id, formData })
 
         if (data.status !== 'success') {
+          // 針對後端傳來的錯誤訊息，把帳號或信箱的重複提示，放到對應輸入框的錯誤提示訊息區域
+          if (/帳號/.test(data.message)) {
+            this.error.account = data.message
+            return
+          }
+          if (/信箱/.test(data.message)) {
+            this.error.email = data.message
+            return
+          }
           this.error.account = data.message
           return
         }
