@@ -22,7 +22,7 @@
         </router-link>
         <router-link
           class="nav-link link-group"
-          :to="{name: 'user-tweets', params: {id: '1'}}"
+          :to="{name: 'user-tweets', params: {id: currentUser.id}}"
         >
           <icon
             icon-name="user"
@@ -54,12 +54,31 @@
         icon-name="logout"
         icon-class="mr-20"
       />
-      <div class="link-text">
+      <div
+        class="link-text"
+        @click.stop.prevent="logout"
+      >
         登出
       </div>
     </div>
   </section>
 </template>
+
+<script>
+import { mapState } from 'vuex'
+
+export default {
+  computed: {
+    ...mapState(['currentUser'])
+  },
+  methods: {
+    logout () {
+      this.$store.commit('revokeAuthentication')
+      this.$router.push({ name: 'user-sign-in' })
+    }
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 $link-hover-opacity: 0.75;
