@@ -48,7 +48,7 @@ const routes = [
   {
     path: '/setting',
     name: 'user-setting',
-    component: BlankPage
+    component: () => import('@/views/UserSetting')
   },
   // 首頁
   {
