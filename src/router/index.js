@@ -61,25 +61,25 @@ const routes = [
   {
     path: '/tweet/:id',
     name: 'tweet',
-    component: BlankPage
+    component: () => import('@/views/Tweet')
+  },
+  // 跟隨者分頁
+  {
+    path: '/user/:id/followers',
+    name: 'followers',
+    component: () => import('@/views/Follower')
+  },
+  // 正在跟隨者分頁
+  {
+    path: '/user/:id/followings',
+    name: 'followings',
+    component: () => import('@/views/Following')
   },
   // 使用者系列
   {
     path: '/user/:id',
     component: BlankPage,
     children: [
-      // 跟隨者分頁
-      {
-        path: 'followers',
-        name: 'followers',
-        component: BlankPage
-      },
-      // 正在跟隨者分頁
-      {
-        path: 'followings',
-        name: 'followings',
-        component: BlankPage
-      },
       // 推文分頁
       {
         path: 'tweets',

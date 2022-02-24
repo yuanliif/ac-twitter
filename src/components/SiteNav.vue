@@ -11,6 +11,7 @@
         <router-link
           class="nav-link link-group"
           :to="{name: 'homepage'}"
+          :class="{'active': ['homepage', 'tweet'].includes($route.name) }"
         >
           <icon
             icon-name="home"
