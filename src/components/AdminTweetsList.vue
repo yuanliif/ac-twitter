@@ -16,24 +16,25 @@
       <div class="text-area">
         <div class="info d-flex">
           <div class="name">
-            <router-link :to="{ name: 'user-tweets', params: { id: user.id } }">
-              {{ user.name }}
+            <router-link
+              :to="{ name: 'user-tweets', params: { id: user.userData.id } }"
+            >
+              {{ user.userData.name }}
             </router-link>
           </div>
           <div class="account">
-            <!-- TODO 加入真實時間 -->
-            {{ user.account | addIcon }} ‧ {{ createdAt | fromNow }}
+            {{ user.userData.account | addIcon }} ‧
+            {{ user.createAt | fromNow }}
           </div>
         </div>
         <div class="comment">
-          <span> {{ user.avatar | sliceSentence }} </span>
+          <span> {{ user.description | sliceSentence }} </span>
         </div>
-        <div class="delete">
-          <img
-            src="./../assets/images/Delete_@2x.png"
-            alt=""
-          >
-        </div>
+        <button
+          class="btn delete"
+          :disabled=" isProcessing "
+          @click.prevent.stop="deleteTweet(user.id)"
+        />
       </div>
     </div>
   </div>
@@ -41,98 +42,58 @@
 
 <script>
 import { fromNowFilter } from './../utils/mixins'
-import { apiHelper, Toast } from './../utils/helpers'
+import { Toast } from './../utils/helpers'
+import adminApi from './../apis/admin'
 import UserThumbnail from './UserThumbnail.vue'
-const dummyList = [
-  // 一般資料
-  {
-    id: 17,
-    account: 'cindy266',
-    name: 'abc',
-    avatar:
-      'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg',
-    introduction: '我是絕對不可以吃的鰻魚燒，不可以吃我會遭天譴的',
-    followed: true
-  },
-  // 帳號下限
-  {
-    id: 18,
-    account: 'c',
-    name: 'abc',
-    avatar:
-      'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg',
-    introduction: '我是絕對不可以吃的鰻魚燒，不可以吃我會遭天譴的',
-    followed: true
-  },
-  // 帳號上限
-  {
-    id: 19,
-    account: 'cindy266cindy266cind',
-    name: 'abc',
-    avatar:
-      'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg',
-    introduction: '我是絕對不可以吃的鰻魚燒，不可以吃我會遭天譴的',
-    followed: true
-  },
-  // 暱稱下限
-  {
-    id: 20,
-    account: 'cindy266',
-    name: 'x',
-    avatar:
-      'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg',
-    introduction: '我是絕對不可以吃的鰻魚燒，不可以吃我會遭天譴的',
-    followed: true
-  },
-  // 暱稱上限
-  {
-    id: 21,
-    account: 'cindy266',
-    name: 'abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwx',
-    avatar:
-      'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg',
-    introduction: '我是絕對不可以吃的鰻魚燒，不可以吃我會遭天譴的',
-    followed: true
-  },
-  // 沒有暱稱
-  {
-    id: 22,
-    account: 'cindy266',
-    name: '',
-    avatar:
-      'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg',
-    introduction: '我是絕對不可以吃的鰻魚燒，不可以吃我會遭天譴的',
-    followed: true
-  },
-  // 未被跟隨
-  {
-    id: 23,
-    account: 'cindy266',
-    name: 'abc',
-    avatar:
-      'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg',
-    introduction: '我是絕對不可以吃的鰻魚燒，不可以吃我會遭天譴的',
-    followed: false
-  },
-  // 圖片無法載入
-  {
-    id: 25,
-    account: 'cindy266',
-    name: 'abc',
-    avatar: 'https://wwww.google.com',
-    introduction: '我是絕對不可以吃的鰻魚燒，不可以吃我會遭天譴的',
-    followed: false
-  },
-  // 沒有圖
-  {
-    id: 24,
-    account: 'cindy266',
-    name: 'abc',
-    avatar: '',
-    introduction: '我是絕對不可以吃的鰻魚燒，不可以吃我會遭天譴的',
-    followed: false
-  }
-]
+// 測試使用
+// import { apiHelper, Toast } from './../utils/helpers'
+// const dummyList = [
+//   {
+//     id: 26,
+//     userData: {
+//       id: 21,
+//       account: 'cindy266',
+//       name: '鰻魚燒',
+//       avatar:
+//         'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg'
+//     },
+//     description: '今天天氣好好喔!!',
+//     replyAmount: 12,
+//     likeAmount: 263,
+//     userLiked: true,
+//     createAt: '2016-08-29T09:12:33.001+0000'
+//   },
+//   {
+//     id: 22,
+//     userData: {
+//       id: 21,
+//       account: 'cindy266',
+//       name: '鰻魚燒',
+//       avatar:
+//         'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg'
+//     },
+//     description: '今天天氣好好喔!!',
+//     replyAmount: 12,
+//     likeAmount: 263,
+//     userLiked: true,
+//     createAt: '2016-08-29T09:12:33.001+0000'
+//   },
+//   {
+//     id: 23,
+//     userData: {
+//       id: 21,
+//       account: 'cindy266',
+//       name: '鰻魚燒',
+//       avatar:
+//         'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg'
+//     },
+//     description: '今天天氣好好喔!!',
+//     replyAmount: 12,
+//     likeAmount: 263,
+//     userLiked: true,
+//     createAt: '2016-08-29T09:12:33.001+0000'
+//   }
+// ]
 export default {
   components: {
     UserThumbnail
@@ -142,24 +103,47 @@ export default {
       return '@' + account
     },
     sliceSentence (comment) {
-      return comment.slice(0, 50) + '...'
+      return comment.length > 50 ? comment.slice(0, 50) + '...' : comment
     }
   },
   mixins: [fromNowFilter],
   data () {
     return {
-      users: dummyList
+      users: {},
+      isProcessing: false
     }
+  },
+  created () {
+    this.fetchUsers()
   },
   methods: {
     async fetchUsers () {
       try {
-        const response = await apiHelper
-        console.log(response)
+        const { data } = await adminApi.getTweets()
+        console.log(data)
+        this.users = data
       } catch (error) {
         Toast.fire({
           icon: 'warning',
           title: '無法取得資料'
+        })
+        console.dir(error)
+      }
+    },
+    async deleteTweet (tweetId) {
+      try {
+        const { data } = await adminApi.deleteTweet({ tweetId })
+        this.isProcessing = true
+        // console.log(data)
+        // console.log(tweetId)
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+        this.fetchUsers()
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          title: '無法刪除篇推文'
         })
       }
     }
@@ -185,7 +169,7 @@ export default {
   .list-container {
     position: relative;
     height: 65px;
-    padding: 0 0 15px 15px;
+    padding: 0 0 12px 15px;
     margin-top: 10px;
     border-bottom: 1px solid #e6ecf0;
     .text-area {
@@ -208,14 +192,17 @@ export default {
       }
     }
     .delete {
+      background: url('./../assets/images/Delete_@2x.png');
+      background-size: 100%;
+      background-repeat: no-repeat;
+      background-position: center;
       position: absolute;
-      top: 19.5px;
+      border: none;
+      padding: 0;
       right: 19.5px;
-    }
-    img {
-      width: 15px;
-      height: 15px;
-      cursor: pointer;
+      top: 4.5px;
+      height: 17px;
+      width: 17px;
     }
   }
 }

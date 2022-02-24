@@ -8,28 +8,32 @@
 
     <div class="nav-item-group">
       <div class="nav-item d-flex align-items-center">
-        <div class="item d-flex">
+        <router-link
+          class="item d-flex"
+          to="/admin/tweets"
+        >
           <icon
             class="nav-icon"
             icon-name="home"
-            icon-class="home"
           />
           <p class="text">
             推文清單
           </p>
-        </div>
+        </router-link>
       </div>
       <div class="nav-item d-flex align-items-center">
-        <div class="item d-flex">
+        <router-link
+          class="item d-flex"
+          to="/admin/users"
+        >
           <icon
             class="nav-icon"
             icon-name="user"
-            icon-class="user"
           />
           <p class="text">
             使用者列表
           </p>
-        </div>
+        </router-link>
       </div>
     </div>
     <div class="logout d-flex align-items-center">
@@ -50,8 +54,6 @@ export default {}
 svg {
   width: 30px;
   height: 24px;
-  display: flex;
-  align-items: center;
 }
 .sidebar {
   height: 100vh;
@@ -70,6 +72,8 @@ svg {
       cursor: default;
       .item {
         cursor: pointer;
+        text-decoration: none;
+        color: #1c1c1c;
         .nav-icon {
           margin: 0 20px 0 10px;
         }
@@ -78,6 +82,9 @@ svg {
           line-height: 26px;
           font-size: 18px;
         }
+      }
+      .active {
+        color: #ff6600;
       }
     }
   }

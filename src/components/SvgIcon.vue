@@ -1,5 +1,5 @@
 <template>
-  <svg :class="['svg-icon', iconClass]">
+  <svg class="svg-icon">
     <use :xlink:href="`#svg-icon-${iconName}`" />
   </svg>
 </template>

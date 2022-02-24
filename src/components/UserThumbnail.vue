@@ -10,7 +10,7 @@
 <template>
   <router-link
     class="photo-container"
-    :to="{name: 'user-tweets', params: {id : user.id}}"
+    :to="{name: 'user-tweets', params: {id : user.userData.id}}"
   >
     <img
       v-show="user.avatar !== ''"
@@ -37,9 +37,12 @@ export default {
     }
   },
   created () {
+    // *解構復值把avatar拿出
+    const { avatar } = this.initialUser.userData
     this.user = {
       ...this.user,
-      ...this.initialUser
+      ...this.initialUser,
+      avatar
     }
   }
 }

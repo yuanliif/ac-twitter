@@ -42,9 +42,6 @@
           >
           <label for="password">密碼</label>
           <span class="line" />
-          <div class="alert">
-            <p />
-          </div>
         </div>
       </div>
 

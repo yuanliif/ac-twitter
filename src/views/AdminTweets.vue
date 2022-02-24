@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import AdminSideBar from './../components/AdminSideBar.vue'
-import AdminTweetsList from './../components/AdminTweetsList.vue'
+import AdminSideBar from '../components/AdminSideBar.vue'
+import AdminTweetsList from '../components/AdminTweetsList.vue'
 export default {
   components: {
     AdminSideBar,
