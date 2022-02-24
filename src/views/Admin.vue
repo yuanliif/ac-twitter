@@ -104,7 +104,7 @@ export default {
         // if (data.status === 'error') {
         //   throw new Error(data.message);
         // }
-        this.$router.push('/admin/users')
+        // this.$router.push('/admin/users')
       } catch (error) {
         Toast.fire({
           icon: 'warning',
@@ -193,6 +193,7 @@ form {
     color: #fff;
     font-size: 18px;
     line-height: 26px;
+    cursor: pointer;
   }
   .front-login {
     margin-top: 20px;

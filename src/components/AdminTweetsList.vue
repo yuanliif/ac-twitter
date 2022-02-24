@@ -16,22 +16,24 @@
       <div class="text-area">
         <div class="info d-flex">
           <div class="name">
-            {{ user.name }}
+            <router-link :to="{ name: 'user-tweets', params: { id: user.id } }">
+              {{ user.name }}
+            </router-link>
           </div>
           <div class="account">
             <!-- TODO 加入真實時間 -->
-            {{ user.account | addIcon }} ‧ 3小時
+            {{ user.account | addIcon }} ‧ {{ createdAt | fromNow }}
           </div>
         </div>
         <div class="comment">
           <span> {{ user.avatar | sliceSentence }} </span>
         </div>
-      </div>
-      <div class="delete">
-        <img
-          src="./../assets/images/Delete_@2x.png"
-          alt=""
-        >
+        <div class="delete">
+          <img
+            src="./../assets/images/Delete_@2x.png"
+            alt=""
+          >
+        </div>
       </div>
     </div>
   </div>
@@ -39,6 +41,7 @@
 
 <script>
 import { fromNowFilter } from './../utils/mixins'
+import { apiHelper, Toast } from './../utils/helpers'
 import UserThumbnail from './UserThumbnail.vue'
 const dummyList = [
   // 一般資料
@@ -147,6 +150,19 @@ export default {
     return {
       users: dummyList
     }
+  },
+  methods: {
+    async fetchUsers () {
+      try {
+        const response = await apiHelper
+        console.log(response)
+      } catch (error) {
+        Toast.fire({
+          icon: 'warning',
+          title: '無法取得資料'
+        })
+      }
+    }
   }
 }
 </script>
@@ -178,6 +194,9 @@ export default {
       margin-left: 15px;
       .name {
         margin-right: 5px;
+        a {
+          color: #1c1c1c;
+        }
       }
       .account {
         color: #657786;
