@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import BlankPage from '@/views/BlankPage'
+import store from '@/store'
 
 // TODO: 使用者角色驗證
 // TODO: token有效性驗證
@@ -109,6 +110,11 @@ const routes = [
 const router = new VueRouter({
   linkActiveClass: 'active',
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  store.dispatch('fetchCurrentUser')
+  next()
 })
 
 export default router
