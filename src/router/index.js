@@ -55,7 +55,7 @@ const routes = [
   {
     path: '/home',
     name: 'homepage',
-    component: BlankPage
+    component: () => import('@/views/Homepage')
   },
   // 推文回覆顯示頁
   {

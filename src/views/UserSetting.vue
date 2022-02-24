@@ -219,16 +219,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.page-container {
-  color: #1C1C1C;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  font-family: 'Noto Sans TC', serif;
-  height: 100vh;
-  width: 100vw;
-}
-
 section.setting-container {
   display: flex;
   flex-direction: column;

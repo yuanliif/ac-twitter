@@ -21,6 +21,17 @@ export default {}
   width: 1440px;
 }
 
+// 作為View Template根元素使用樣式
+.page-container {
+  color: #1C1C1C;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  font-family: 'Noto Sans TC', serif;
+  height: inherit;
+  width: inherit;
+}
+
 // 通用按鈕顏色樣式
 .btn-control {
   background-color: #FF6600;
