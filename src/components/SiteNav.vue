@@ -24,6 +24,7 @@
         <router-link
           class="nav-link link-group"
           :to="{name: 'user-tweets', params: {id: currentUser.id}}"
+          :class="{'active': ['user-tweets', 'user-replies', 'user-likes'].includes($route.name)} && $route.params.id === currentUser.id"
         >
           <icon
             icon-name="user"

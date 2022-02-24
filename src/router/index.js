@@ -78,25 +78,25 @@ const routes = [
   // 使用者系列
   {
     path: '/user/:id',
-    component: BlankPage,
+    component: () => import('@/views/UserProfile'),
     children: [
       // 推文分頁
       {
         path: 'tweets',
         name: 'user-tweets',
-        component: BlankPage
+        component: () => import('@/components/TweetContent')
       },
       // 推文與回覆分頁
       {
         path: 'replies',
         name: 'user-replies',
-        component: BlankPage
+        component: () => import('@/components/ReplyContent')
       },
       // 喜歡的內容
       {
         path: 'likes',
         name: 'user-likes',
-        component: BlankPage
+        component: () => import('@/components/LikeContent')
       }
     ]
   },
