@@ -51,15 +51,19 @@
                 v-if="!user.notification"
                 icon-name="notification"
                 class="btn-control-outline btn-icon cursor-pointer"
+                @click.native.stop.prevent="onNotification(user.id)"
               />
               <icon
                 v-else
                 icon-name="notification-checked"
                 class="btn-control btn-icon  cursor-pointer"
+                @click.native.stop.prevent="offNotification(user.id)"
               />
               <FollowControlButton
                 :initial-user="user"
                 class="btn-text"
+                @user-followed="follow"
+                @user-unfollowed="unfollow"
               />
             </template>
           </div>
@@ -160,6 +164,22 @@ export default {
           title: '無法載入使用者資料，請稍後再試'
         })
       }
+    },
+    // 通知開關目前僅實作狀態變化
+    onNotification (userId) {
+      console.log(`對 ${userId} 開啟通知`)
+      this.user.notification = true
+    },
+    offNotification (userId) {
+      console.log(`對 ${userId} 關閉通知`)
+      this.user.notification = false
+    },
+    // 藉由FollowControlButton對上層的通知，來更新使用者的跟隨者數據
+    follow () {
+      this.user.following = this.user.following + 1
+    },
+    unfollow () {
+      this.user.following = this.user.following - 1
     }
   }
 }
