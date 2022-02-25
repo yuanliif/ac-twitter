@@ -140,9 +140,6 @@ export default {
       this.isValid = (newValue === '')
     }
   },
-  updated () {
-    console.log('updated')
-  },
   created () {
     this.value = this.initialValue
   },

@@ -1,41 +1,43 @@
 <!-- 熱門使用者推薦列 -->
 <template>
-  <div
-    v-show="!isLoading"
-    class="list-container"
-  >
-    <div class="list-header">
-      Popular
-    </div>
-    <section
-      v-for="user in userList"
-      :key="user.id"
+  <section class="recommended-list">
+    <div
+      v-show="!isLoading"
+      class="list-container"
     >
-      <div class="break" />
-      <div class="user-container">
-        <span class="photo">
-          <UserThumbnail :initial-user="user" />
-        </span>
-        <span class="info">
-          <div
-            class="name"
-            :title="emptyName(user.name, user.account)"
-          >
-            {{ emptyName(user.name, user.account) }}
-          </div>
-          <div
-            class="account"
-            :title="user.account"
-          >
-            @{{ user.account }}
-          </div>
-        </span>
-        <span class="control">
-          <FollowControlButton :initial-user="user" />
-        </span>
+      <div class="list-header">
+        Popular
       </div>
-    </section>
-  </div>
+      <section
+        v-for="user in userList"
+        :key="user.id"
+      >
+        <div class="break" />
+        <div class="user-container">
+          <span class="photo">
+            <UserThumbnail :initial-user="user" />
+          </span>
+          <span class="info">
+            <div
+              class="name"
+              :title="emptyName(user.name, user.account)"
+            >
+              {{ emptyName(user.name, user.account) }}
+            </div>
+            <div
+              class="account"
+              :title="user.account"
+            >
+              @{{ user.account }}
+            </div>
+          </span>
+          <span class="control">
+            <FollowControlButton :initial-user="user" />
+          </span>
+        </div>
+      </section>
+    </div>
+  </section>
 </template>
 
 <script>
@@ -46,6 +48,7 @@ import UserThumbnail from '@/components/UserThumbnail.vue'
 import FollowControlButton from '@/components/FollowControlButton.vue'
 
 // 測試資料，請保留以供測試
+
 /*
 const dummyList = [
   // 一般資料
@@ -113,7 +116,7 @@ const dummyList = [
   },
   // 圖片無法載入
   {
-    id: 25,
+    id: 24,
     account: 'cindy266',
     name: 'abc',
     avatar: 'https://wwww.google.com',
@@ -122,7 +125,7 @@ const dummyList = [
   },
   // 沒有圖
   {
-    id: 24,
+    id: 25,
     account: 'cindy266',
     name: 'abc',
     avatar: '',
@@ -131,7 +134,7 @@ const dummyList = [
   },
   // 正方形圖片
   {
-    id: 25,
+    id: 26,
     account: 'cindy266',
     name: 'abc',
     avatar: 'https://pbs.twimg.com/profile_images/1222168673399402496/IbBY8sB-_400x400.jpg',
@@ -140,7 +143,7 @@ const dummyList = [
   },
   // 長方形圖片（較長）
   {
-    id: 25,
+    id: 27,
     account: 'cindy266',
     name: 'abc',
     avatar: 'https://museum.acgn-stock.com/images/08.jpg',
@@ -149,7 +152,7 @@ const dummyList = [
   },
   // 長方形圖片（較寬）
   {
-    id: 25,
+    id: 28,
     account: 'cindy266',
     name: 'abc',
     avatar: 'https://museum.acgn-stock.com/images/33.jpg',
@@ -168,17 +171,29 @@ export default {
   data () {
     return {
       userList: [],
-      isLoading: true
+      isLoading: false,
+      userId: -1
     }
   },
-  created () {
-    this.fetchUserList()
+  watch: {
+    // 確保先有使用者資訊，再取得推薦使用者清單
+    '$store.state.currentUser': {
+      handler: function (newValue, oldValue) {
+        this.userId = newValue.id
+        this.fetchUserList()
+      },
+      deep: true,
+      immediate: true
+    }
   },
   methods: {
     // 測試時使用
-    // fetchUserList () {
-    //   this.userList = dummyList.slice(0, 10)
-    // }
+    /*
+    fetchUserList () {
+      // 避免推薦列表中，出現使用者自己
+      this.userList = dummyList.filter(user => user.id !== this.userId).slice(0, 10)
+    }
+    */
     async fetchUserList () {
       try {
         const response = await followshipsAPI.getTopUsers()
@@ -188,7 +203,9 @@ export default {
         }
 
         const { data } = response
-        this.userList = data
+
+        // 避免推薦列表中，出現使用者自己
+        this.userList = data.filter(user => user.id !== this.userId).slice(0, 10)
       } catch (error) {
         Toast.fire({
           icon: 'error',
@@ -203,16 +220,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+section.recommended-list {
+  border-left: 1px solid #E6ECF0;
+}
 .list-container {
   background-color: #F5F8FA;
   border-radius: 14px;
   color: #1C1C1C;
   font-family: 'Noto Sans TC', serif;
-  max-width: 350px;
+  margin-left: 30px;
+  margin-top: 15px;
   padding-bottom: 1px;
   padding-left: 15px;
   padding-right: 15px;
   text-align: left;
+  width: 350px;
 }
 .list-header {
   font-size: 18px;
