@@ -135,3 +135,43 @@ export const inputValidationMethod = {
     }
   }
 }
+
+// 給帳號顯示增加@的前綴
+export const addPrefixFilter = {
+  filters: {
+    addPrefix (account) {
+      return `@${account}`
+    }
+  }
+}
+
+/*
+  數字格式化顯示
+  1. 單位做到支援Number.MAX_SAFE_INTEGER就好了，超過就直接顯示了
+  2. 數字每跨4位數字就換一次單位
+  3. 最多顯示一位小數
+  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER
+  https://googology.fandom.com/zh/wiki/%E4%B8%AD%E6%96%87%E6%95%B8%E5%AD%97?variant=zh-tw
+*/
+const formatter = new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 1 })
+export const numberFormatFilter = {
+  filters: {
+    numberFormat (number) {
+      if (number > Number.MAX_SAFE_INTEGER) {
+        return `${number}`
+      }
+
+      const postfix = ['', '萬', '億', '京']
+      let index = 0
+
+      while (number >= 10000) {
+        number /= 10000
+        index += 1
+      }
+
+      const numberPart = formatter.format(number)
+
+      return `${numberPart}${postfix[index]}`
+    }
+  }
+}
