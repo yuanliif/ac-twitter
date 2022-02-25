@@ -15,6 +15,7 @@
           <icon
             class="nav-icon"
             icon-name="home"
+            icon-class="home"
           />
           <p class="text">
             推文清單
@@ -29,6 +30,7 @@
           <icon
             class="nav-icon"
             icon-name="user"
+            icon-class="user"
           />
           <p class="text">
             使用者列表

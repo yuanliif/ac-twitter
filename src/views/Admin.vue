@@ -55,8 +55,8 @@
       <div class="front-login d-flex justify-content-end">
         <p>
           <router-link
-            class="to-signup"
-            to="/signup"
+            class="to-signin"
+            to="/signin"
           >
             前台登入
           </router-link>
@@ -120,7 +120,7 @@ export default {
   font-family: 'Noto Sans TC', sans-serif;
   font-weight: bold;
   box-sizing: border-box;
-  color: #1C1C1C;
+  color: #1c1c1c;
 }
 .container {
   padding-top: 60px;
@@ -167,6 +167,10 @@ form {
         font-weight: 500;
         font-size: 19px;
         padding-top: 25px;
+        &:focus {
+          outline: none;
+          box-shadow: none;
+        }
         &:hover ~ .line,
         &:focus ~ .line {
           background-color: #50b5ff;

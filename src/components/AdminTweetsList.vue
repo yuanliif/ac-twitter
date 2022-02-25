@@ -131,6 +131,7 @@ export default {
       }
     },
     async deleteTweet (tweetId) {
+      // TODO 串接API
       try {
         const { data } = await adminApi.deleteTweet({ tweetId })
         this.isProcessing = true
@@ -153,7 +154,7 @@ export default {
 
 <style lang="scss" scoped>
 .tweets {
-  min-width: 1062px;
+  min-width: 70vmax;
   border-left: 1px solid #e6ecf0;
   .navbar {
     height: 55px;
