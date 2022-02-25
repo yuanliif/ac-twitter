@@ -13,46 +13,15 @@
       </h1>
     </div>
     <div class="sign-up-content">
-      <label for="account">
-        <input
-          v-model="account"
-          type="text"
-          name="account"
-        >
-        <span class="input-title">帳號</span>
-      </label>
-      <label for="name">
-        <input
-          v-model="name"
-          type="text"
-          name="name"
-        >
-        <span class="input-title">名稱</span>
-      </label>
-      <label for="email">
-        <input
-          v-model="email"
-          type="text"
-          name="email"
-        >
-        <span class="input-title">Email</span>
-      </label>
-      <label for="password">
-        <input
-          v-model="password"
-          type="text"
-          name="password"
-        >
-        <span class="input-title">密碼</span>
-      </label>
-      <label for="password-check">
-        <input
-          v-model="passwordCheck"
-          type="text"
-          name="password-check"
-        >
-        <span class="input-title">密碼確認</span>
-      </label>
+      <GeneralInput
+        v-for="key in inputKeys"
+        :key="key"
+        v-bind="inputConfig[key]"
+        :name="key"
+        :error-message="error[key]"
+        :initial-value="data[key]"
+        @input-change="data[key] = $event"
+      />
     </div>
     <div class="sign-up-button">
       <button
@@ -77,7 +46,7 @@ import LogoImg from '../assets/images/Logo.png'
 import { inputValidationMethod } from '@/utils/mixins'
 import authorizationAPI from '../apis/authorization'
 import { Toast } from '../utils/helpers'
-
+import GeneralInput from './../components/GeneralInput.vue'
 const inputKeys = ['account', 'name', 'email', 'password', 'passwordCheck']
 const inputConfig = {
   account: {
@@ -85,8 +54,7 @@ const inputConfig = {
     inputType: 'text',
     minlength: 1,
     maxlength: 20,
-    required: true,
-    prefix: '@'
+    required: true
   },
   name: {
     label: '名稱',
@@ -116,46 +84,107 @@ const inputConfig = {
 }
 
 export default {
+  name: 'UserSignUp',
+  components: {
+    GeneralInput
+  },
   mixins: [inputValidationMethod],
+
   data () {
     return {
       LogoImg,
-      account: '',
-      name: '',
-      email: '',
-      password: '',
-      passwordCheck: '',
+
+      data: {
+        account: '',
+        name: '',
+        email: '',
+        password: '',
+        passwordCheck: ''
+      },
+
+      error: {
+        account: '',
+        name: '',
+        email: '',
+        password: '',
+        passwordCheck: ''
+      },
+
       inputKeys,
-      config: inputConfig,
-      isLoading: true,
-      isProcessing: false
+      inputConfig
     }
   },
   methods: {
     async handleSubmit (e) {
       try {
-        if (
-          !this.account ||
-          !this.email ||
-          !this.password ||
-          !this.passwordCheck
-        ) {
-          Toast.fire({
-            icon: 'warning',
-            title: '請確認已填寫所有欄位'
-          })
+        let status
+        let message
+        let pass = true
+
+        ;({ status, message } = this.checkAccount(this.data.account))
+        if (status === false) {
+          this.error.account = message
+          pass = false
+        }
+
+        ({ status, message } = this.checkName(this.data.name))
+        if (status === false) {
+          this.error.account = message
+          pass = false
+        }
+
+        ({ status, message } = this.checkEmail(this.data.email))
+        if (status === false) {
+          this.error.account = message
+          pass = false
+        }
+
+        ({ status, message } = this.checkPassword(this.data.password))
+        if (status === false) {
+          this.error.account = message
+          pass = false
+        }
+
+        ({ status, message } = this.checkPassword(this.data.passwordCheck))
+        if (status === false) {
+          this.error.account = message
+          pass = false
+        } else if (this.data.password !== this.data.passwordCheck) {
+          this.error.passwordCheck = '密碼不一致'
+          pass = false
+        }
+
+        if (pass === false) {
+          return
         }
 
         const { data } = await authorizationAPI.userSignUp({
-          account: this.account,
-          name: this.name,
-          email: this.email,
-          password: this.password,
-          passwordCheck: this.passwordCheck
+          account: this.data.account,
+          name: this.data.name,
+          email: this.data.email,
+          password: this.data.password,
+          passwordCheck: this.data.passwordCheck
         })
 
         if (data.status !== 'success') {
-          throw new Error(data.message)
+          if (/帳號/.test(data.message)) {
+            this.error.account = data.message
+            return
+          }
+          if (/名稱/.test(data.message)) {
+            this.error.name = data.message
+            return
+          }
+          if (/信箱/.test(data.message)) {
+            this.error.email = data.message
+            return
+          }
+          if (/密碼/.test(data.message)) {
+            this.error.password = data.message
+            return
+          }
+          this.error.account = data.message
+          return
         }
 
         this.$router.push({ name: 'user-sign-in' })
@@ -166,12 +195,24 @@ export default {
         })
       }
     },
-    handleCancel () {
-      this.account = ''
-      this.name = ''
-      this.email = ''
-      this.password = ''
-      this.passwordCheck = ''
+    handleCancel (e) {
+      this.data = {
+        ...this.data,
+        account: '',
+        name: '',
+        email: '',
+        password: '',
+        passwordCheck: ''
+      }
+
+      this.error = {
+        ...this.error,
+        account: '',
+        name: '',
+        email: '',
+        password: '',
+        passwordCheck: ''
+      }
     }
   }
 }
@@ -201,6 +242,7 @@ export default {
       display: inline-block;
       margin: 0 auto;
       margin-top: 20px;
+      color: #1c1c1c;
     }
   }
 
@@ -208,32 +250,6 @@ export default {
     margin-top: 40px;
     display: flex;
     flex-direction: column;
-    label {
-      position: relative;
-      margin-bottom: 30px;
-
-      input {
-        width: 100%;
-        height: 52px;
-        background-color: #f5f8fa;
-        border: none;
-        border-bottom: 2px solid #657786;
-        border-radius: 0px 0px 4px 4px;
-        padding-top: 25px;
-        padding-left: 10px;
-      }
-      .input-title {
-        position: absolute;
-        top: 5px;
-        left: 10px;
-        font-family: 'Noto Sans TC';
-        font-style: normal;
-        font-weight: 500;
-        font-size: 15px;
-        line-height: 15px;
-        color: #657786;
-      }
-    }
   }
 
   .sign-up {

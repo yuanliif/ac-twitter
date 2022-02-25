@@ -82,8 +82,10 @@ const dummyUser = {
   id: 21,
   account: 'cindy266',
   name: '鰻魚燒',
-  cover: 'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg',
-  avatar: 'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg',
+  cover:
+    'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg',
+  avatar:
+    'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg',
   introduction: '我是絕對不可以吃的鰻魚燒，不可以吃我會遭天譴的',
   email: 'aaa@bbb.ccc',
   follower: 56,
@@ -148,11 +150,11 @@ export default {
       try {
         let status
         let message
-        let pass = true;
+        let pass = true
 
         // 表單發送前的資料驗證
         // 表單資料全部驗證完後，再決定是否送出表單，或者把所有的錯誤顯示出來
-        ({ status, message } = this.checkAccount(this.data.account))
+        ;({ status, message } = this.checkAccount(this.data.account))
         if (status === false) {
           this.error.account = message
           pass = false
@@ -193,7 +195,10 @@ export default {
 
         const form = e.target
         const formData = new FormData(form)
-        const { data } = await usersAPI.updateUserSetting({ userId: dummyUser.id, formData })
+        const { data } = await usersAPI.updateUserSetting({
+          userId: dummyUser.id,
+          formData
+        })
 
         if (data.status !== 'success') {
           // 針對後端傳來的錯誤訊息，把帳號或信箱的重複提示，放到對應輸入框的錯誤提示訊息區域
@@ -232,7 +237,7 @@ export default {
 
 <style lang="scss" scoped>
 .page-container {
-  color: #1C1C1C;
+  color: #1c1c1c;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -248,7 +253,7 @@ section.setting-container {
   flex-wrap: nowrap;
 
   .page-header {
-    border-bottom: 1px solid #E6ECF0;
+    border-bottom: 1px solid #e6ecf0;
     font-size: 19px;
     font-weight: bold;
     line-height: 28px;
@@ -275,5 +280,4 @@ form.setting-form {
     padding: 10px 40px;
   }
 }
-
 </style>

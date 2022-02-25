@@ -13,24 +13,15 @@
       </h1>
     </div>
     <div class="sign-in-content">
-      <label for="account">
-        <input
-          v-model="account"
-          type="text"
-          name="account"
-        >
-        <span class="input-title">帳號</span>
-      </label>
-
-      <label for="password">
-        <input
-          v-model="password"
-          type="text"
-          name="password"
-        >
-        <span class="input-title">密碼</span>
-      </label>
-
+      <GeneralInput
+        v-for="key in inputKeys"
+        :key="key"
+        v-bind="inputConfig[key]"
+        :name="key"
+        :initial-value="data[key]"
+        :error-message="error[key]"
+        @input-change="data[key] = $event"
+      />
     </div>
     <div class="sign-in-button">
       <button class="sign-up">
@@ -39,16 +30,18 @@
     </div>
     <div class="other-option">
       <router-link
-        to='/signup'
+        to="/signup"
         class="cancel"
-        @click.prevent.stop="handleCancel"
-      > 註冊 Alphitter</router-link>
+      >
+        註冊 Alphitter
+      </router-link>
       <span>·</span>
-      <a
-        href="#"
+      <router-link
+        to="/admin"
         class="cancel"
-        @click.prevent.stop="handleCancel"
-      > 後台登入</a>
+      >
+        後台登入
+      </router-link>
     </div>
   </form>
 </template>
@@ -57,55 +50,93 @@
 import LogoImg from '../assets/images/Logo.png'
 import authorizationAPI from './../apis/authorization'
 import { Toast } from './../utils/helpers'
+import GeneralInput from './../components/GeneralInput.vue'
+import { inputValidationMethod } from './../utils/mixins'
+const inputKeys = ['account', 'password']
+const inputConfig = {
+  account: {
+    label: '帳號',
+    inputType: 'text',
+    minlength: 1,
+    maxlength: 20,
+    required: true
+  },
+  password: {
+    label: '密碼',
+    inputType: 'password',
+    minlength: 5,
+    maxlength: 20,
+    required: true
+  }
+}
 
 export default {
+  name: 'UserSignIn',
+  components: {
+    GeneralInput
+  },
+  mixins: [inputValidationMethod],
+
   data () {
     return {
       LogoImg,
-      account: '',
-      password: ''
+      data: {
+        account: '',
+        password: ''
+      },
+      error: {
+        account: '',
+        password: ''
+      },
+      inputKeys,
+      inputConfig
     }
   },
   methods: {
     async handleSubmit () {
       try {
-        if (!this.account) {
-          Toast.fire({
-            icon: 'warning',
-            title: '請輸入帳號'
-          })
+        let status
+        let message
+        let pass = true
 
-          return
+        ;({ status, message } = this.checkAccount(this.data.account))
+        if (status === false) {
+          this.error.account = message
+          pass = false
         }
 
-        if (!this.password) {
-          Toast.fire({
-            icon: 'warning',
-            title: '請輸入密碼'
-          })
+        ({ status, message } = this.checkPassword(this.data.password))
+        if (status === false) {
+          this.error.account = message
+          pass = false
+        }
 
+        if (pass === false) {
           return
         }
 
         const response = await authorizationAPI.userSignIn({
-          account: this.account,
-          password: this.password
+          account: this.data.account,
+          password: this.data.password
         })
 
-        console.log('response', response)
+        console.log(response)
+
+        const { data } = response
+
+        // if (status !== 'success') {
+        //   throw new Error(data.message)
+        // }
+
+        localStorage.setItem('token', data.token)
+        this.$router.push('/home')
       } catch (error) {
+        console.log(error)
         Toast.fire({
           icon: 'error',
           title: '目前無法登入，請稍後再試'
         })
       }
-    },
-    handleCancel () {
-      this.account = ''
-      this.name = ''
-      this.email = ''
-      this.password = ''
-      this.passwordCheck = ''
     }
   }
 }
