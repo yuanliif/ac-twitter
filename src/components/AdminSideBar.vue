@@ -54,8 +54,9 @@ export default {}
 
 <style lang="scss" scoped>
 svg {
-  width: 30px;
+  width: 24px;
   height: 24px;
+  margin-right: 7px;
 }
 .sidebar {
   height: 100vh;
@@ -69,6 +70,7 @@ svg {
   .nav-item-group {
     width: inherit;
     margin-top: 24px;
+    margin: 24px 0 0 10px;
     .nav-item {
       height: 56px;
       cursor: default;
@@ -77,7 +79,7 @@ svg {
         text-decoration: none;
         color: #1c1c1c;
         .nav-icon {
-          margin: 0 20px 0 10px;
+          margin-right: 20px;
         }
         .text {
           margin: 0;
@@ -95,11 +97,11 @@ svg {
     bottom: 22px;
     margin-left: 11px;
     img {
-      width: 18px;
-      height: 16px;
+      width: 24px;
+      height: 24px;
     }
     p {
-      margin: 0 23px;
+      margin: 0 20px;
       line-height: 26px;
       font-size: 18px;
     }
