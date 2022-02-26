@@ -1,7 +1,7 @@
 <template>
   <router-link
     v-slot="{ navigate }"
-    :to="{ name: 'tweet', parmas: { id: tweet.id } }"
+    :to="{ name: 'tweet', params: { id: tweet.id } }"
     class="tweet-container cursor-pointer"
     custom
   >
