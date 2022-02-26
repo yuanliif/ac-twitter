@@ -32,6 +32,11 @@ export default {
       type: Array,
       required: true,
       default: () => []
+    },
+    isLoading: {
+      type: Boolean,
+      required: true,
+      default: true
     }
   },
   watch: {

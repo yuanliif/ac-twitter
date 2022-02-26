@@ -1,5 +1,4 @@
 <template>
-  <!-- 使用者Profile推文區域（待完成） -->
   <div class="tab-container">
     <!-- 推文列表 -->
     <TweetList
@@ -11,9 +10,8 @@
 
 <script>
 import { Toast, sortByTime } from '@/utils/helpers'
-import UsersAPI from '@/apis/users'
+import usersAPI from '@/apis/users'
 import TweetList from '@/components/TweetList.vue'
-// import UsersAPI from '@/apis/users'
 // import moment from 'moment' // 測試用
 
 // 測試資料
@@ -166,7 +164,7 @@ export default {
     async fetchTweets (userId) {
       try {
         this.isLoading = true
-        const response = await UsersAPI.getUserTweets({ userId })
+        const response = await usersAPI.getUserTweets({ userId })
 
         if (response.statusText !== 'OK') {
           throw new Error(response.statusText)
