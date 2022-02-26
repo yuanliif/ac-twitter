@@ -13,7 +13,7 @@ export default new Vuex.Store({
       email: '',
       cover: '',
       avatar: '',
-      rolo: '',
+      role: '',
       introduction: '',
       follower: -1,
       following: -1
