@@ -86,19 +86,19 @@ const routes = [
       {
         path: 'tweets',
         name: 'user-tweets',
-        component: () => import('@/components/TweetContent')
+        component: () => import('@/components/TweetTab')
       },
       // 推文與回覆分頁
       {
         path: 'replies',
         name: 'user-replies',
-        component: () => import('@/components/ReplyContent')
+        component: () => import('@/components/ReplyTab')
       },
       // 喜歡的內容
       {
         path: 'likes',
         name: 'user-likes',
-        component: () => import('@/components/LikeContent')
+        component: () => import('@/components/LikeTab')
       }
     ]
   },

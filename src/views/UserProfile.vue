@@ -90,6 +90,7 @@
           </div>
         </main>
       </section>
+      <UserNav />
       <router-view />
     </section>
     <RecommendedList />
@@ -100,6 +101,7 @@
 import SiteNav from '@/components/SiteNav.vue'
 import RecommendedList from '@/components/RecommendedList.vue'
 import FollowControlButton from '@/components/FollowControlButton.vue'
+import UserNav from '@/components/UserNav.vue'
 import { emptyNameMethod, addPrefixFilter, numberFormatFilter } from '@/utils/mixins'
 import { mapState } from 'vuex'
 import usersAPI from '@/apis/users'
@@ -109,7 +111,8 @@ export default {
   components: {
     SiteNav,
     RecommendedList,
-    FollowControlButton
+    FollowControlButton,
+    UserNav
   },
   mixins: [emptyNameMethod, addPrefixFilter, numberFormatFilter],
   data () {
@@ -331,5 +334,7 @@ section.main {
   flex-wrap: nowrap;
   flex-grow: 1;
   flex-shrink: 1;
+  overflow-x: clip;
+  overflow-y: auto;
 }
 </style>
