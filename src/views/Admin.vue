@@ -68,7 +68,8 @@
 </template>
 
 <script>
-import authorizationAPI from './../apis/authorization'
+import authorizationApi from './../apis/authorization'
+import adminApi from './../apis/admin'
 import { Toast } from './../utils/helpers'
 export default {
   data () {
@@ -91,18 +92,21 @@ export default {
         }
 
         this.isProcessing = true
-        const response = await authorizationAPI.adminSignIn({
+        const response = await authorizationApi.adminSignIn({
           account: this.account,
           password: this.password
         })
-        // TODO: 檢查data中的資料
-        // const { data } = response;
-        console.log('response', response)
-        // localStorage.setItem('token', data.token);
-        // if (data.status === 'error') {
-        //   throw new Error(data.message);
-        // }
-        this.$router.push('/admin/tweets')
+        // console.log(response)
+        const { data } = response
+        // *將token存入localStorage
+        localStorage.setItem('token', data.token)
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+        const currentUser = await adminApi.getCurrentUser()
+        console.log(currentUser)
+        this.$store.commit('setCurrentUser', currentUser)
+        // this.$router.push('/admin/tweets')
       } catch (error) {
         this.isProcessing = false
         Toast.fire({

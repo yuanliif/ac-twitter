@@ -32,7 +32,7 @@
               {{ user.name }}
             </div>
             <div class="account">
-              {{ user.account }}
+              {{ user.account | addIcon }}
             </div>
           </div>
           <div class="tweet">
@@ -86,11 +86,14 @@ export default {
     adjustNum (num) {
       if (num < 1000) {
         return num
-      } else if (num < 10000) {
+      } else if (num < 100000) {
         return Math.floor(((num / 1000) * 10) / 10).toFixed(1) + 'K'
       } else {
         return Math.floor(num / 1000) + 'K'
       }
+    },
+    addIcon (account) {
+      return '@' + account
     }
   },
   data () {
@@ -126,7 +129,7 @@ svg {
 a {
   pointer-events: none;
 }
-c .users {
+.users {
   min-width: 70vmax;
   border-left: 1px solid #e6ecf0;
   .navbar {
