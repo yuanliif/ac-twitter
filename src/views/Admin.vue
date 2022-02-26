@@ -69,7 +69,6 @@
 
 <script>
 import authorizationApi from './../apis/authorization'
-import adminApi from './../apis/admin'
 import { Toast } from './../utils/helpers'
 export default {
   data () {
@@ -97,6 +96,7 @@ export default {
           password: this.password
         })
         const { data } = response
+        const { userData } = data
 
         // *將token存入localStorage
         localStorage.setItem('token', data.token)
@@ -104,8 +104,7 @@ export default {
           throw new Error(data.message)
         }
         // *傳入vuex
-        const currentUser = await adminApi.getCurrentUser()
-        this.$store.commit('setCurrentUser', currentUser)
+        this.$store.commit('setCurrentUser', userData)
         this.$router.push('/admin/tweets')
       } catch (error) {
         this.isProcessing = false

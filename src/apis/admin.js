@@ -15,10 +15,5 @@ export default {
     return apiHelper.get('/admin/users', {
       // headers: { Authorization: `Bearer ${getToken()}` }
     })
-  },
-  getCurrentUser () {
-    return apiHelper.get('/users/current_user', {
-      // headers: { Authorization: `Bearer ${getToken()}` }
-    })
   }
 }
