@@ -1,20 +1,41 @@
 <template>
-  <!-- 使用者Profile推文區域（待完成） -->
-  <div class="tab-container">
-    <!-- 推文列表 -->
-    <TweetList
-      :tweets="tweets"
-      :is-loading="isLoading"
-    />
+  <div class="home-tweet-area">
+    <PageHeader>
+      首頁
+    </PageHeader>
+    <section
+      class="tweet-input-box"
+    >
+      <section class="avatar-part">
+        <UserThumbnail :initial-user="currentUser" />
+      </section>
+      <section class="input-part">
+        <textarea
+          placeholder="有什麼新鮮事？"
+          maxlength="140"
+        />
+        <button class="btn-control btn-tweet">
+          推文
+        </button>
+      </section>
+    </section>
+    <section class="tweet-list-container">
+      <TweetList
+        :tweets="tweets"
+        :is-loading="isLoading"
+      />
+    </section>
   </div>
 </template>
 
 <script>
-import { Toast, sortByTime } from '@/utils/helpers'
-import UsersAPI from '@/apis/users'
+import PageHeader from '@/components/PageHeader.vue'
 import TweetList from '@/components/TweetList.vue'
-// import UsersAPI from '@/apis/users'
+import UserThumbnail from '@/components/UserThumbnail.vue'
+import tweetsAPI from '@/apis/tweets'
+import { sortByTime, Toast } from '@/utils/helpers'
 // import moment from 'moment' // 測試用
+import { mapState } from 'vuex'
 
 // 測試資料
 /*
@@ -144,6 +165,8 @@ const dummyTweets = [
 
 export default {
   components: {
+    PageHeader,
+    UserThumbnail,
     TweetList
   },
   data () {
@@ -152,21 +175,22 @@ export default {
       isLoading: true
     }
   },
+  computed: {
+    ...mapState(['currentUser'])
+  },
   created () {
-    const { id } = this.$route.params
-    this.fetchTweets(id)
+    this.fetchTweets()
   },
   methods: {
     // 測試用
-    // fetchTweets (userId) {
-    //   console.log(userId)
+    // fetchTweets () {
     //   this.tweets = sortByTime(dummyTweets, 'createAt')
     //   this.isLoading = false
     // }
-    async fetchTweets (userId) {
+    async fetchTweets () {
       try {
         this.isLoading = true
-        const response = await UsersAPI.getUserTweets({ userId })
+        const response = await tweetsAPI.get()
 
         if (response.statusText !== 'OK') {
           throw new Error(response.statusText)
@@ -184,3 +208,65 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.home-tweet-area {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+section.tweet-input-box {
+  border-bottom: 10px solid #E6ECF0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  padding: 10px 15px;
+
+  .input-part {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+    margin-left: 10px;
+
+    textarea {
+      border: none;
+      height: 26px;
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 26px;
+      margin-top: 11px;
+      padding: 0;
+      resize: none;
+
+      &::placeholder {
+        color: #9197A3;
+      }
+
+      &:focus {
+        border: none;
+        outline: none;
+      }
+    }
+
+    .btn-tweet {
+      align-self: flex-end;
+      border-radius: 100px;
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 18px;
+      margin-top: 25px;
+      padding: 10px 15px;
+    }
+  }
+}
+.tweet-list-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  overflow-x: clip;
+  overflow-y: auto;
+}
+</style>

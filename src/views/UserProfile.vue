@@ -169,42 +169,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-section.main {
+.profile-container {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  width: 600px;
+}
 
-  .profile-container {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
+.page-control {
+  border-bottom: 1px solid #E6ECF0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+  .btn-back {
+    height: 24px;
+    margin: 15px 40px 16px 15px;
+    width: 24px;
   }
 
-  .page-control {
-    border-bottom: 1px solid #E6ECF0;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+  .simple-info {
+    align-self: center;
 
-    .btn-back {
-      height: 24px;
-      margin: 15px 40px 16px 15px;
-      width: 24px;
-    }
-
-    .simple-info {
-      align-self: center;
-
-      .tweet-count {
-        color: #657786;
-        font-size: 13px;
-        font-weight: 500;
-        line-height: 13px;
-      }
+    .tweet-count {
+      color: #657786;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 13px;
     }
   }
 }
+
 .profile {
   .user-cover {
     background-color: #999999;
