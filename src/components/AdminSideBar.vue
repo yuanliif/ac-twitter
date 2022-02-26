@@ -59,7 +59,7 @@ svg {
   margin-right: 7px;
 }
 .sidebar {
-  height: 100vh;
+  height: 100%;
   width: 275px;
   margin: 4px 0 0 103px;
   border-right: 1px solid #e6ecf0;

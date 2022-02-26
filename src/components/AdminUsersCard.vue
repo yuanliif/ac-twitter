@@ -12,21 +12,20 @@
           :key="user.id"
           class="user-card d-flex flex-column flex-wrap align-items-center justify-content-between"
         >
-          <img
-            :src="user.cover"
-            alt=""
-            class="cover"
-          >
+          <div class="cover">
+            <img
+              v-show="user.cover !== ''"
+              :src="user.cover"
+              alt=""
+            >
+          </div>
           <div class="info">
             <div class="avatar">
-              <UserThumbnail
-                :initial-user="user"
-                style="
-                  width: 100px;
-                  height: 100px;
-                  clip-path: circle(50px at center);
-                "
-              />
+              <img
+                v-show="user.avatar !== ''"
+                :src="user.avatar"
+                alt=""
+              >
             </div>
             <div class="name">
               {{ user.name }}
@@ -60,11 +59,13 @@
             </div>
             <div class="follow d-flex">
               <div class="following">
-                {{ user.following }}個跟隨中
+                {{ user.following }}個
               </div>
+              <p>跟隨中</p>
               <div class="follower">
-                {{ user.follower }}個跟隨者
+                {{ user.follower }}個
               </div>
+              <p>跟隨者</p>
             </div>
           </div>
         </div>
@@ -74,14 +75,10 @@
 </template>
 
 <script>
-import UserThumbnail from './UserThumbnail.vue'
 import adminApi from './../apis/admin'
 import { Toast } from './../utils/helpers'
 
 export default {
-  components: {
-    UserThumbnail
-  },
   filters: {
     adjustNum (num) {
       if (num < 1000) {
@@ -143,61 +140,87 @@ a {
       line-height: 26px;
     }
   }
-  .users-container {
-    padding: 0px 15px;
-    .user-card {
-      position: relative;
-      width: 245px;
-      height: 314px;
-      background: #f6f7f8;
-      border-radius: 10px;
-      margin: 0 15px 15px 0;
-      .cover {
+  .data-panel {
+    height: 1147px;
+    overflow-y: auto;
+    .users-container {
+      padding: 0px 15px;
+      .user-card {
+        position: relative;
         width: 245px;
-        height: 140px;
-      }
-      .info {
-        position: absolute;
-        text-align: center;
-        top: 68px;
-        left: 72.5px;
-        font-size: 15px;
-        line-height: 22px;
-        .avatar {
-          width: 100px;
-          height: 100px;
+        height: 314px;
+        background: #f6f7f8;
+        border-radius: 10px;
+        margin: 0 15px 15px 0;
+        .cover {
+          width: 245px;
+          height: 140px;
+          background-color: #c4c4c4;
+          border-top-left-radius: 10px;
+          border-top-right-radius: 10px;
+          overflow: hidden;
+          img {
+            height: inherit;
+            object-fit: cover;
+            width: 100%;
+          }
         }
-        .name {
-          margin-top: 5px;
-          font-weight: 900;
+        .info {
+          position: absolute;
+          text-align: center;
+          top: 68px;
+          left: 72.5px;
+          font-size: 15px;
+          line-height: 22px;
+          .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #c4c4c4;
+            border: 4px solid #ffffff;
+            img {
+              border-radius: 50%;
+              object-fit: cover;
+              height: 92px;
+              width: 92px;
+            }
+          }
+          .name {
+            margin-top: 5px;
+            font-weight: 900;
+          }
+          .account {
+            margin-top: 2px;
+            color: #657786;
+            font-weight: 500;
+          }
         }
-        .account {
-          margin-top: 2px;
-          color: #657786;
+        .tweet {
+          margin-bottom: 21px;
+          .comment-like {
+            margin: 15px 0;
+            width: 130px;
+            height: 24px;
+            font-weight: 500;
+            p {
+              line-height: 15px;
+              margin-left: 7px;
+            }
+            .comment {
+              margin-right: 15px;
+            }
+          }
+        }
+        .follow {
+          font-size: 14px;
+          line-height: 20px;
+          color: #000;
           font-weight: 500;
-        }
-      }
-      .tweet {
-        margin-bottom: 21px;
-        .comment-like {
-          margin: 15px 0;
-          width: 130px;
-          height: 24px;
-          p {
-            line-height: 15px;
-            margin-left: 7px;
+          > p {
+            margin: 0 5px 0 0;
+            font-weight: 400;
+            color: #657786;
           }
-          .comment {
-            margin-right: 15px;
-          }
-        }
-      }
-      .follow {
-        font-size: 14px;
-        line-height: 20px;
-        color: #000;
-        .following {
-          margin-right: 5px;
         }
       }
     }

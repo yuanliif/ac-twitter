@@ -96,17 +96,17 @@ export default {
           account: this.account,
           password: this.password
         })
-        // console.log(response)
         const { data } = response
+
         // *將token存入localStorage
         localStorage.setItem('token', data.token)
         if (data.status === 'error') {
           throw new Error(data.message)
         }
+        // *傳入vuex
         const currentUser = await adminApi.getCurrentUser()
-        console.log(currentUser)
         this.$store.commit('setCurrentUser', currentUser)
-        // this.$router.push('/admin/tweets')
+        this.$router.push('/admin/tweets')
       } catch (error) {
         this.isProcessing = false
         Toast.fire({
