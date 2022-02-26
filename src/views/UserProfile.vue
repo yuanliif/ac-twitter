@@ -173,7 +173,6 @@ section.main {
   width: 600px;
 
   .profile-container {
-    border-bottom: 1px solid #E6ECF0;
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
@@ -323,5 +322,14 @@ section.main {
   font-size: 19px;
   font-weight: 900;
   line-height: 24px;
+}
+
+// 分頁內容根元素的功用樣式
+::v-deep .tab-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  flex-grow: 1;
+  flex-shrink: 1;
 }
 </style>

@@ -78,6 +78,7 @@ const routes = [
   // 使用者系列
   {
     path: '/user/:id',
+    name: 'user-main',
     component: () => import('@/views/UserProfile'),
     redirect: { name: 'user-tweets' },
     children: [
