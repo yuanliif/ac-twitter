@@ -91,7 +91,7 @@
         </main>
       </section>
       <UserNav />
-      <router-view />
+      <router-view :user-id="$route.params.id" />
     </section>
     <RecommendedList />
   </div>

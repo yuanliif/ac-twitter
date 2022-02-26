@@ -4,56 +4,11 @@
     class="tweet-list"
   >
     <template v-show="tweets.length > 0">
-      <router-link
+      <Tweet
         v-for="tweet in tweets"
         :key="tweet.id"
-        v-slot="{ navigate }"
-        :to="{name: 'tweet', params: {id: tweet.id}}"
-        class="tweet-container cursor-pointer"
-        custom
-      >
-        <div @click="navigate">
-          <section class="avatar-part">
-            <UserThumbnail :initial-user="tweet.userData" />
-          </section>
-          <section class="content-part">
-            <div class="title-part">
-              <div
-                class="user-name"
-                :title="emptyName(tweet.userData.name, tweet.userData.account)"
-              >
-                {{ emptyName(tweet.userData.name, tweet.userData.account) }}
-              </div>
-              <div class="account-and-time">
-                {{ tweet.userData.account | addPrefix }}・{{ tweet.createAt | timeFormat }}
-              </div>
-            </div>
-            <div class="tweet">
-              {{ tweet.description }}
-            </div>
-            <div class="control-group">
-              <div class="control-container">
-                <span class="event-area">
-                  <icon
-                    icon-name="reply"
-                    class="control-icon"
-                  />
-                  <span class="control-statistic">{{ tweet.replyAmount | numberFormat }}</span>
-                </span>
-              </div>
-              <div class="control-container">
-                <span class="event-area">
-                  <icon
-                    icon-name="like"
-                    class="control-icon"
-                  />
-                  <span class="control-statistic">{{ tweet.likeAmount | numberFormat }}</span>
-                </span>
-              </div>
-            </div>
-          </section>
-        </div>
-      </router-link>
+        :initial-tweet="tweet"
+      />
     </template>
     <h1
       v-show="tweets.length === 0"
@@ -65,11 +20,10 @@
 </template>
 
 <script>
-import UserThumbnail from '@/components/UserThumbnail.vue'
-import { emptyNameMethod, addPrefixFilter, numberFormatFilter, timeFormatFilter } from '@/utils/mixins'
+import Tweet from '@/components/Tweet.vue'
 import { sortByTime, Toast } from '@/utils/helpers'
 import UsersAPI from '@/apis/users'
-// import moment from 'moment'
+// import moment from 'moment' // 測試用
 
 // 測試資料
 /*
@@ -199,9 +153,8 @@ const dummyTweets = [
 
 export default {
   components: {
-    UserThumbnail
+    Tweet
   },
-  mixins: [emptyNameMethod, addPrefixFilter, numberFormatFilter, timeFormatFilter],
   props: {
     userId: {
       type: Number,
@@ -215,11 +168,20 @@ export default {
       isLoading: true
     }
   },
+  watch: {
+    // 頁面重新載入時使用
+    userId (newValue) {
+      this.fetchTweets(newValue)
+    }
+  },
+  // 分頁切換時使用
   created () {
-    const { id } = this.$route.params
-    this.fetchTweets(id)
+    if (this.userId !== -1) {
+      this.fetchTweets(this.userId)
+    }
   },
   methods: {
+    // 測試用
     // fetchTweets (userId) {
     //   this.tweets = sortByTime(dummyTweets, 'createAt')
     //   this.isLoading = false
@@ -254,82 +216,6 @@ export default {
   flex-shrink: 0;
   flex-wrap: nowrap;
 
-  .tweet-container {
-    border-bottom: 1px solid #E6ECF0;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    padding: 10px 15px;
-  }
-
-  section.avatar-part {
-    margin-right: 10px;
-    margin-top: 3px;
-  }
-
-  section.content-part {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    overflow: hidden;
-
-    .title-part {
-      display: flex;
-      flex-wrap: nowrap;
-      flex-direction: row;
-      font-size: 15px;
-      line-height: 22px;
-
-      .user-name {
-        color: #1C1C1C;
-        flex-shrink: 1;
-        font-weight: bold;
-        margin-right: 5px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-      }
-
-      .account-and-time {
-        color: #657786;
-        flex-shrink: 0;
-        font-weight: 500;
-      }
-    }
-
-    .tweet {
-      margin-top: 6px;
-      word-break: break-all;
-    }
-
-    .control-group {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      margin-top: 13px;
-
-      .control-container {
-        color: #657786;
-        width: 90px;
-
-        .event-area {
-          cursor: pointer;
-        }
-
-        .control-icon {
-          height: 15px;
-          margin-right: 10px;
-          width: 15px;
-        }
-
-        .control-statistic {
-          font-size: 13px;
-          font-weight: 500;
-          line-height: 13px;
-        }
-      }
-    }
-  }
   h1.default-text {
     font-weight: bold;
     margin-top: 15px;
