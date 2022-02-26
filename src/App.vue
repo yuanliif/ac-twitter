@@ -56,4 +56,8 @@ export default {}
     color: #FFFFFF
   }
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}
 </style>

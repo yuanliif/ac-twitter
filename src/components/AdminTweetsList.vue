@@ -21,7 +21,7 @@
             </div>
             <div class="account">
               {{ tweet.userData.account | addIcon }} ‧
-              {{ tweet.createAt | fromNow }}
+              {{ tweet.createAt }}
             </div>
           </div>
           <div class="comment">
@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import { fromNowFilter } from './../utils/mixins'
 import { Toast } from './../utils/helpers'
 import adminApi from './../apis/admin'
 import UserThumbnail from './UserThumbnail.vue'
@@ -57,7 +56,6 @@ export default {
       return comment.length > 50 ? comment.slice(0, 50) + '...' : comment
     }
   },
-  mixins: [fromNowFilter],
   data () {
     return {
       tweets: [],
@@ -125,7 +123,6 @@ a {
   .data-panel {
     height: 1147px;
     overflow-y: auto;
-    border: 1px black solid;
     .list-container {
       position: relative;
       height: 65px;
