@@ -3,6 +3,25 @@
     v-show="!isLoading"
     class="tweet-list"
   >
+    <!-- 推文輸入區 -->
+    <section
+      v-if="$route.name === 'homepage'"
+      class="tweet-input-box"
+    >
+      <section class="avatar-part">
+        <UserThumbnail :initial-user="currentUser" />
+      </section>
+      <section class="input-part">
+        <textarea
+          placeholder="有什麼新鮮事？"
+          maxlength="140"
+        />
+        <button class="btn-control btn-tweet">
+          推文
+        </button>
+      </section>
+    </section>
+    <!-- 推文顯示清單 -->
     <template v-show="tweets.length > 0">
       <Tweet
         v-for="tweet in tweets"
@@ -21,8 +40,10 @@
 
 <script>
 import Tweet from '@/components/Tweet.vue'
+import UserThumbnail from '@/components/UserThumbnail.vue'
 import { sortByTime, Toast } from '@/utils/helpers'
 import UsersAPI from '@/apis/users'
+import { mapState } from 'vuex'
 // import moment from 'moment' // 測試用
 
 // 測試資料
@@ -153,6 +174,7 @@ const dummyTweets = [
 
 export default {
   components: {
+    UserThumbnail,
     Tweet
   },
   props: {
@@ -167,6 +189,9 @@ export default {
       tweets: [],
       isLoading: true
     }
+  },
+  computed: {
+    ...mapState(['currentUser'])
   },
   watch: {
     // 頁面重新載入時使用
@@ -209,6 +234,52 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+section.tweet-input-box {
+  border-bottom: 10px solid #E6ECF0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  padding: 10px 15px;
+
+  .input-part {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+    margin-left: 10px;
+
+    textarea {
+      border: none;
+      height: 26px;
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 26px;
+      margin-top: 11px;
+      padding: 0;
+      resize: none;
+
+      &::placeholder {
+        color: #9197A3;
+      }
+
+      &:focus {
+        border: none;
+        outline: none;
+      }
+    }
+
+    .btn-tweet {
+      align-self: flex-end;
+      border-radius: 100px;
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 18px;
+      margin-top: 25px;
+      padding: 10px 15px;
+    }
+  }
+}
 .tweet-list {
   display: flex;
   flex-direction: column;

@@ -184,6 +184,7 @@ section.content-part {
   }
 
   .tweet {
+    font-weight: 500;
     margin-top: 6px;
     word-break: break-all;
   }
