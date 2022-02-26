@@ -75,21 +75,9 @@
 
 <script>
 import UserThumbnail from './UserThumbnail.vue'
-const dummyData = [
-  {
-    id: 21,
-    account: 'cindy266',
-    name: '鰻魚燒',
-    tweetAmount: 38211,
-    follower: 562,
-    following: 65,
-    likeAmount: 37111,
-    cover:
-      'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg',
-    avatar:
-      'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg'
-  }
-]
+import adminApi from './../apis/admin'
+import { Toast } from './../utils/helpers'
+
 export default {
   components: {
     UserThumbnail
@@ -99,9 +87,9 @@ export default {
       if (num < 1000) {
         return num
       } else if (num < 10000) {
-        return Math.floor((num / 1000) * 10 / 10).toFixed(1) + 'K'
+        return Math.floor(((num / 1000) * 10) / 10).toFixed(1) + 'K'
       } else {
-        return Math.floor((num / 1000)) + 'K'
+        return Math.floor(num / 1000) + 'K'
       }
     }
   },
@@ -114,8 +102,17 @@ export default {
     this.fetchUsers()
   },
   methods: {
-    fetchUsers () {
-      this.users = dummyData
+    async fetchUsers () {
+      try {
+        const { data } = await adminApi.getUsers()
+        this.users = data
+      } catch (error) {
+        Toast.fire({
+          icon: 'error',
+          title: '無法顯示所有使用者'
+        })
+        console.dir(error)
+      }
     }
   }
 }
@@ -126,7 +123,10 @@ svg {
   width: 20px;
   height: 20px;
 }
-.users {
+a {
+  pointer-events: none;
+}
+c .users {
   min-width: 70vmax;
   border-left: 1px solid #e6ecf0;
   .navbar {

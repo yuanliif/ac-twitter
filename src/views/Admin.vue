@@ -48,6 +48,7 @@
       <button
         class="btn btn-lg btn-block"
         type="submit"
+        :disabled="isProcessing"
       >
         登入
       </button>
@@ -101,13 +102,13 @@ export default {
         // if (data.status === 'error') {
         //   throw new Error(data.message);
         // }
-        // this.$router.push('/admin/users')
+        this.$router.push('/admin/tweets')
       } catch (error) {
+        this.isProcessing = false
         Toast.fire({
           icon: 'warning',
           title: '帳號不存在'
         })
-        this.isProcessing = false
         console.dir(error)
       }
     }

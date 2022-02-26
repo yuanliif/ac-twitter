@@ -60,8 +60,9 @@ svg {
 }
 .sidebar {
   height: 100vh;
-  width: 235px;
-  margin: 4px 40px 0 103px;
+  width: 275px;
+  margin: 4px 0 0 103px;
+  border-right: 1px solid #e6ecf0;
   .logo {
     width: 30px;
     height: 30px;

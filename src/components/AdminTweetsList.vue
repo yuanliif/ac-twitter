@@ -5,36 +5,35 @@
         推文清單
       </div>
     </div>
-    <div
-      v-for="user in users"
-      :key="user.id"
-      class="list-container d-flex"
-    >
-      <span class="photo">
-        <UserThumbnail :initial-user="user" />
-      </span>
-      <div class="text-area">
-        <div class="info d-flex">
-          <div class="name">
-            <router-link
-              :to="{ name: 'user-tweets', params: { id: user.userData.id } }"
-            >
-              {{ user.userData.name }}
-            </router-link>
+    <div class="data-panel">
+      <div
+        v-for="tweet in tweets"
+        :key="tweet.id"
+        class="list-container d-flex"
+      >
+        <span class="photo">
+          <UserThumbnail :initial-user="tweet.userData" />
+        </span>
+        <div class="text-area">
+          <div class="info d-flex">
+            <div class="name">
+              {{ tweet.userData.name }}
+            </div>
+            <div class="account">
+              {{ tweet.userData.account | addIcon }} ‧
+              {{ tweet.createAt | fromNow }}
+            </div>
           </div>
-          <div class="account">
-            {{ user.userData.account | addIcon }} ‧
-            {{ user.createAt | fromNow }}
+          <div class="comment">
+            <span> {{ tweet.description | sliceSentence }} </span>
           </div>
+          <button
+            class="btn delete"
+            type="button"
+            :disabled="isProcessing"
+            @click.prevent.stop="deleteTweet(tweet.id)"
+          />
         </div>
-        <div class="comment">
-          <span> {{ user.description | sliceSentence }} </span>
-        </div>
-        <button
-          class="btn delete"
-          :disabled=" isProcessing "
-          @click.prevent.stop="deleteTweet(user.id)"
-        />
       </div>
     </div>
   </div>
@@ -45,55 +44,7 @@ import { fromNowFilter } from './../utils/mixins'
 import { Toast } from './../utils/helpers'
 import adminApi from './../apis/admin'
 import UserThumbnail from './UserThumbnail.vue'
-// 測試使用
-// import { apiHelper, Toast } from './../utils/helpers'
-// const dummyList = [
-//   {
-//     id: 26,
-//     userData: {
-//       id: 21,
-//       account: 'cindy266',
-//       name: '鰻魚燒',
-//       avatar:
-//         'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg'
-//     },
-//     description: '今天天氣好好喔!!',
-//     replyAmount: 12,
-//     likeAmount: 263,
-//     userLiked: true,
-//     createAt: '2016-08-29T09:12:33.001+0000'
-//   },
-//   {
-//     id: 22,
-//     userData: {
-//       id: 21,
-//       account: 'cindy266',
-//       name: '鰻魚燒',
-//       avatar:
-//         'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg'
-//     },
-//     description: '今天天氣好好喔!!',
-//     replyAmount: 12,
-//     likeAmount: 263,
-//     userLiked: true,
-//     createAt: '2016-08-29T09:12:33.001+0000'
-//   },
-//   {
-//     id: 23,
-//     userData: {
-//       id: 21,
-//       account: 'cindy266',
-//       name: '鰻魚燒',
-//       avatar:
-//         'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg'
-//     },
-//     description: '今天天氣好好喔!!',
-//     replyAmount: 12,
-//     likeAmount: 263,
-//     userLiked: true,
-//     createAt: '2016-08-29T09:12:33.001+0000'
-//   }
-// ]
+
 export default {
   components: {
     UserThumbnail
@@ -109,19 +60,20 @@ export default {
   mixins: [fromNowFilter],
   data () {
     return {
-      users: {},
+      tweets: [],
       isProcessing: false
     }
   },
   created () {
-    this.fetchUsers()
+    this.fetchTweets()
   },
   methods: {
-    async fetchUsers () {
+    async fetchTweets () {
       try {
         const { data } = await adminApi.getTweets()
-        console.log(data)
-        this.users = data
+        this.tweets = {
+          ...data
+        }
       } catch (error) {
         Toast.fire({
           icon: 'warning',
@@ -131,21 +83,22 @@ export default {
       }
     },
     async deleteTweet (tweetId) {
-      // TODO 串接API
       try {
-        const { data } = await adminApi.deleteTweet({ tweetId })
         this.isProcessing = true
-        // console.log(data)
-        // console.log(tweetId)
+        const { data } = await adminApi.deleteTweet({ tweetId })
+        console.log(data)
         if (data.status !== 'success') {
           throw new Error(data.message)
         }
-        this.fetchUsers()
+        this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId)
+        this.isProcessing = false
       } catch (error) {
+        this.isProcessing = false
         Toast.fire({
           icon: 'error',
           title: '無法刪除篇推文'
         })
+        console.dir(error)
       }
     }
   }
@@ -153,9 +106,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+a {
+  pointer-events: none;
+}
 .tweets {
   min-width: 70vmax;
-  border-left: 1px solid #e6ecf0;
   .navbar {
     height: 55px;
     width: 100%;
@@ -204,6 +159,10 @@ export default {
       top: 4.5px;
       height: 17px;
       width: 17px;
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
     }
   }
 }
