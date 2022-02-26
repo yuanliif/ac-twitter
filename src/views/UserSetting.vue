@@ -1,10 +1,7 @@
 <template>
   <div class="page-container">
     <SiteNav />
-    <section
-      v-show="!isLoading"
-      class="setting-container"
-    >
+    <section class="setting-container">
       <div class="page-header">
         帳戶設定
       </div>
@@ -39,6 +36,7 @@ import GeneralInput from '@/components/GeneralInput.vue'
 import usersAPI from '@/apis/users'
 import { inputValidationMethod } from '@/utils/mixins'
 import { Toast } from '@/utils/helpers'
+import { mapState } from 'vuex'
 
 const inputKeys = ['account', 'name', 'email', 'password', 'passwordCheck']
 const inputConfig = {
@@ -77,21 +75,6 @@ const inputConfig = {
   }
 }
 
-// 再串接Vuex前，先用dummyUser頂著
-const dummyUser = {
-  id: 21,
-  account: 'cindy266',
-  name: '鰻魚燒',
-  cover:
-    'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg',
-  avatar:
-    'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg',
-  introduction: '我是絕對不可以吃的鰻魚燒，不可以吃我會遭天譴的',
-  email: 'aaa@bbb.ccc',
-  follower: 56,
-  following: 65
-}
-
 export default {
   components: {
     SiteNav,
@@ -116,36 +99,30 @@ export default {
       },
       inputKeys,
       config: inputConfig,
-      isLoading: true,
       isProcessing: false
     }
   },
-  created () {
-    this.fetchUser(dummyUser.id)
+  computed: {
+    ...mapState(['currentUser'])
   },
-  methods: {
-    async fetchUser (userId) {
-      try {
-        this.isLoading = true
-        const response = await usersAPI.getUserData({ userId })
-
-        if (response.statusText !== 'OK') {
-          throw new Error(response.statusText)
-        }
+  watch: {
+    // 監聽Vuex state中currentUser的變化，並把變動更新到容器所儲存的data
+    '$store.state.currentUser': {
+      handler: function (newValue, oldValue) {
+        const { account, name, email } = newValue
 
         this.data = {
           ...this.data,
-          ...response.data
+          account,
+          name,
+          email
         }
-
-        this.isLoading = false
-      } catch (error) {
-        Toast.fire({
-          icon: 'error',
-          title: '無法載入使用者資料，請稍後再試'
-        })
-      }
-    },
+      },
+      deep: true,
+      immediate: true
+    }
+  },
+  methods: {
     async handleSubmit (e) {
       try {
         let status
@@ -196,7 +173,7 @@ export default {
         const form = e.target
         const formData = new FormData(form)
         const { data } = await usersAPI.updateUserSetting({
-          userId: dummyUser.id,
+          userId: this.currentUser.id,
           formData
         })
 
@@ -219,6 +196,13 @@ export default {
           title: '成功修改使用者設定'
         })
 
+        // 確定使用者設定在後端更新成更後，把新的資訊寫回到Vuex裡
+        this.$store.commit('setCurrentUser', {
+          account: this.data.account,
+          name: this.data.name,
+          email: this.data.email
+        })
+
         // 成功修改使用者設定後，清空密碼，避免使用者快速再送出重複的設定
         this.data.password = ''
         this.data.passwordCheck = ''
@@ -236,16 +220,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.page-container {
-  color: #1c1c1c;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  font-family: 'Noto Sans TC', serif;
-  height: 100vh;
-  width: 100vw;
-}
-
 section.setting-container {
   display: flex;
   flex-direction: column;

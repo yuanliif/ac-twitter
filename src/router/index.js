@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import BlankPage from '@/views/BlankPage'
+import store from '@/store'
 
 // TODO: 使用者角色驗證
 // TODO: token有效性驗證
@@ -54,48 +55,48 @@ const routes = [
   {
     path: '/home',
     name: 'homepage',
-    component: () => import('./../views/HomePage.vue')
+    component: () => import('@/views/Homepage')
   },
   // 推文回覆顯示頁
   {
     path: '/tweet/:id',
     name: 'tweet',
-    component: BlankPage
+    component: () => import('@/views/Tweet')
+  },
+  // 跟隨者分頁
+  {
+    path: '/user/:id/followers',
+    name: 'followers',
+    component: () => import('@/views/Follower')
+  },
+  // 正在跟隨者分頁
+  {
+    path: '/user/:id/followings',
+    name: 'followings',
+    component: () => import('@/views/Following')
   },
   // 使用者系列
   {
     path: '/user/:id',
-    component: BlankPage,
+    component: () => import('@/views/UserProfile'),
     children: [
-      // 跟隨者分頁
-      {
-        path: 'followers',
-        name: 'followers',
-        component: BlankPage
-      },
-      // 正在跟隨者分頁
-      {
-        path: 'followings',
-        name: 'followings',
-        component: BlankPage
-      },
       // 推文分頁
       {
         path: 'tweets',
         name: 'user-tweets',
-        component: BlankPage
+        component: () => import('@/components/TweetContent')
       },
       // 推文與回覆分頁
       {
         path: 'replies',
         name: 'user-replies',
-        component: BlankPage
+        component: () => import('@/components/ReplyContent')
       },
       // 喜歡的內容
       {
         path: 'likes',
         name: 'user-likes',
-        component: BlankPage
+        component: () => import('@/components/LikeContent')
       }
     ]
   },
@@ -109,6 +110,11 @@ const routes = [
 const router = new VueRouter({
   linkActiveClass: 'active',
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  store.dispatch('fetchCurrentUser')
+  next()
 })
 
 export default router
