@@ -24,13 +24,13 @@
 </template>
 
 <script>
-import { sortByTime } from '@/utils/helpers'
+import { sortByTime, Toast } from '@/utils/helpers'
 import Reply from '@/components/Reply.vue'
-// import usersAPI from '@/apis/users'
-import moment from 'moment' // 測試用
+import usersAPI from '@/apis/users'
+// import moment from 'moment' // 測試用
 
 // 測試資料
-
+/*
 const dummyReplies = [
   // 一般資料
   {
@@ -153,6 +153,7 @@ const dummyReplies = [
     createAt: '2016-05-29T09:12:33.001+0000'
   }
 ]
+*/
 
 export default {
   components: {
@@ -170,31 +171,31 @@ export default {
   },
   methods: {
     // 測試用
+    /*
     fetchReplies (userId) {
       console.log(userId)
       this.replies = sortByTime(dummyReplies, 'createAt')
       this.isLoading = false
     }
-    /*
+    */
     async fetchReplies (userId) {
       try {
         this.isLoading = true
-        const response = await usersAPI.({ userId })
+        const response = await usersAPI.getUserReplies({ userId })
 
         if (response.statusText !== 'OK') {
           throw new Error(response.statusText)
         }
 
-        this.tweets = sortByTime(response.data)
+        this.replies = sortByTime(response.data)
         this.isLoading = false
       } catch (error) {
         Toast.fire({
           icon: 'error',
-          title: '無法取得推文，請稍後再試'
+          title: '無法取得推文與回覆，請稍後再試'
         })
       }
     }
-    */
   }
 }
 </script>
