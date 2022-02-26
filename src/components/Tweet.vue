@@ -38,13 +38,13 @@
             <icon
               v-if="tweet.userLiked === false"
               icon-name="like"
-              class="control-icon cursor-pointer"
+              class="control-icon cursor-pointer icon-like"
               @click.native.stop.prevent="like(tweet.id)"
             />
             <icon
               v-else
               icon-name="like-checked"
-              class="control-icon cursor-pointer"
+              class="control-icon cursor-pointer icon-like-checked"
               @click.native.stop.prevent="unlike(tweet.id)"
             />
             <span class="control-statistic">{{ tweet.likeAmount | numberFormat }}</span>
@@ -96,11 +96,14 @@ export default {
       this.isProcessing = true
 
       try {
-        const response = await tweetsAPI.like({ tweetId })
+        const { data } = await tweetsAPI.like({ tweetId })
 
-        console.log(response)
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
 
         this.tweet.userLiked = true
+        this.tweet.likeAmount += 1
       } catch (error) {
         Toast.fire({
           icon: 'error',
@@ -121,11 +124,14 @@ export default {
       this.isProcessing = true
 
       try {
-        const response = await tweetsAPI.unlike({ tweetId })
+        const { data } = await tweetsAPI.unlike({ tweetId })
 
-        console.log(response)
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
 
         this.tweet.userLiked = false
+        this.tweet.likeAmount -= 1
       } catch (error) {
         Toast.fire({
           icon: 'error',
@@ -205,6 +211,15 @@ section.content-part {
         height: 15px;
         margin-right: 10px;
         width: 15px;
+      }
+
+      .icon-like-checked {
+        height: 24px;
+        margin-right: 5px;
+        width: 24px;
+        & ~ .control-statistic {
+          color: #E0245E;
+        }
       }
 
       .control-statistic {

@@ -41,6 +41,9 @@ export default {
   },
   watch: {
     tweets: {
+      handler: function (newValue, oldValue) {
+
+      },
       deep: true
     }
   }
