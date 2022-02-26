@@ -21,7 +21,7 @@
             {{ tweet.userData.account | addPrefix }}・{{ tweet.createAt | timeFormat }}
           </div>
         </div>
-        <div class="tweet">
+        <div class="description">
           {{ tweet.description }}
         </div>
         <div class="control-group">
@@ -189,7 +189,7 @@ section.content-part {
     }
   }
 
-  .tweet {
+  .description {
     font-size: 15px;
     font-weight: 500;
     line-height: 22px;
