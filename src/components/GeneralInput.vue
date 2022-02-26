@@ -12,9 +12,8 @@
 
 <template>
   <section class="input-group">
-    <label class="input-label">{{ label }}</label>
     <span class="input-container">
-      {{ prefix }}
+      <span class="prefix">{{ prefix }}</span>
       <input
         :value="value"
         :class="{'invalid': !isValid}"
@@ -28,6 +27,7 @@
       >
       <div class="input-status-bar" />
     </span>
+    <label class="input-label">{{ label }}</label>
     <div class="input-status-info">
       <div
         class="text"
@@ -174,17 +174,31 @@ section.input-group {
   .input-container {
     background-color: #F5F8FA;
     border-radius: 4px 4px 0px 0px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
     font-size: 19px;
     font-weight: 500;
     line-height: 29px;
     padding-left: 10px;
+    position: relative;
     word-spacing: -.25rem;
 
+    .prefix {
+      flex-grow: 0;
+      flex-shrink: 0;
+      padding-bottom: 4px;
+      padding-top: 20px;
+    }
+
     .input-status-bar {
+      bottom: 0;
       background-color: #657786;
       border-radius: 0px 0px 4px 4px;
       height: 2px;
-      margin-left: -10px;
+      left: 0;
+      position: absolute;
+      right: 0;
     }
   }
   .input-status-info {
@@ -196,6 +210,7 @@ section.input-group {
     justify-content: space-between;
     line-height: 15px;
     margin-top: 5px;
+    white-space: nowrap;
 
     .text {
       color: #FC5A5A;
@@ -213,6 +228,7 @@ section.input-group {
   input {
     background-color: inherit;
     border: none;
+    flex-grow: 1;
     padding-bottom: 4px;
     padding-left: 0px;
     padding-top: 20px;
@@ -221,7 +237,8 @@ section.input-group {
     border: none;
     outline: none;
   }
-  input:focus ~ .input-status-bar {
+  input:focus ~ .input-status-bar,
+  input:hover ~ .input-status-bar {
     background-color: #50B5FF;
   }
   input.invalid ~ .input-status-bar {
