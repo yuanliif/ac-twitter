@@ -59,11 +59,11 @@
             </div>
             <div class="follow d-flex">
               <div class="following">
-                {{ user.following }}個
+                {{ user.following }} 個
               </div>
               <p>跟隨中</p>
               <div class="follower">
-                {{ user.follower }}個
+                {{ user.follower }} 位
               </div>
               <p>跟隨者</p>
             </div>
@@ -80,6 +80,7 @@ import { Toast } from './../utils/helpers'
 
 export default {
   filters: {
+    // TODO 引入數字規則
     adjustNum (num) {
       if (num < 1000) {
         return num

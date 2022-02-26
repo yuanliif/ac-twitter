@@ -20,6 +20,7 @@
               {{ tweet.userData.name }}
             </div>
             <div class="account">
+              <!-- TODO 引入時間規則 -->
               {{ tweet.userData.account | addIcon }} ‧
               {{ tweet.createAt }}
             </div>
@@ -32,7 +33,12 @@
             type="button"
             :disabled="isProcessing"
             @click.prevent.stop="deleteTweet(tweet.id)"
-          />
+          >
+            <icon
+              icon-name="delete"
+              icon-class="delete-icon"
+            />
+          </button>
         </div>
       </div>
     </div>
@@ -149,20 +155,20 @@ a {
         }
       }
       .delete {
-        background: url('./../assets/images/Delete_@2x.png');
-        background-size: 100%;
-        background-repeat: no-repeat;
-        background-position: center;
         position: absolute;
         border: none;
         padding: 0;
         right: 19.5px;
         top: 4.5px;
-        height: 17px;
-        width: 17px;
+        height: 15px;
+        width: 15px;
         &:focus {
           outline: none;
           box-shadow: none;
+        }
+        svg {
+          width: 15px;
+          height: 15px;
         }
       }
     }

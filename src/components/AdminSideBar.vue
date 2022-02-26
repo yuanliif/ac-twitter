@@ -1,10 +1,10 @@
 <template>
   <div class="sidebar d-flex flex-column">
-    <img
+    <icon
       class="logo"
-      src="./../assets/images/Logo_@2x_30.png"
-      alt=""
-    >
+      icon-name="logo"
+      icon-class="logo"
+    />
 
     <div class="nav-item-group">
       <div class="nav-item d-flex align-items-center">
@@ -39,10 +39,10 @@
       </div>
     </div>
     <div class="logout d-flex align-items-center">
-      <img
-        src="./../assets/images/Logout_@2x.png"
-        alt=""
-      >
+      <icon
+        icon-name="logout"
+        icon-class="logout-icon"
+      />
       <p>登出</p>
     </div>
   </div>

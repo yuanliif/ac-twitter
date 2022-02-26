@@ -1,11 +1,10 @@
 <template>
   <div class="container">
     <div class="logo d-flex justify-content-center">
-      <img
-        src="./../assets/images/Logo_@2x_50.png"
-        alt="ac-logo"
-        style="width: 50px"
-      >
+      <icon
+        icon-name="logo-50"
+        icon-class="logo-50"
+      />
     </div>
     <form
       class="w-70 mx-auto"
@@ -46,7 +45,7 @@
       </div>
 
       <button
-        class="btn btn-lg btn-block"
+        class="btn btn-lg btn-block btn-control"
         type="submit"
         :disabled="isProcessing"
       >
@@ -130,8 +129,9 @@ export default {
   padding-top: 60px;
   .logo {
     margin-bottom: 20px;
-    img {
+    svg {
       width: 50px;
+      height: 50px;
     }
   }
 }
