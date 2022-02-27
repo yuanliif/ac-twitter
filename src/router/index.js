@@ -19,13 +19,13 @@ const routes = [
   {
     path: '/signin',
     name: 'user-sign-in',
-    component: BlankPage
+    component: () => import('../views/UserSignIn.vue')
   },
   // 使用者註冊頁
   {
     path: '/signup',
     name: 'user-sign-up',
-    component: BlankPage
+    component: () => import('../views/UserSignUp.vue')
   },
   // 管理員登入頁
   {

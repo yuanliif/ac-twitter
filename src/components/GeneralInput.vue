@@ -137,7 +137,7 @@ export default {
       this.value = newValue
     },
     errorMessage (newValue) {
-      this.isValid = (newValue === '')
+      this.isValid = newValue === ''
     }
   },
   created () {
@@ -172,7 +172,7 @@ section.input-group {
     top: 5px;
   }
   .input-container {
-    background-color: #F5F8FA;
+    background-color: #f5f8fa;
     border-radius: 4px 4px 0px 0px;
     display: flex;
     flex-direction: row;
@@ -182,7 +182,7 @@ section.input-group {
     line-height: 29px;
     padding-left: 10px;
     position: relative;
-    word-spacing: -.25rem;
+    word-spacing: -0.25rem;
 
     .prefix {
       flex-grow: 0;
@@ -213,7 +213,7 @@ section.input-group {
     white-space: nowrap;
 
     .text {
-      color: #FC5A5A;
+      color: #fc5a5a;
       flex-shrink: 1;
       min-width: 0;
       overflow-x: clip;
@@ -239,10 +239,10 @@ section.input-group {
   }
   input:focus ~ .input-status-bar,
   input:hover ~ .input-status-bar {
-    background-color: #50B5FF;
+    background-color: #50b5ff;
   }
   input.invalid ~ .input-status-bar {
-    background-color: #FC5A5A;
+    background-color: #fc5a5a;
   }
 }
 </style>
