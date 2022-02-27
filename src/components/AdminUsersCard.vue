@@ -16,7 +16,7 @@
             <img
               v-show="user.cover !== ''"
               :src="user.cover"
-              alt=""
+              @error="user.cover = ''"
             >
           </div>
           <div class="info">
@@ -24,14 +24,14 @@
               <img
                 v-show="user.avatar !== ''"
                 :src="user.avatar"
-                alt=""
+                @error="user.avatar = ''"
               >
             </div>
             <div class="name">
-              {{ user.name }}
+              {{ emptyName(user.name, user.account) }}
             </div>
             <div class="account">
-              {{ user.account | addIcon }}
+              {{ user.account | addPrefix }}
             </div>
           </div>
           <div class="tweet">
@@ -43,7 +43,7 @@
                   icon-class="tweets"
                 />
                 <p>
-                  {{ user.tweetAmount | adjustNum }}
+                  {{ user.tweetAmount | numberFormat }}
                 </p>
               </div>
               <div class="like d-flex">
@@ -53,17 +53,17 @@
                   icon-class="like"
                 />
                 <p>
-                  {{ user.likeAmount | adjustNum }}
+                  {{ user.likeAmount | numberFormat }}
                 </p>
               </div>
             </div>
             <div class="follow d-flex">
               <div class="following">
-                {{ user.following }} 個
+                {{ user.following | numberFormat }} 個
               </div>
               <p>跟隨中</p>
               <div class="follower">
-                {{ user.follower }} 位
+                {{ user.follower | numberFormat }} 位
               </div>
               <p>跟隨者</p>
             </div>
@@ -77,6 +77,11 @@
 <script>
 import adminApi from './../apis/admin'
 import { Toast } from './../utils/helpers'
+import {
+  emptyNameMethod,
+  addPrefixFilter,
+  numberFormatFilter
+} from '@/utils/mixins'
 
 export default {
   filters: {
@@ -94,6 +99,7 @@ export default {
       return '@' + account
     }
   },
+  mixins: [emptyNameMethod, addPrefixFilter, numberFormatFilter],
   data () {
     return {
       users: []
@@ -146,6 +152,9 @@ a {
     overflow-y: auto;
     .users-container {
       padding: 0px 15px;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
       .user-card {
         position: relative;
         width: 245px;

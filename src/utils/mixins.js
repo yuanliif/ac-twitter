@@ -52,6 +52,23 @@ function lengthCheck ({ input, min = -1, max = -1 }) {
   return result
 }
 
+// 用正則表達式檢查
+function regexCheck ({ input, regex }) {
+  const result = {
+    status: true,
+    message: ''
+  }
+
+  const re = new RegExp(regex)
+  result.status = re.test(input)
+
+  if (result.status === false) {
+    result.message = '輸入格式錯誤'
+  }
+
+  return result
+}
+
 // 表單輸入驗證方法
 export const inputValidationMethod = {
   methods: {
@@ -127,35 +144,61 @@ export const inputValidationMethod = {
   }
 }
 
-// 用正則表達式檢查
-function regexCheck ({ input, regex }) {
-  const result = {
-    status: true,
-    message: ''
+// 給帳號顯示增加@的前綴
+export const addPrefixFilter = {
+  filters: {
+    addPrefix (account) {
+      return `@${account}`
+    }
   }
+}
 
-  const re = new RegExp(regex)
-  result.status = re.test(input)
+/*
+  數字格式化顯示
+  1. 單位做到支援Number.MAX_SAFE_INTEGER就好了，超過就直接顯示了
+  2. 數字每跨4位數字就換一次單位
+  3. 最多顯示一位小數
+  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER
+  https://googology.fandom.com/zh/wiki/%E4%B8%AD%E6%96%87%E6%95%B8%E5%AD%97?variant=zh-tw
+*/
+const formatter = new Intl.NumberFormat('en-US', {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 1
+})
+export const numberFormatFilter = {
+  filters: {
+    numberFormat (number) {
+      if (number > Number.MAX_SAFE_INTEGER) {
+        return `${number}`
+      }
 
-  if (result.status === false) {
-    result.message = '輸入格式錯誤'
+      const postfix = ['', '萬', '億', '京']
+      let index = 0
+
+      while (number >= 10000) {
+        number /= 10000
+        index += 1
+      }
+
+      const numberPart = formatter.format(number)
+
+      return `${numberPart}${postfix[index]}`
+    }
   }
-
-  return result
 }
 
 // 檢查時間是否與當前時間差距24小時以上
 function checkTimeDiff (momentTime) {
   const now = moment()
 
-  return (now.diff(momentTime, 'h') >= 24)
+  return now.diff(momentTime, 'h') >= 24
 }
 
 // 檢查時間是否與當前時間在同一年內
 function inThisYear (momentTime) {
   const now = moment()
 
-  return (now.isSame(momentTime, 'year'))
+  return now.isSame(momentTime, 'year')
 }
 
 export const timeFormatFilter = {

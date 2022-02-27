@@ -17,12 +17,12 @@
         <div class="text-area">
           <div class="info d-flex">
             <div class="name">
-              {{ tweet.userData.name }}
+              {{ emptyName(tweet.userData.name, tweet.userData.name) }}
             </div>
             <div class="account">
               <!-- TODO 引入時間規則 -->
-              {{ tweet.userData.account | addIcon }} ‧
-              {{ tweet.createAt }}
+              {{ tweet.userData.account | addPrefix }} ‧
+              {{ tweet.createAt | timeFormat }}
             </div>
           </div>
           <div class="comment">
@@ -49,6 +49,12 @@
 import { Toast } from './../utils/helpers'
 import adminApi from './../apis/admin'
 import UserThumbnail from './UserThumbnail.vue'
+import {
+  emptyNameMethod,
+  addPrefixFilter,
+  numberFormatFilter,
+  timeFormatFilter
+} from '@/utils/mixins'
 
 export default {
   components: {
@@ -62,6 +68,12 @@ export default {
       return comment.length > 50 ? comment.slice(0, 50) + '...' : comment
     }
   },
+  mixins: [
+    emptyNameMethod,
+    addPrefixFilter,
+    numberFormatFilter,
+    timeFormatFilter
+  ],
   data () {
     return {
       tweets: [],
@@ -75,12 +87,10 @@ export default {
     async fetchTweets () {
       try {
         const { data } = await adminApi.getTweets()
-        this.tweets = {
-          ...data
-        }
+        this.tweets = data
       } catch (error) {
         Toast.fire({
-          icon: 'warning',
+          icon: 'error',
           title: '無法取得資料'
         })
         console.dir(error)
@@ -90,7 +100,6 @@ export default {
       try {
         this.isProcessing = true
         const { data } = await adminApi.deleteTweet({ tweetId })
-        console.log(data)
         if (data.status !== 'success') {
           throw new Error(data.message)
         }

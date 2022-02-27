@@ -204,7 +204,7 @@ form {
     margin-top: 20px;
     p {
       position: relative;
-      .to-signup {
+      .to-signin {
         color: #0099ff;
         font-size: 18px;
         line-height: 26px;
