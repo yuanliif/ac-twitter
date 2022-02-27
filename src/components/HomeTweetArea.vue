@@ -3,7 +3,7 @@
     <PageHeader>
       首頁
     </PageHeader>
-    <TweetBox />
+    <TweetBox @after-tweet="addTweetToList($event)" />
     <section class="tweet-list-container">
       <TweetList
         :tweets="tweets"
@@ -185,6 +185,9 @@ export default {
           title: '無法取得推文，請稍後再試'
         })
       }
+    },
+    addTweetToList (tweet) {
+      this.tweets = [tweet, ...this.tweets]
     }
   }
 }

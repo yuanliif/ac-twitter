@@ -150,7 +150,23 @@ export const inputValidationMethod = {
         return result
       }
 
-      result = lengthCheck({ input: tweet, min: 1, max: 140 })
+      result = {
+        status: true,
+        message: ''
+      }
+
+      if (tweet.length === 0) {
+        result.status = false
+        result.message = '內容不可空白'
+        return result
+      }
+
+      if (tweet.length > 140) {
+        result.status = false
+        result.message = '字數不可超過140字'
+        return result
+      }
+
       return result
     }
   }

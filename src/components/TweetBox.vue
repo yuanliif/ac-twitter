@@ -7,7 +7,7 @@
     </section>
     <section class="input-part">
       <textarea
-        v-model="tweet"
+        v-model.trim.lazy="description"
         placeholder="有什麼新鮮事？"
         maxlength="140"
       />
@@ -16,7 +16,10 @@
           class="error-message"
           title="error"
         >{{ error }}</span>
-        <button class="btn-control btn-tweet">
+        <button
+          class="btn-control btn-tweet"
+          @click.stop.prevent="tweet"
+        >
           推文
         </button>
       </div>
@@ -26,20 +29,65 @@
 
 <script>
 import UserThumbnail from '@/components/UserThumbnail'
+import { inputValidationMethod } from '@/utils/mixins'
+import tweetsAPI from '@/apis/tweets'
 import { mapState } from 'vuex'
+import { Toast } from '@/utils/helpers'
 
 export default {
   components: {
     UserThumbnail
   },
+  mixins: [inputValidationMethod],
   data () {
     return {
-      tweet: '',
-      error: ''
+      description: '',
+      error: '',
+      isProcessing: false
     }
   },
   computed: {
     ...mapState(['currentUser'])
+  },
+  methods: {
+    async tweet () {
+      try {
+        const { status, message } = this.checkTweet(this.description)
+
+        if (status === false) {
+          this.error = message
+          return
+        }
+
+        this.isProcessing = true
+
+        const { data } = await tweetsAPI.post({ description: this.description })
+
+        if (data.status !== 'success') {
+          throw new Error(data.status)
+        }
+
+        this.$emit('after-tweet', {
+          id: new Date().valueOf(),
+          userData: this.currentUser,
+          description: this.description,
+          replyAmount: 0,
+          likeAmount: 0,
+          userLiked: false,
+          createdAt: new Date()
+        })
+
+        this.description = ''
+      } catch (error) {
+        console.log(error)
+        Toast.fire({
+          icon: 'error',
+          title: '發推失敗，請稍後再試'
+        })
+      } finally {
+        this.isProcessing = false
+      }
+    }
   }
 }
 </script>>

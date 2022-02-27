@@ -1,7 +1,6 @@
 <template>
   <div class="page-container">
     <SiteNav />
-    <!-- 首頁時間軸區域（待完成） -->
     <section class="main">
       <HomeTweetArea />
     </section>
