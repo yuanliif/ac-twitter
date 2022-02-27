@@ -3,7 +3,7 @@
     <SiteNav />
     <!-- 跟隨者區域（待完成） -->
     <section class="main">
-      跟隨者區域
+      <Follower />
     </section>
     <RecommendedList />
   </div>
@@ -12,10 +12,12 @@
 <script>
 import SiteNav from '@/components/SiteNav.vue'
 import RecommendedList from '@/components/RecommendedList.vue'
+import Follower from '@/components/FollowerContent.vue'
 export default {
   components: {
     SiteNav,
-    RecommendedList
+    RecommendedList,
+    Follower
   }
 }
 </script>

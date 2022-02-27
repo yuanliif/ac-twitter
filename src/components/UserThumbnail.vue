@@ -10,7 +10,7 @@
 <template>
   <router-link
     class="photo-container"
-    :to="{name: 'user-tweets', params: {id : user.id}}"
+    :to="{name: 'user-main', params: {id : user.id}}"
   >
     <img
       v-show="user.avatar !== ''"
@@ -33,6 +33,14 @@ export default {
       user: {
         id: -1,
         avatar: ''
+      }
+    }
+  },
+  watch: {
+    initialUser (newValue) {
+      this.user = {
+        ...this.user,
+        ...newValue
       }
     }
   },

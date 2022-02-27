@@ -94,7 +94,8 @@
           </div>
         </main>
       </section>
-      <router-view />
+      <UserNav />
+      <router-view :user-id="$route.params.id" />
     </section>
     <RecommendedList />
   </div>
@@ -104,6 +105,7 @@
 import SiteNav from '@/components/SiteNav.vue'
 import RecommendedList from '@/components/RecommendedList.vue'
 import FollowControlButton from '@/components/FollowControlButton.vue'
+import UserNav from '@/components/UserNav.vue'
 import { emptyNameMethod, addPrefixFilter, numberFormatFilter } from '@/utils/mixins'
 import { mapState } from 'vuex'
 import usersAPI from '@/apis/users'
@@ -113,7 +115,8 @@ export default {
   components: {
     SiteNav,
     RecommendedList,
-    FollowControlButton
+    FollowControlButton,
+    UserNav
   },
   mixins: [emptyNameMethod, addPrefixFilter, numberFormatFilter],
   data () {
@@ -186,43 +189,36 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-section.main {
+.profile-container {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  width: 600px;
+}
 
-  .profile-container {
-    border-bottom: 1px solid #E6ECF0;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
+.page-control {
+  border-bottom: 1px solid #E6ECF0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+
+  .btn-back {
+    height: 24px;
+    margin: 15px 40px 16px 15px;
+    width: 24px;
   }
 
-  .page-control {
-    border-bottom: 1px solid #E6ECF0;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
+  .simple-info {
+    align-self: center;
 
-    .btn-back {
-      height: 24px;
-      margin: 15px 40px 16px 15px;
-      width: 24px;
-    }
-
-    .simple-info {
-      align-self: center;
-
-      .tweet-count {
-        color: #657786;
-        font-size: 13px;
-        font-weight: 500;
-        line-height: 13px;
-      }
+    .tweet-count {
+      color: #657786;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 13px;
     }
   }
 }
+
 .profile {
   .user-cover {
     background-color: #999999;
@@ -343,5 +339,16 @@ section.main {
   font-size: 19px;
   font-weight: 900;
   line-height: 24px;
+}
+
+// 分頁內容根元素的功用樣式
+::v-deep .tab-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  flex-grow: 1;
+  flex-shrink: 1;
+  overflow-x: clip;
+  overflow-y: auto;
 }
 </style>

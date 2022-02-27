@@ -15,6 +15,7 @@ export default {}
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap');
 
 #app {
+  font-family: 'Noto Sans TC', serif;
   height: 1200px;
   margin-left: auto;
   margin-right: auto;
@@ -55,6 +56,14 @@ export default {}
     background-color: #FF6600;
     color: #FFFFFF
   }
+}
+
+// section.main通用設定
+section.main {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  width: 600px;
 }
 
 .cursor-pointer {
