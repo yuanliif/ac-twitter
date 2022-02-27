@@ -4,7 +4,6 @@
     <!-- 首頁時間軸區域（待完成） -->
     <section class="main">
       <HomeTweetArea />
-      <tweet-list :user-id="currentUser.id" />
     </section>
     <RecommendedList />
   </div>

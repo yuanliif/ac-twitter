@@ -120,13 +120,11 @@ export default {
           password: this.data.password
         })
 
-        console.log(response)
-
         const { data } = response
 
         localStorage.setItem('token', data.token)
 
-        this.$store.commit('setCurrentUser', response.userData)
+        this.$store.commit('setCurrentUser', data.userData)
 
         this.$router.push('/home')
       } catch (error) {

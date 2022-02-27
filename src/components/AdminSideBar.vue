@@ -38,10 +38,13 @@
         </router-link>
       </div>
     </div>
-    <div class="logout d-flex align-items-center">
+    <div
+      class="logout d-flex align-items-center"
+      @click.stop.prevent="logout"
+    >
       <icon
         icon-name="logout"
-        icon-class="logout-icon"
+        icon-class="logout-icon cursor-point"
       />
       <p>登出</p>
     </div>
@@ -49,7 +52,14 @@
 </template>
 
 <script>
-export default {}
+export default {
+  methods: {
+    logout () {
+      this.$store.commit('revokeAuthentication')
+      this.$router.push({ name: 'admin-sign-in' })
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -59,10 +69,10 @@ svg {
   margin-right: 7px;
 }
 .sidebar {
-  height: 100%;
   width: 275px;
   margin: 4px 0 0 103px;
   border-right: 1px solid #e6ecf0;
+
   .logo {
     width: 30px;
     height: 30px;
@@ -94,12 +104,14 @@ svg {
     }
   }
   .logout {
-    position: absolute;
-    bottom: 22px;
+    cursor: pointer;
+    margin-bottom: 17px;
     margin-left: 11px;
-    img {
-      width: 24px;
-      height: 24px;
+    margin-top: auto;
+    user-select: none;
+
+    svg {
+      margin-right: 0px;
     }
     p {
       margin: 0 20px;

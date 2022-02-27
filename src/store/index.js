@@ -57,8 +57,18 @@ export default new Vuex.Store({
           follower,
           following
         })
+
+        return {
+          isAuthenticated: true,
+          role
+        }
       } catch (error) {
         console.error(error.message)
+
+        return {
+          isAuthenticated: false,
+          role: ''
+        }
       }
     }
   },
