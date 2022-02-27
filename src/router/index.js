@@ -37,13 +37,13 @@ const routes = [
   {
     path: '/admin/tweets',
     name: 'admin-tweets',
-    component: BlankPage
+    component: () => import('./../views/AdminTweets.vue')
   },
   // 後台使用者頁
   {
     path: '/admin/users',
     name: 'admin-users',
-    component: BlankPage
+    component: () => import('./../views/AdminUsers.vue')
   },
   // 使用者設定頁
   {

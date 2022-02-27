@@ -1,11 +1,10 @@
 <template>
   <div class="container">
     <div class="logo d-flex justify-content-center">
-      <img
-        src="./../assets/images/Logo_50.png"
-        alt="ac-logo"
-        style="width: 50px"
-      >
+      <icon
+        icon-name="logo-50"
+        icon-class="logo-50"
+      />
     </div>
     <form
       class="w-70 mx-auto"
@@ -27,6 +26,7 @@
             autofocus
           >
           <label for="account">帳號</label>
+          <span class="line" />
         </div>
 
         <div class="form-label">
@@ -40,12 +40,14 @@
             required
           >
           <label for="password">密碼</label>
+          <span class="line" />
         </div>
       </div>
 
       <button
-        class="btn btn-lg btn-block"
+        class="btn btn-lg btn-block btn-control"
         type="submit"
+        :disabled="isProcessing"
       >
         登入
       </button>
@@ -53,8 +55,8 @@
       <div class="front-login d-flex justify-content-end">
         <p>
           <router-link
-            class="to-signup"
-            to="/signup"
+            class="to-signin"
+            to="/signin"
           >
             前台登入
           </router-link>
@@ -65,7 +67,7 @@
 </template>
 
 <script>
-import authorizationAPI from './../apis/authorization'
+import authorizationApi from './../apis/authorization'
 import { Toast } from './../utils/helpers'
 export default {
   data () {
@@ -88,24 +90,27 @@ export default {
         }
 
         this.isProcessing = true
-        const response = await authorizationAPI.adminSignIn({
+        const response = await authorizationApi.adminSignIn({
           account: this.account,
           password: this.password
         })
-        // TODO: 檢查data中的資料
-        // const { data } = response;
-        console.log('response', response)
-        // localStorage.setItem('token', data.token);
-        // if (data.status === 'error') {
-        //   throw new Error(data.message);
-        // }
-        this.$router.push('/admin_main')
+        const { data } = response
+        const { userData } = data
+
+        // *將token存入localStorage
+        localStorage.setItem('token', data.token)
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+        // *傳入vuex
+        this.$store.commit('setCurrentUser', userData)
+        this.$router.push('/admin/tweets')
       } catch (error) {
+        this.isProcessing = false
         Toast.fire({
           icon: 'warning',
           title: '帳號不存在'
         })
-        this.isProcessing = false
         console.dir(error)
       }
     }
@@ -117,15 +122,21 @@ export default {
 * {
   font-family: 'Noto Sans TC', sans-serif;
   font-weight: bold;
+  box-sizing: border-box;
+  color: #1c1c1c;
 }
 .container {
   padding-top: 60px;
   .logo {
     margin-bottom: 20px;
+    svg {
+      width: 50px;
+      height: 50px;
+    }
   }
 }
 form {
-  width: 540px;
+  max-width: 540px;
   h1 {
     font-size: 23px;
     line-height: 33.3px;
@@ -140,14 +151,7 @@ form {
     }
     .form-label {
       position: relative;
-      &::after {
-        content: '';
-        display: block;
-        width: 540px;
-        height: 2px;
-        background-color: #657786;
-        border-radius: 0px 0px 4px 4px;
-      }
+      height: 52px;
       label {
         position: absolute;
         margin: 0;
@@ -165,10 +169,25 @@ form {
         border-radius: 4px;
         border: none;
         font-weight: 500;
-        &:focus ~ label,
-        &:valid ~ label {
-          display: none;
+        font-size: 19px;
+        padding-top: 25px;
+        &:focus {
+          outline: none;
+          box-shadow: none;
         }
+        &:hover ~ .line,
+        &:focus ~ .line {
+          background-color: #50b5ff;
+        }
+      }
+      .line {
+        display: block;
+        position: absolute;
+        bottom: 0px;
+        width: 100%;
+        height: 2px;
+        background-color: #657786;
+        border-radius: 0px 0px 4px 4px;
       }
     }
   }
@@ -179,15 +198,17 @@ form {
     color: #fff;
     font-size: 18px;
     line-height: 26px;
+    cursor: pointer;
   }
   .front-login {
     margin-top: 20px;
     p {
       position: relative;
-      .to-signup {
+      .to-signin {
         color: #0099ff;
         font-size: 18px;
         line-height: 26px;
+        text-decoration: none;
         &::after {
           content: '';
           position: absolute;
