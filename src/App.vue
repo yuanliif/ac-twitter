@@ -15,6 +15,7 @@ export default {}
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans+TC&display=swap');
 
 #app {
+  font-family: 'Noto Sans TC', serif;
   height: 1200px;
   margin-left: auto;
   margin-right: auto;

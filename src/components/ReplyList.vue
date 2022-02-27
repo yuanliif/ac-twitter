@@ -1,34 +1,34 @@
 <template>
   <div
     v-show="!isLoading"
-    class="tweet-list"
+    class="reply-list"
   >
     <!-- 推文顯示清單 -->
-    <template v-show="tweets.length > 0">
-      <Tweet
-        v-for="tweet in tweets"
-        :key="tweet.id"
-        :initial-tweet="tweet"
+    <template v-show="replies.length > 0">
+      <Reply
+        v-for="reply in replies"
+        :key="reply.id"
+        :initial-reply="reply"
       />
     </template>
     <h1
-      v-show="isLoading === false && tweets.length === 0"
+      v-show="isLoading === false && replies.length === 0"
       class="default-text"
     >
-      尚無推文
+      尚無推文與回覆
     </h1>
   </div>
 </template>
 
 <script>
-import Tweet from '@/components/Tweet.vue'
+import Reply from '@/components/Reply.vue'
 
 export default {
   components: {
-    Tweet
+    Reply
   },
   props: {
-    tweets: {
+    replies: {
       type: Array,
       required: true,
       default: () => []
@@ -40,10 +40,7 @@ export default {
     }
   },
   watch: {
-    tweets: {
-      handler: function (newValue, oldValue) {
-
-      },
+    replies: {
       deep: true
     }
   }
@@ -51,7 +48,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.tweet-list {
+.reply-list {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
