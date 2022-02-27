@@ -1,3 +1,7 @@
+import moment from 'moment'
+// 設定moment語系
+moment.locale('zh-tw')
+
 // 當使用者沒有暱稱時，用帳號作為顯示上使用
 export const emptyNameMethod = {
   methods: {
@@ -132,6 +136,89 @@ export const inputValidationMethod = {
       result = regexCheck({ input: password, regex: /^[a-zA-Z0-9]{5,20}$/ })
 
       return result
+    }
+  }
+}
+
+// 給帳號顯示增加@的前綴
+export const addPrefixFilter = {
+  filters: {
+    addPrefix (account) {
+      return `@${account}`
+    }
+  }
+}
+
+/*
+  數字格式化顯示
+  1. 單位做到支援Number.MAX_SAFE_INTEGER就好了，超過就直接顯示了
+  2. 數字每跨4位數字就換一次單位
+  3. 最多顯示一位小數
+  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER
+  https://googology.fandom.com/zh/wiki/%E4%B8%AD%E6%96%87%E6%95%B8%E5%AD%97?variant=zh-tw
+*/
+const formatter = new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 1 })
+export const numberFormatFilter = {
+  filters: {
+    numberFormat (number) {
+      if (number > Number.MAX_SAFE_INTEGER) {
+        return `${number}`
+      }
+
+      const postfix = ['', '萬', '億', '京']
+      let index = 0
+
+      while (number >= 10000) {
+        number /= 10000
+        index += 1
+      }
+
+      const numberPart = formatter.format(number)
+
+      return `${numberPart}${postfix[index]}`
+    }
+  }
+}
+
+// 檢查時間是否與當前時間差距24小時以上
+function checkTimeDiff (momentTime) {
+  const now = moment()
+
+  return (now.diff(momentTime, 'h') >= 24)
+}
+
+// 檢查時間是否與當前時間在同一年內
+function inThisYear (momentTime) {
+  const now = moment()
+
+  return (now.isSame(momentTime, 'year'))
+}
+
+export const timeFormatFilter = {
+  filters: {
+    timeFormat (datetime) {
+      if (!datetime) {
+        return ''
+      }
+
+      const momentTime = moment(datetime)
+
+      if (momentTime.isValid() === false) {
+        return ''
+      }
+
+      if (checkTimeDiff(momentTime)) {
+        if (inThisYear(momentTime)) {
+          // 顯示X月Y日
+          return momentTime.format('MoDo')
+        } else {
+          // 顯示X年Y月Z日
+          return momentTime.format('ll')
+        }
+      } else {
+        // 顯示多久前
+        return momentTime.fromNow()
+      }
     }
   }
 }

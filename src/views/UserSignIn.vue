@@ -124,11 +124,10 @@ export default {
 
         const { data } = response
 
-        // if (status !== 'success') {
-        //   throw new Error(data.message)
-        // }
-
         localStorage.setItem('token', data.token)
+
+        this.$store.commit('setCurrentUser', response.userData)
+
         this.$router.push('/home')
       } catch (error) {
         console.log(error)

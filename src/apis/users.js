@@ -9,5 +9,8 @@ export default {
   },
   updateUserSetting ({ userId, formData }) {
     return apiHelper.put(`/users/${userId}/account`, formData)
+  },
+  getUserTweets ({ userId }) {
+    return apiHelper.get(`/users/${userId}/tweets`)
   }
 }
