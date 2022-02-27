@@ -1,9 +1,7 @@
 <template>
   <div class="page-container">
     <SiteNav />
-    <section
-      class="setting-container"
-    >
+    <section class="setting-container">
       <div class="page-header">
         帳戶設定
       </div>
@@ -129,11 +127,11 @@ export default {
       try {
         let status
         let message
-        let pass = true;
+        let pass = true
 
         // 表單發送前的資料驗證
         // 表單資料全部驗證完後，再決定是否送出表單，或者把所有的錯誤顯示出來
-        ({ status, message } = this.checkAccount(this.data.account))
+        ;({ status, message } = this.checkAccount(this.data.account))
         if (status === false) {
           this.error.account = message
           pass = false
@@ -174,7 +172,10 @@ export default {
 
         const form = e.target
         const formData = new FormData(form)
-        const { data } = await usersAPI.updateUserSetting({ userId: this.currentUser.id, formData })
+        const { data } = await usersAPI.updateUserSetting({
+          userId: this.currentUser.id,
+          formData
+        })
 
         if (data.status !== 'success') {
           // 針對後端傳來的錯誤訊息，把帳號或信箱的重複提示，放到對應輸入框的錯誤提示訊息區域
@@ -226,7 +227,7 @@ section.setting-container {
   flex-wrap: nowrap;
 
   .page-header {
-    border-bottom: 1px solid #E6ECF0;
+    border-bottom: 1px solid #e6ecf0;
     font-size: 19px;
     font-weight: bold;
     line-height: 28px;
@@ -253,5 +254,4 @@ form.setting-form {
     padding: 10px 40px;
   }
 }
-
 </style>

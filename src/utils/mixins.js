@@ -1,3 +1,7 @@
+import moment from 'moment'
+// 設定moment語系
+moment.locale('zh-tw')
+
 // 當使用者沒有暱稱時，用帳號作為顯示上使用
 export const emptyNameMethod = {
   methods: {
@@ -138,4 +142,47 @@ function regexCheck ({ input, regex }) {
   }
 
   return result
+}
+
+// 檢查時間是否與當前時間差距24小時以上
+function checkTimeDiff (momentTime) {
+  const now = moment()
+
+  return (now.diff(momentTime, 'h') >= 24)
+}
+
+// 檢查時間是否與當前時間在同一年內
+function inThisYear (momentTime) {
+  const now = moment()
+
+  return (now.isSame(momentTime, 'year'))
+}
+
+export const timeFormatFilter = {
+  filters: {
+    timeFormat (datetime) {
+      if (!datetime) {
+        return ''
+      }
+
+      const momentTime = moment(datetime)
+
+      if (momentTime.isValid() === false) {
+        return ''
+      }
+
+      if (checkTimeDiff(momentTime)) {
+        if (inThisYear(momentTime)) {
+          // 顯示X月Y日
+          return momentTime.format('MoDo')
+        } else {
+          // 顯示X年Y月Z日
+          return momentTime.format('ll')
+        }
+      } else {
+        // 顯示多久前
+        return momentTime.fromNow()
+      }
+    }
+  }
 }
