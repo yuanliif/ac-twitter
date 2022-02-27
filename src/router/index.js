@@ -19,13 +19,13 @@ const routes = [
   {
     path: '/signin',
     name: 'user-sign-in',
-    component: BlankPage
+    component: () => import('../views/UserSignIn.vue')
   },
   // 使用者註冊頁
   {
     path: '/signup',
     name: 'user-sign-up',
-    component: BlankPage
+    component: () => import('../views/UserSignUp.vue')
   },
   // 管理員登入頁
   {
@@ -37,13 +37,13 @@ const routes = [
   {
     path: '/admin/tweets',
     name: 'admin-tweets',
-    component: BlankPage
+    component: () => import('./../views/AdminTweets.vue')
   },
   // 後台使用者頁
   {
     path: '/admin/users',
     name: 'admin-users',
-    component: BlankPage
+    component: () => import('./../views/AdminUsers.vue')
   },
   // 使用者設定頁
   {

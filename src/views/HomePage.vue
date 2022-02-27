@@ -1,9 +1,10 @@
 <template>
   <div class="page-container">
     <SiteNav />
-    <!-- 跟隨者區域（待完成） -->
+    <!-- 首頁時間軸區域（待完成） -->
     <section class="main">
-      <Follower />
+      <HomeTweetArea />
+      <tweet-list :user-id="currentUser.id" />
     </section>
     <RecommendedList />
   </div>
@@ -11,19 +12,18 @@
 
 <script>
 import SiteNav from '@/components/SiteNav.vue'
+import HomeTweetArea from '@/components/HomeTweetArea.vue'
 import RecommendedList from '@/components/RecommendedList.vue'
-import Follower from '@/components/FollowerContent.vue'
+import { mapState } from 'vuex'
+
 export default {
   components: {
     SiteNav,
-    RecommendedList,
-    Follower
+    HomeTweetArea,
+    RecommendedList
+  },
+  computed: {
+    ...mapState(['currentUser'])
   }
 }
 </script>
-
-<style lang="scss" scoped>
-section.main {
-  width: 600px;
-}
-</style>>
