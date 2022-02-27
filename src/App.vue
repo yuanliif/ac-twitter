@@ -56,4 +56,16 @@ export default {}
     color: #FFFFFF
   }
 }
+
+// section.main通用設定
+section.main {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  width: 600px;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
 </style>

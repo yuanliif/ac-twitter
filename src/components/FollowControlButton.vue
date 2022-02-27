@@ -5,6 +5,7 @@
   1. 顯示「正在跟隨」或「跟隨」
   2. 按下按鈕時，在請求完成前，使用者無法再觸發
   3. 請求完成後，依情況自己變動狀態資訊
+  4. 把跟隨或者取消跟隨發出事件通知上層
 -->
 
 <template>
@@ -63,6 +64,7 @@ export default {
         }
 
         this.user.followed = true
+        this.$emit('user-followed')
       } catch (error) {
         Toast.fire({
           icon: 'error',
@@ -83,6 +85,7 @@ export default {
         }
 
         this.user.followed = false
+        this.$emit('user-unfollowed')
       } catch (error) {
         Toast.fire({
           icon: 'error',
