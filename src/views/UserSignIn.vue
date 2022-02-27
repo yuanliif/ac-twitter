@@ -98,6 +98,8 @@ export default {
         let status
         let message
         let pass = true
+        this.error.account = ''
+        this.error.password = ''
 
         ;({ status, message } = this.checkAccount(this.data.account))
         if (status === false) {
@@ -115,17 +117,28 @@ export default {
           return
         }
 
-        const response = await authorizationAPI.userSignIn({
+        const { data } = await authorizationAPI.userSignIn({
           account: this.data.account,
           password: this.data.password
         })
 
-        const { data } = response
+        if (data.status !== 'success') {
+          if (/帳號/.test(data.message)) {
+            this.error.account = data.message
+            return
+          }
+
+          if (/密碼/.test(data.message)) {
+            this.error.password = data.message
+            return
+          }
+
+          this.error.account = data.message
+          return
+        }
 
         localStorage.setItem('token', data.token)
-
         this.$store.commit('setCurrentUser', data.userData)
-
         this.$router.push('/home')
       } catch (error) {
         console.log(error)
@@ -216,7 +229,7 @@ export default {
 
   .other-option {
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
     font-family: 'Noto Sans TC';
     font-style: normal;
     font-weight: bold;

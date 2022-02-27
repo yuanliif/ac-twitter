@@ -22,7 +22,7 @@
             <div class="account">
               <!-- TODO 引入時間規則 -->
               {{ tweet.userData.account | addPrefix }} ‧
-              {{ tweet.createAt | timeFormat }}
+              {{ tweet.createdAt | timeFormat }}
             </div>
           </div>
           <div class="comment">

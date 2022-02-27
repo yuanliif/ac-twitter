@@ -51,8 +51,7 @@ const inputConfig = {
   name: {
     label: '名稱',
     inputType: 'text',
-    maxlength: 50,
-    showLimit: true
+    maxlength: 50
   },
   email: {
     label: 'Email',
@@ -170,11 +169,12 @@ export default {
 
         this.isProcessing = true
 
-        const form = e.target
-        const formData = new FormData(form)
         const { data } = await usersAPI.updateUserSetting({
           userId: this.currentUser.id,
-          formData
+          account: this.data.account,
+          name: this.data.name,
+          email: this.data.name,
+          password: this.data.password
         })
 
         if (data.status !== 'success') {

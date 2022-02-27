@@ -43,9 +43,9 @@ const dummyReplies = [
       avatar: 'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg'
     },
     tweetId: 29,
-    tweetOwerId: 65,
-    tweetOwerAccount: 'Danny561',
-    createAt: '2016-08-29T09:12:33.001+0000'
+    tweetOwnerId: 65,
+    tweetOwnerAccount: 'Danny561',
+    createdAt: '2016-08-29T09:12:33.001+0000'
   },
   // name很長
   {
@@ -58,9 +58,9 @@ const dummyReplies = [
       avatar: 'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg'
     },
     tweetId: 29,
-    tweetOwerId: 65,
-    tweetOwerAccount: 'Danny561Danny561Danny561Danny561Da',
-    createAt: '2016-08-29T09:12:33.001+0000'
+    tweetOwnerId: 65,
+    tweetOwnerAccount: 'Danny561Danny561Danny561Danny561Da',
+    createdAt: '2016-08-29T09:12:33.001+0000'
   },
   // name很長且account也很長
   {
@@ -73,9 +73,9 @@ const dummyReplies = [
       avatar: 'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg'
     },
     tweetId: 29,
-    tweetOwerId: 65,
-    tweetOwerAccount: 'Danny561Danny561Danny561Danny561Da',
-    createAt: '2016-08-29T09:12:33.001+0000'
+    tweetOwnerId: 65,
+    tweetOwnerAccount: 'Danny561Danny561Danny561Danny561Da',
+    createdAt: '2016-08-29T09:12:33.001+0000'
   },
   // 今年內
   {
@@ -88,9 +88,9 @@ const dummyReplies = [
       avatar: 'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg'
     },
     tweetId: 29,
-    tweetOwerId: 65,
-    tweetOwerAccount: 'Danny561Danny561Danny561Danny561Da',
-    createAt: '2022-02-01T11:00:00.001+0800'
+    tweetOwnerId: 65,
+    tweetOwnerAccount: 'Danny561Danny561Danny561Danny561Da',
+    createdAt: '2022-02-01T11:00:00.001+0800'
   },
   // 24小時內
   {
@@ -103,9 +103,9 @@ const dummyReplies = [
       avatar: 'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg'
     },
     tweetId: 29,
-    tweetOwerId: 65,
-    tweetOwerAccount: 'Danny561Danny561Danny561Danny561Da',
-    createAt: moment().startOf('day').toISOString()
+    tweetOwnerId: 65,
+    tweetOwnerAccount: 'Danny561Danny561Danny561Danny561Da',
+    createdAt: moment().startOf('day').toISOString()
   },
   // 長內文
   {
@@ -118,9 +118,9 @@ const dummyReplies = [
       avatar: 'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg'
     },
     tweetId: 29,
-    tweetOwerId: 65,
-    tweetOwerAccount: 'Danny561Danny561Danny561Danny561Da',
-    createAt: moment().startOf('day').toISOString()
+    tweetOwnerId: 65,
+    tweetOwnerAccount: 'Danny561Danny561Danny561Danny561Da',
+    createdAt: moment().startOf('day').toISOString()
   },
   // 一般資料
   {
@@ -133,9 +133,9 @@ const dummyReplies = [
       avatar: 'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg'
     },
     tweetId: 29,
-    tweetOwerId: 65,
-    tweetOwerAccount: 'Danny561',
-    createAt: '2016-08-29T09:12:33.001+0000'
+    tweetOwnerId: 65,
+    tweetOwnerAccount: 'Danny561',
+    createdAt: '2016-08-29T09:12:33.001+0000'
   },
   // 一般資料
   {
@@ -148,9 +148,9 @@ const dummyReplies = [
       avatar: 'https://i.epochtimes.com/assets/uploads/2021/08/id13156667-shutterstock_376153318-450x322.jpg'
     },
     tweetId: 29,
-    tweetOwerId: 65,
-    tweetOwerAccount: 'Danny561',
-    createAt: '2016-05-29T09:12:33.001+0000'
+    tweetOwnerId: 65,
+    tweetOwnerAccount: 'Danny561',
+    createdAt: '2016-05-29T09:12:33.001+0000'
   }
 ]
 */
@@ -174,7 +174,7 @@ export default {
     /*
     fetchReplies (userId) {
       console.log(userId)
-      this.replies = sortByTime(dummyReplies, 'createAt')
+      this.replies = sortByTime(dummyReplies, 'createdAt')
       this.isLoading = false
     }
     */
