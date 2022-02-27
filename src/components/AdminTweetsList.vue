@@ -17,7 +17,7 @@
         <div class="text-area">
           <div class="info d-flex">
             <div class="name">
-              {{ emptyName(tweet.userData.name, tweet.userData.name) }}
+              {{ emptyName(tweet.userData.name, tweet.userData.account) }}
             </div>
             <div class="account">
               <!-- TODO 引入時間規則 -->
