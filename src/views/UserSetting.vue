@@ -173,7 +173,7 @@ export default {
           userId: this.currentUser.id,
           account: this.data.account,
           name: this.data.name,
-          email: this.data.name,
+          email: this.data.email,
           password: this.data.password
         })
 
