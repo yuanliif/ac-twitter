@@ -78,6 +78,7 @@ const routes = [
   // 使用者系列
   {
     path: '/user/:id',
+    name: 'user-main',
     component: () => import('@/views/UserProfile'),
     redirect: { name: 'user-tweets' },
     children: [
@@ -85,19 +86,19 @@ const routes = [
       {
         path: 'tweets',
         name: 'user-tweets',
-        component: () => import('@/components/TweetContent')
+        component: () => import('@/components/TweetTab')
       },
       // 推文與回覆分頁
       {
         path: 'replies',
         name: 'user-replies',
-        component: () => import('@/components/ReplyContent')
+        component: () => import('@/components/ReplyTab')
       },
       // 喜歡的內容
       {
         path: 'likes',
         name: 'user-likes',
-        component: () => import('@/components/LikeContent')
+        component: () => import('@/components/LikeTab')
       }
     ]
   },
