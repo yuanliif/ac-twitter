@@ -136,6 +136,18 @@ export const inputValidationMethod = {
       result = regexCheck({ input: password, regex: /^[a-zA-Z0-9]{5,20}$/ })
 
       return result
+    },
+    // 推文規則：長度不超過140
+    checkTweet (tweet) {
+      let result
+
+      result = typeCheck({ input: tweet, typeRef: '' })
+      if (result.status === false) {
+        return result
+      }
+
+      result = lengthCheck({ input: tweet, min: 1, max: 140 })
+      return result
     }
   }
 }
