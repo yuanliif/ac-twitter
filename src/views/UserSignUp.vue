@@ -59,8 +59,7 @@ const inputConfig = {
   name: {
     label: '名稱',
     inputType: 'text',
-    maxlength: 50,
-    showLimit: true
+    maxlength: 50
   },
   email: {
     label: 'Email',
@@ -129,25 +128,25 @@ export default {
 
         ({ status, message } = this.checkName(this.data.name))
         if (status === false) {
-          this.error.account = message
+          this.error.name = message
           pass = false
         }
 
         ({ status, message } = this.checkEmail(this.data.email))
         if (status === false) {
-          this.error.account = message
+          this.error.email = message
           pass = false
         }
 
         ({ status, message } = this.checkPassword(this.data.password))
         if (status === false) {
-          this.error.account = message
+          this.error.password = message
           pass = false
         }
 
         ({ status, message } = this.checkPassword(this.data.passwordCheck))
         if (status === false) {
-          this.error.account = message
+          this.error.passwordCheck = message
           pass = false
         } else if (this.data.password !== this.data.passwordCheck) {
           this.error.passwordCheck = '密碼不一致'

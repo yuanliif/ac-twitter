@@ -31,14 +31,14 @@
     <div class="other-option">
       <router-link
         to="/signup"
-        class="cancel"
+        class="route-control"
       >
         註冊 Alphitter
       </router-link>
       <span>·</span>
       <router-link
         to="/admin"
-        class="cancel"
+        class="route-control"
       >
         後台登入
       </router-link>
@@ -107,7 +107,7 @@ export default {
 
         ({ status, message } = this.checkPassword(this.data.password))
         if (status === false) {
-          this.error.account = message
+          this.error.password = message
           pass = false
         }
 
@@ -124,11 +124,10 @@ export default {
 
         const { data } = response
 
-        // if (status !== 'success') {
-        //   throw new Error(data.message)
-        // }
-
         localStorage.setItem('token', data.token)
+
+        this.$store.commit('setCurrentUser', response.userData)
+
         this.$router.push('/home')
       } catch (error) {
         console.log(error)
@@ -226,8 +225,10 @@ export default {
     font-size: 18px;
     line-height: 26px;
     color: #0099ff;
-    a {
+
+    .route-control {
       text-decoration: underline;
+      color: #0099ff;
     }
   }
 }
