@@ -165,6 +165,7 @@ export default {
           passwordCheck: this.data.passwordCheck
         })
 
+        // 針對 http code 200 的處理流程
         if (data.status !== 'success') {
           if (/帳號/.test(data.message)) {
             this.error.account = data.message
@@ -188,6 +189,32 @@ export default {
 
         this.$router.push({ name: 'user-sign-in' })
       } catch (error) {
+        const { response } = error
+
+        // 針對 http code 401 的處理流程
+        if (response) {
+          const { data } = response
+
+          if (data.status !== 'success') {
+            if (/帳號/.test(data.message)) {
+              this.error.account = data.message
+              return
+            }
+            if (/名稱/.test(data.message)) {
+              this.error.name = data.message
+              return
+            }
+            if (/信箱/.test(data.message)) {
+              this.error.email = data.message
+              return
+            }
+            if (/密碼/.test(data.message)) {
+              this.error.password = data.message
+              return
+            }
+          }
+        }
+
         Toast.fire({
           icon: 'error',
           title: '目前無法註冊，請稍後再試'
@@ -195,23 +222,7 @@ export default {
       }
     },
     handleCancel (e) {
-      this.data = {
-        ...this.data,
-        account: '',
-        name: '',
-        email: '',
-        password: '',
-        passwordCheck: ''
-      }
-
-      this.error = {
-        ...this.error,
-        account: '',
-        name: '',
-        email: '',
-        password: '',
-        passwordCheck: ''
-      }
+      this.$router.push({ name: 'user-sign-in' })
     }
   }
 }
