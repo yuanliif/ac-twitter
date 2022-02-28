@@ -22,16 +22,16 @@
         <main class="profile">
           <div class="user-cover">
             <img
-              v-show="user.cover !== ''"
+              v-show="user.cover"
               :src="user.cover"
-              @error.stop.prevent="user.cover = ''"
+              @error="user.cover = ''"
             >
             <div class="user-avatar">
               <div class="avatar-container">
                 <img
-                  v-show="user.avatar !== ''"
+                  v-show="user.avatar"
                   :src="user.avatar"
-                  @error.stop.prevent="user.avatar = ''"
+                  @error="user.avatar = ''"
                 >
               </div>
             </div>
@@ -79,16 +79,16 @@
             </div>
             <div class="user-statistic">
               <router-link
-                :to="{name: 'followers', params: {id: user.id}}"
-                class="user-follower"
-              >
-                {{ user.follower | numberFormat }} 個<em>跟隨中</em>
-              </router-link>
-              <router-link
                 :to="{name: 'followings', params: {id: user.id}}"
                 class="user-following"
               >
-                {{ user.following | numberFormat }} 位<em>跟隨者</em>
+                {{ user.following | numberFormat }} 個<em>跟隨中</em>
+              </router-link>
+              <router-link
+                :to="{name: 'followers', params: {id: user.id}}"
+                class="user-follower"
+              >
+                {{ user.follower | numberFormat }} 位<em>跟隨者</em>
               </router-link>
             </div>
           </div>
@@ -319,7 +319,7 @@ export default {
       margin-bottom: 20px;
 
       .user-follower {
-        margin-right: 20px;
+        margin-left: 20px;
       }
 
       .user-follower,

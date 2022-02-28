@@ -122,6 +122,7 @@ export default {
           password: this.data.password
         })
 
+        // 針對 http code 200 的處理流程
         if (data.status !== 'success') {
           if (/帳號/.test(data.message)) {
             this.error.account = data.message
@@ -141,7 +142,23 @@ export default {
         this.$store.commit('setCurrentUser', data.userData)
         this.$router.push('/home')
       } catch (error) {
-        console.log(error)
+        const { response } = error
+
+        // 針對 http code 不是 200 的處理流程
+        if (response) {
+          const { data } = response
+
+          if (/帳號/.test(data.message)) {
+            this.error.account = data.message
+            return
+          }
+
+          if (/密碼/.test(data.message)) {
+            this.error.password = data.message
+            return
+          }
+        }
+
         Toast.fire({
           icon: 'error',
           title: '目前無法登入，請稍後再試'

@@ -211,6 +211,23 @@ export const numberFormatFilter = {
       const numberPart = formatter.format(number)
 
       return `${numberPart}${postfix[index]}`
+    },
+    numberFormatEng (number) {
+      if (number > Number.MAX_SAFE_INTEGER) {
+        return `${number}`
+      }
+
+      const postfix = ['', 'k', 'm', 'b', 't', 'p']
+      let index = 0
+
+      while (number >= 1000) {
+        number /= 1000
+        index += 1
+      }
+
+      const numberPart = formatter.format(number)
+
+      return `${numberPart}${postfix[index]}`
     }
   }
 }
@@ -254,6 +271,19 @@ export const timeFormatFilter = {
         // 顯示多久前
         return momentTime.fromNow()
       }
+    },
+    timeFormatForTweetPage (datetime) {
+      if (!datetime) {
+        return ''
+      }
+
+      const momentTime = moment(datetime)
+
+      if (momentTime.isValid() === false) {
+        return ''
+      }
+
+      return momentTime.format('A hh:mm・YYYY年MoDo')
     }
   }
 }

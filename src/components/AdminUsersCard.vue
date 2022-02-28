@@ -14,7 +14,7 @@
         >
           <div class="cover">
             <img
-              v-show="user.cover !== ''"
+              v-show="user.cover"
               :src="user.cover"
               @error="user.cover = ''"
             >
@@ -22,7 +22,7 @@
           <div class="info">
             <div class="avatar">
               <img
-                v-show="user.avatar !== ''"
+                v-show="user.avatar"
                 :src="user.avatar"
                 @error="user.avatar = ''"
               >
@@ -43,7 +43,7 @@
                   icon-class="tweets"
                 />
                 <p>
-                  {{ user.tweetAmount | numberFormat }}
+                  {{ user.tweetAmount | numberFormatEng }}
                 </p>
               </div>
               <div class="like d-flex">
@@ -53,7 +53,7 @@
                   icon-class="like"
                 />
                 <p>
-                  {{ user.likeAmount | numberFormat }}
+                  {{ user.likeAmount | numberFormatEng }}
                 </p>
               </div>
             </div>
