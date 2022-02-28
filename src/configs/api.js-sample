@@ -1,0 +1,2 @@
+// 請依照實際後端API的位址進行設定
+export const API_URL = 'http://localhost:3000/api'
