@@ -191,27 +191,25 @@ export default {
       } catch (error) {
         const { response } = error
 
-        // 針對 http code 401 的處理流程
+        // 針對 http code 不是 200 的處理流程
         if (response) {
           const { data } = response
 
-          if (data.status !== 'success') {
-            if (/帳號/.test(data.message)) {
-              this.error.account = data.message
-              return
-            }
-            if (/名稱/.test(data.message)) {
-              this.error.name = data.message
-              return
-            }
-            if (/信箱/.test(data.message)) {
-              this.error.email = data.message
-              return
-            }
-            if (/密碼/.test(data.message)) {
-              this.error.password = data.message
-              return
-            }
+          if (/帳號/.test(data.message)) {
+            this.error.account = data.message
+            return
+          }
+          if (/名稱/.test(data.message)) {
+            this.error.name = data.message
+            return
+          }
+          if (/信箱/.test(data.message)) {
+            this.error.email = data.message
+            return
+          }
+          if (/密碼/.test(data.message)) {
+            this.error.password = data.message
+            return
           }
         }
 
