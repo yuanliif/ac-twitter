@@ -90,11 +90,15 @@ export default {
         }
 
         this.isProcessing = true
-        const response = await authorizationApi.adminSignIn({
+        const { data } = await authorizationApi.adminSignIn({
           account: this.account,
           password: this.password
         })
-        const { data } = response
+
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
+
         const { userData } = data
 
         // *將token存入localStorage
@@ -109,7 +113,7 @@ export default {
         this.isProcessing = false
         Toast.fire({
           icon: 'warning',
-          title: '帳號不存在'
+          title: error.message
         })
         console.dir(error)
       }
