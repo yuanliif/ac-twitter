@@ -30,7 +30,7 @@ const dummyTweets = [
     replyAmount: 12,
     likeAmount: 263,
     userLiked: true,
-    createAt: '2016-08-29T09:12:33.001+0000'
+    createdAt: '2016-08-29T09:12:33.001+0000'
   },
   // name很長
   {
@@ -45,7 +45,7 @@ const dummyTweets = [
     replyAmount: 12,
     likeAmount: 263,
     userLiked: true,
-    createAt: '2016-08-29T09:12:33.001+0000'
+    createdAt: '2016-08-29T09:12:33.001+0000'
   },
   // name很長且account也很長
   {
@@ -60,7 +60,7 @@ const dummyTweets = [
     replyAmount: 12,
     likeAmount: 263,
     userLiked: true,
-    createAt: '2016-08-29T09:12:33.001+0000'
+    createdAt: '2016-08-29T09:12:33.001+0000'
   },
   // 今年內
   {
@@ -75,7 +75,7 @@ const dummyTweets = [
     replyAmount: 12,
     likeAmount: 263,
     userLiked: true,
-    createAt: '2022-02-01T11:00:00.001+0800'
+    createdAt: '2022-02-01T11:00:00.001+0800'
   },
   // 24小時內
   {
@@ -90,7 +90,7 @@ const dummyTweets = [
     replyAmount: 12,
     likeAmount: 263,
     userLiked: true,
-    createAt: moment().startOf('day').toISOString()
+    createdAt: moment().startOf('day').toISOString()
   },
   // 長內文
   {
@@ -105,7 +105,7 @@ const dummyTweets = [
     replyAmount: 12,
     likeAmount: 263,
     userLiked: true,
-    createAt: moment().startOf('day').toISOString()
+    createdAt: moment().startOf('day').toISOString()
   },
   // 回覆數量1,000以上，10,000以下
   {
@@ -120,7 +120,7 @@ const dummyTweets = [
     replyAmount: 5566,
     likeAmount: 263,
     userLiked: true,
-    createAt: moment().startOf('day').toISOString()
+    createdAt: moment().startOf('day').toISOString()
   },
   // 回覆數量10,000以上
   {
@@ -135,7 +135,7 @@ const dummyTweets = [
     replyAmount: 114514,
     likeAmount: 263,
     userLiked: true,
-    createAt: moment().startOf('day').toISOString()
+    createdAt: moment().startOf('day').toISOString()
   }
 ]
 */
@@ -150,6 +150,11 @@ export default {
       isLoading: true
     }
   },
+  beforeRouteUpdate (to, from, next) {
+    const { id } = to.params
+    this.fetchTweets(id)
+    next()
+  },
   created () {
     const { id } = this.$route.params
     this.fetchTweets(id)
@@ -158,7 +163,7 @@ export default {
     // 測試用
     // fetchTweets (userId) {
     //   console.log(userId)
-    //   this.tweets = sortByTime(dummyTweets, 'createAt')
+    //   this.tweets = sortByTime(dummyTweets, 'createdAt')
     //   this.isLoading = false
     // }
     async fetchTweets (userId) {

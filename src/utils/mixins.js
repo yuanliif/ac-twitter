@@ -140,6 +140,34 @@ export const inputValidationMethod = {
       result = regexCheck({ input: password, regex: /^[a-zA-Z0-9]{5,20}$/ })
 
       return result
+    },
+    // 推文規則：長度不超過140
+    checkTweet (tweet) {
+      let result
+
+      result = typeCheck({ input: tweet, typeRef: '' })
+      if (result.status === false) {
+        return result
+      }
+
+      result = {
+        status: true,
+        message: ''
+      }
+
+      if (tweet.length === 0) {
+        result.status = false
+        result.message = '內容不可空白'
+        return result
+      }
+
+      if (tweet.length > 140) {
+        result.status = false
+        result.message = '字數不可超過140字'
+        return result
+      }
+
+      return result
     }
   }
 }

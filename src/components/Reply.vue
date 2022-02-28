@@ -12,12 +12,12 @@
           {{ emptyName(reply.replyerData.name, reply.replyerData.account) }}
         </div>
         <div class="account-and-time">
-          {{ reply.replyerData.account | addPrefix }}・{{ reply.createAt | timeFormat }}
+          {{ reply.replyerData.account | addPrefix }}・{{ reply.createdAt | timeFormat }}
         </div>
       </div>
       <div class="reply-to">
         <span class="text">回覆</span>
-        <span class="account">{{ reply.tweetOwerAccount | addPrefix }}</span>
+        <span class="account">{{ reply.tweetOwnerAccount | addPrefix }}</span>
       </div>
       <div class="reply">
         {{ reply.comment }}

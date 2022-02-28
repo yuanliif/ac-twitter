@@ -1,7 +1,7 @@
 <template>
   <router-link
     v-slot="{ navigate }"
-    :to="{ name: 'tweet', parmas: { id: tweet.id } }"
+    :to="{ name: 'tweet', params: { id: tweet.id } }"
     class="tweet-container cursor-pointer"
     custom
   >
@@ -18,7 +18,7 @@
             {{ emptyName(tweet.userData.name, tweet.userData.account) }}
           </div>
           <div class="account-and-time">
-            {{ tweet.userData.account | addPrefix }}・{{ tweet.createAt | timeFormat }}
+            {{ tweet.userData.account | addPrefix }}・{{ tweet.createdAt | timeFormat }}
           </div>
         </div>
         <div class="description">

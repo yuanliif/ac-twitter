@@ -39,6 +39,14 @@ export default {
       isProcessing: false
     }
   },
+  watch: {
+    initialUser (newValue) {
+      this.user = {
+        ...this.user,
+        ...newValue
+      }
+    }
+  },
   created () {
     this.user = {
       ...this.user,
