@@ -3,22 +3,7 @@
     <PageHeader>
       首頁
     </PageHeader>
-    <section
-      class="tweet-input-box"
-    >
-      <section class="avatar-part">
-        <UserThumbnail :initial-user="currentUser" />
-      </section>
-      <section class="input-part">
-        <textarea
-          placeholder="有什麼新鮮事？"
-          maxlength="140"
-        />
-        <button class="btn-control btn-tweet">
-          推文
-        </button>
-      </section>
-    </section>
+    <TweetBox @after-tweet="addTweetToList($event)" />
     <section class="tweet-list-container">
       <TweetList
         :tweets="tweets"
@@ -30,12 +15,11 @@
 
 <script>
 import PageHeader from '@/components/PageHeader.vue'
+import TweetBox from '@/components/TweetBox.vue'
 import TweetList from '@/components/TweetList.vue'
-import UserThumbnail from '@/components/UserThumbnail.vue'
 import tweetsAPI from '@/apis/tweets'
 import { sortByTime, Toast } from '@/utils/helpers'
 // import moment from 'moment' // 測試用
-import { mapState } from 'vuex'
 
 // 測試資料
 /*
@@ -53,7 +37,7 @@ const dummyTweets = [
     replyAmount: 12,
     likeAmount: 263,
     userLiked: true,
-    createAt: '2016-08-29T09:12:33.001+0000'
+    createdAt: '2016-08-29T09:12:33.001+0000'
   },
   // name很長
   {
@@ -68,7 +52,7 @@ const dummyTweets = [
     replyAmount: 12,
     likeAmount: 263,
     userLiked: true,
-    createAt: '2016-08-29T09:12:33.001+0000'
+    createdAt: '2016-08-29T09:12:33.001+0000'
   },
   // name很長且account也很長
   {
@@ -83,7 +67,7 @@ const dummyTweets = [
     replyAmount: 12,
     likeAmount: 263,
     userLiked: true,
-    createAt: '2016-08-29T09:12:33.001+0000'
+    createdAt: '2016-08-29T09:12:33.001+0000'
   },
   // 今年內
   {
@@ -98,7 +82,7 @@ const dummyTweets = [
     replyAmount: 12,
     likeAmount: 263,
     userLiked: true,
-    createAt: '2022-02-01T11:00:00.001+0800'
+    createdAt: '2022-02-01T11:00:00.001+0800'
   },
   // 24小時內
   {
@@ -113,7 +97,7 @@ const dummyTweets = [
     replyAmount: 12,
     likeAmount: 263,
     userLiked: true,
-    createAt: moment().startOf('day').toISOString()
+    createdAt: moment().startOf('day').toISOString()
   },
   // 長內文
   {
@@ -128,7 +112,7 @@ const dummyTweets = [
     replyAmount: 12,
     likeAmount: 263,
     userLiked: true,
-    createAt: moment().startOf('day').toISOString()
+    createdAt: moment().startOf('day').toISOString()
   },
   // 回覆數量1,000以上，10,000以下
   {
@@ -143,7 +127,7 @@ const dummyTweets = [
     replyAmount: 5566,
     likeAmount: 263,
     userLiked: true,
-    createAt: moment().startOf('day').toISOString()
+    createdAt: moment().startOf('day').toISOString()
   },
   // 回覆數量10,000以上
   {
@@ -158,7 +142,7 @@ const dummyTweets = [
     replyAmount: 114514,
     likeAmount: 263,
     userLiked: true,
-    createAt: moment().startOf('day').toISOString()
+    createdAt: moment().startOf('day').toISOString()
   }
 ]
 */
@@ -166,7 +150,7 @@ const dummyTweets = [
 export default {
   components: {
     PageHeader,
-    UserThumbnail,
+    TweetBox,
     TweetList
   },
   data () {
@@ -175,16 +159,13 @@ export default {
       isLoading: true
     }
   },
-  computed: {
-    ...mapState(['currentUser'])
-  },
   created () {
     this.fetchTweets()
   },
   methods: {
     // 測試用
     // fetchTweets () {
-    //   this.tweets = sortByTime(dummyTweets, 'createAt')
+    //   this.tweets = sortByTime(dummyTweets, 'createdAt')
     //   this.isLoading = false
     // }
     async fetchTweets () {
@@ -204,6 +185,9 @@ export default {
           title: '無法取得推文，請稍後再試'
         })
       }
+    },
+    addTweetToList (tweet) {
+      this.tweets = [tweet, ...this.tweets]
     }
   }
 }
@@ -215,52 +199,6 @@ export default {
   flex-direction: column;
   flex-wrap: nowrap;
   overflow: hidden;
-}
-section.tweet-input-box {
-  border-bottom: 10px solid #E6ECF0;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  padding: 10px 15px;
-
-  .input-part {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    flex-shrink: 0;
-    flex-wrap: nowrap;
-    margin-left: 10px;
-
-    textarea {
-      border: none;
-      height: 26px;
-      font-size: 18px;
-      font-weight: 500;
-      line-height: 26px;
-      margin-top: 11px;
-      padding: 0;
-      resize: none;
-
-      &::placeholder {
-        color: #9197A3;
-      }
-
-      &:focus {
-        border: none;
-        outline: none;
-      }
-    }
-
-    .btn-tweet {
-      align-self: flex-end;
-      border-radius: 100px;
-      font-size: 18px;
-      font-weight: 500;
-      line-height: 18px;
-      margin-top: 25px;
-      padding: 10px 15px;
-    }
-  }
 }
 .tweet-list-container {
   display: flex;

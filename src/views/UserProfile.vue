@@ -144,6 +144,11 @@ export default {
     const { id } = this.$route.params
     this.fetchUser(id)
   },
+  beforeRouteUpdate (to, from, next) {
+    const { id } = to.params
+    this.fetchUser(id)
+    next()
+  },
   methods: {
     async fetchUser (userId) {
       try {
@@ -179,10 +184,10 @@ export default {
     },
     // 藉由FollowControlButton對上層的通知，來更新使用者的跟隨者數據
     follow () {
-      this.user.following = this.user.following + 1
+      this.user.follower = this.user.follower + 1
     },
     unfollow () {
-      this.user.following = this.user.following - 1
+      this.user.follower = this.user.follower - 1
     }
   }
 }

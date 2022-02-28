@@ -115,7 +115,11 @@ export const inputValidationMethod = {
       }
 
       // Email的正則表示：https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#basic_validation
-      result = regexCheck({ input: email, regex: /^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/ })
+      result = regexCheck({
+        input: email,
+        regex:
+          /^[a-zA-Z0-9.!#$%&'*+\\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
+      })
 
       return result
     },
@@ -134,6 +138,34 @@ export const inputValidationMethod = {
       }
 
       result = regexCheck({ input: password, regex: /^[a-zA-Z0-9]{5,20}$/ })
+
+      return result
+    },
+    // 推文規則：長度不超過140
+    checkTweet (tweet) {
+      let result
+
+      result = typeCheck({ input: tweet, typeRef: '' })
+      if (result.status === false) {
+        return result
+      }
+
+      result = {
+        status: true,
+        message: ''
+      }
+
+      if (tweet.length === 0) {
+        result.status = false
+        result.message = '內容不可空白'
+        return result
+      }
+
+      if (tweet.length > 140) {
+        result.status = false
+        result.message = '字數不可超過140字'
+        return result
+      }
 
       return result
     }
@@ -157,7 +189,10 @@ export const addPrefixFilter = {
   https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number/MAX_SAFE_INTEGER
   https://googology.fandom.com/zh/wiki/%E4%B8%AD%E6%96%87%E6%95%B8%E5%AD%97?variant=zh-tw
 */
-const formatter = new Intl.NumberFormat('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 1 })
+const formatter = new Intl.NumberFormat('en-US', {
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 1
+})
 export const numberFormatFilter = {
   filters: {
     numberFormat (number) {
@@ -184,14 +219,14 @@ export const numberFormatFilter = {
 function checkTimeDiff (momentTime) {
   const now = moment()
 
-  return (now.diff(momentTime, 'h') >= 24)
+  return now.diff(momentTime, 'h') >= 24
 }
 
 // 檢查時間是否與當前時間在同一年內
 function inThisYear (momentTime) {
   const now = moment()
 
-  return (now.isSame(momentTime, 'year'))
+  return now.isSame(momentTime, 'year')
 }
 
 export const timeFormatFilter = {

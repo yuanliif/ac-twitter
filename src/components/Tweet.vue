@@ -1,7 +1,7 @@
 <template>
   <router-link
     v-slot="{ navigate }"
-    :to="{ name: 'tweet', parmas: { id: tweet.id } }"
+    :to="{ name: 'tweet', params: { id: tweet.id } }"
     class="tweet-container cursor-pointer"
     custom
   >
@@ -18,10 +18,10 @@
             {{ emptyName(tweet.userData.name, tweet.userData.account) }}
           </div>
           <div class="account-and-time">
-            {{ tweet.userData.account | addPrefix }}・{{ tweet.createAt | timeFormat }}
+            {{ tweet.userData.account | addPrefix }}・{{ tweet.createdAt | timeFormat }}
           </div>
         </div>
-        <div class="tweet">
+        <div class="description">
           {{ tweet.description }}
         </div>
         <div class="control-group">
@@ -38,13 +38,13 @@
             <icon
               v-if="tweet.userLiked === false"
               icon-name="like"
-              class="control-icon cursor-pointer"
+              class="control-icon cursor-pointer icon-like"
               @click.native.stop.prevent="like(tweet.id)"
             />
             <icon
               v-else
               icon-name="like-checked"
-              class="control-icon cursor-pointer"
+              class="control-icon cursor-pointer icon-like-checked"
               @click.native.stop.prevent="unlike(tweet.id)"
             />
             <span class="control-statistic">{{ tweet.likeAmount | numberFormat }}</span>
@@ -96,11 +96,14 @@ export default {
       this.isProcessing = true
 
       try {
-        const response = await tweetsAPI.like({ tweetId })
+        const { data } = await tweetsAPI.like({ tweetId })
 
-        console.log(response)
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
 
         this.tweet.userLiked = true
+        this.tweet.likeAmount += 1
       } catch (error) {
         Toast.fire({
           icon: 'error',
@@ -121,11 +124,14 @@ export default {
       this.isProcessing = true
 
       try {
-        const response = await tweetsAPI.unlike({ tweetId })
+        const { data } = await tweetsAPI.unlike({ tweetId })
 
-        console.log(response)
+        if (data.status !== 'success') {
+          throw new Error(data.message)
+        }
 
         this.tweet.userLiked = false
+        this.tweet.likeAmount -= 1
       } catch (error) {
         Toast.fire({
           icon: 'error',
@@ -183,8 +189,10 @@ section.content-part {
     }
   }
 
-  .tweet {
+  .description {
+    font-size: 15px;
     font-weight: 500;
+    line-height: 22px;
     margin-top: 6px;
     word-break: break-all;
   }
@@ -203,6 +211,15 @@ section.content-part {
         height: 15px;
         margin-right: 10px;
         width: 15px;
+      }
+
+      .icon-like-checked {
+        height: 24px;
+        margin-right: 5px;
+        width: 24px;
+        & ~ .control-statistic {
+          color: #E0245E;
+        }
       }
 
       .control-statistic {
