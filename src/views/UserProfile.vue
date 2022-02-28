@@ -79,16 +79,16 @@
             </div>
             <div class="user-statistic">
               <router-link
-                :to="{name: 'followers', params: {id: user.id}}"
-                class="user-follower"
-              >
-                {{ user.follower | numberFormat }} 個<em>跟隨中</em>
-              </router-link>
-              <router-link
                 :to="{name: 'followings', params: {id: user.id}}"
                 class="user-following"
               >
-                {{ user.following | numberFormat }} 位<em>跟隨者</em>
+                {{ user.following | numberFormat }} 個<em>跟隨中</em>
+              </router-link>
+              <router-link
+                :to="{name: 'followers', params: {id: user.id}}"
+                class="user-follower"
+              >
+                {{ user.follower | numberFormat }} 位<em>跟隨者</em>
               </router-link>
             </div>
           </div>
@@ -319,7 +319,7 @@ export default {
       margin-bottom: 20px;
 
       .user-follower {
-        margin-right: 20px;
+        margin-left: 20px;
       }
 
       .user-follower,
