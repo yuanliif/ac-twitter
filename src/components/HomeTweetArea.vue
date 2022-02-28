@@ -171,7 +171,7 @@ export default {
     async fetchTweets () {
       try {
         this.isLoading = true
-        const response = await tweetsAPI.get()
+        const response = await tweetsAPI.getAll()
 
         if (response.statusText !== 'OK') {
           throw new Error(response.statusText)

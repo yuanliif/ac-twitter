@@ -13,7 +13,7 @@
     :to="{name: 'user-main', params: {id : user.id}}"
   >
     <img
-      v-show="user.avatar !== ''"
+      v-show="user.avatar"
       :src="user.avatar"
       @error="user.avatar = ''"
     >

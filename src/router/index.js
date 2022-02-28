@@ -83,7 +83,7 @@ const routes = [
   {
     path: '/tweet/:id',
     name: 'tweet',
-    component: () => import('@/views/Tweet'),
+    component: () => import('@/views/TweetAndReply'),
     beforeEnter: authorizeIsUser
   },
   // 跟隨者分頁

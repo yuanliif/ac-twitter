@@ -22,16 +22,16 @@
         <main class="profile">
           <div class="user-cover">
             <img
-              v-show="user.cover !== ''"
+              v-show="user.cover"
               :src="user.cover"
-              @error.stop.prevent="user.cover = ''"
+              @error="user.cover = ''"
             >
             <div class="user-avatar">
               <div class="avatar-container">
                 <img
-                  v-show="user.avatar !== ''"
+                  v-show="user.avatar"
                   :src="user.avatar"
-                  @error.stop.prevent="user.avatar = ''"
+                  @error="user.avatar = ''"
                 >
               </div>
             </div>
