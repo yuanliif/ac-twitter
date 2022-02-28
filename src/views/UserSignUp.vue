@@ -32,11 +32,12 @@
       </button>
     </div>
     <div class="cancel">
-      <a
-        href="#"
+      <router-link
+        to="router.go(-1)"
         class="cancel"
-        @click.prevent.stop="handleCancel"
-      > 取消</a>
+      >
+        取消
+      </router-link>
     </div>
   </form>
 </template>
@@ -192,25 +193,6 @@ export default {
           icon: 'error',
           title: '目前無法註冊，請稍後再試'
         })
-      }
-    },
-    handleCancel (e) {
-      this.data = {
-        ...this.data,
-        account: '',
-        name: '',
-        email: '',
-        password: '',
-        passwordCheck: ''
-      }
-
-      this.error = {
-        ...this.error,
-        account: '',
-        name: '',
-        email: '',
-        password: '',
-        passwordCheck: ''
       }
     }
   }
