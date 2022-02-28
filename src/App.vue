@@ -1,6 +1,8 @@
 <template>
   <div id="app">
     <router-view />
+    <!-- modal要mount的位置 -->
+    <portal-target name="modals" />
   </div>
 </template>
 
