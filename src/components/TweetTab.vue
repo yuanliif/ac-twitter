@@ -2,7 +2,7 @@
   <div class="tab-container">
     <!-- 推文列表 -->
     <TweetList
-      :tweets="tweets"
+      :tweets="sortedTweets"
       :is-loading="isLoading"
     />
   </div>
@@ -155,12 +155,9 @@ export default {
     this.fetchTweets(id)
     next()
   },
-  watch: {
-    '$store.state.currentUser': {
-      handler: function (newValue, oldValue) {
-        this.fetchTweets(newValue.id)
-      },
-      deep: true
+  computed: {
+    sortedTweets () {
+      return sortByTime(this.tweets, 'createdAt')
     }
   },
   created () {
@@ -171,7 +168,7 @@ export default {
     // 測試用
     // fetchTweets (userId) {
     //   console.log(userId)
-    //   this.tweets = sortByTime(dummyTweets, 'createdAt')
+    //   this.tweets = dummyTweets
     //   this.isLoading = false
     // }
     async fetchTweets (userId) {
@@ -183,7 +180,7 @@ export default {
           throw new Error(response.statusText)
         }
 
-        this.tweets = sortByTime(response.data)
+        this.tweets = response.data
         this.isLoading = false
       } catch (error) {
         Toast.fire({

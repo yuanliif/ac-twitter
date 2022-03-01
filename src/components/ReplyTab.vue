@@ -6,15 +6,15 @@
       class="reply-list"
     >
       <!-- 推文顯示清單 -->
-      <template v-show="replies.length > 0">
+      <template v-show="sortedReplies.length > 0">
         <Reply
-          v-for="reply in replies"
+          v-for="reply in sortedReplies"
           :key="reply.id"
           :initial-reply="reply"
         />
       </template>
       <h1
-        v-show="isLoading === false && replies.length === 0"
+        v-show="isLoading === false && sortedReplies.length === 0"
         class="default-text"
       >
         尚無推文與回覆
@@ -165,12 +165,14 @@ export default {
       isLoading: true
     }
   },
-  watch: {
-    '$store.state.currentUser': {
-      handler: function (newValue, oldValue) {
-        this.fetchReplies(newValue.id)
-      },
-      deep: true
+  beforeRouteUpdate (to, from, next) {
+    const { id } = to.params
+    this.fetchTweets(id)
+    next()
+  },
+  computed: {
+    sortedReplies () {
+      return sortByTime(this.replies, 'createdAt')
     }
   },
   created () {
@@ -182,7 +184,7 @@ export default {
     /*
     fetchReplies (userId) {
       console.log(userId)
-      this.replies = sortByTime(dummyReplies, 'createdAt')
+      this.replies = dummyReplies
       this.isLoading = false
     }
     */
@@ -195,7 +197,7 @@ export default {
           throw new Error(response.statusText)
         }
 
-        this.replies = sortByTime(response.data)
+        this.replies = response.data
         this.isLoading = false
       } catch (error) {
         Toast.fire({

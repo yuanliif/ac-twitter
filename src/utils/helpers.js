@@ -29,6 +29,6 @@ export const Toast = Swal.mixin({
 })
 
 // 依時間排序，時間近的在前面
-export const sortByTime = function (arr, key) {
+export const sortByTime = function (arr, key = 'createdAt') {
   return arr.sort((firstEl, secondEl) => moment(secondEl[key]).valueOf() - moment(firstEl[key]).valueOf())
 }

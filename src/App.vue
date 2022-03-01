@@ -44,10 +44,6 @@ export default {}
   &:hover {
     background-color: #b14700;
   }
-
-  &[disabled] {
-    opacity: 0.4;
-  }
 }
 .btn-control-outline {
   background-color: transparent;
@@ -57,6 +53,12 @@ export default {}
   &:hover {
     background-color: #FF6600;
     color: #FFFFFF
+  }
+}
+.btn-control,
+.btn-control-outline {
+  &[disabled] {
+    opacity: 0.4;
   }
 }
 

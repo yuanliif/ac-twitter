@@ -40,17 +40,14 @@ export default {
     }
   },
   watch: {
-    initialUser (newValue) {
-      this.user = {
-        ...this.user,
-        ...newValue
-      }
-    }
-  },
-  created () {
-    this.user = {
-      ...this.user,
-      ...this.initialUser
+    initialUser: {
+      handler: function (newValue, oldValue) {
+        this.user = {
+          ...this.user,
+          ...newValue
+        }
+      },
+      immediate: true
     }
   },
   methods: {
