@@ -1,12 +1,10 @@
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import moment from 'moment'
-
-// swagger
-const baseURL = 'https://virtserver.swaggerhub.com/HUANG-SIH-MAN/twitter-API/1.0.0/api'
+import { API_URL } from '@/configs/api'
 
 const axiosInstance = axios.create({
-  baseURL
+  baseURL: API_URL
 })
 axiosInstance.interceptors.request.use(
   config => {

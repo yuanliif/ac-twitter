@@ -1,9 +1,15 @@
 <template>
   <div class="page-container">
     <SiteNav />
-    <!-- 使用者Profile（待完成） -->
+    <portal to="modals">
+      <UserProfileModal
+        :show="show"
+        @close="closeModal"
+        @update="updateProfile"
+      />
+    </portal>
+
     <section class="main">
-      <!-- 使用者Profile區域（待完成）-->
       <section
         v-show="!isLoading"
         class="profile-container"
@@ -22,23 +28,26 @@
         <main class="profile">
           <div class="user-cover">
             <img
-              v-show="user.cover !== ''"
+              v-show="user.cover"
               :src="user.cover"
-              @error.stop.prevent="user.cover = ''"
+              @error="user.cover = ''"
             >
             <div class="user-avatar">
               <div class="avatar-container">
                 <img
-                  v-show="user.avatar !== ''"
+                  v-show="user.avatar"
                   :src="user.avatar"
-                  @error.stop.prevent="user.avatar = ''"
+                  @error="user.avatar = ''"
                 >
               </div>
             </div>
           </div>
           <div class="control-group">
             <template v-if="currentUser.id === user.id">
-              <button class="btn-control-outline btn-text">
+              <button
+                class="btn-control-outline btn-text"
+                @click.stop.prevent="showModal"
+              >
                 編輯個人資料
               </button>
             </template>
@@ -79,16 +88,16 @@
             </div>
             <div class="user-statistic">
               <router-link
-                :to="{name: 'followers', params: {id: user.id}}"
-                class="user-follower"
-              >
-                {{ user.follower | numberFormat }} 個<em>跟隨中</em>
-              </router-link>
-              <router-link
                 :to="{name: 'followings', params: {id: user.id}}"
                 class="user-following"
               >
-                {{ user.following | numberFormat }} 位<em>跟隨者</em>
+                {{ user.following | numberFormat }} 個<em>跟隨中</em>
+              </router-link>
+              <router-link
+                :to="{name: 'followers', params: {id: user.id}}"
+                class="user-follower"
+              >
+                {{ user.follower | numberFormat }} 位<em>跟隨者</em>
               </router-link>
             </div>
           </div>
@@ -107,15 +116,18 @@ import RecommendedList from '@/components/RecommendedList.vue'
 import FollowControlButton from '@/components/FollowControlButton.vue'
 import UserNav from '@/components/UserNav.vue'
 import { emptyNameMethod, addPrefixFilter, numberFormatFilter } from '@/utils/mixins'
+import UserProfileModal from '@/components/UserProfileModal.vue'
 import { mapState } from 'vuex'
 import usersAPI from '@/apis/users'
 import { Toast } from '@/utils/helpers'
+import store from '@/store'
 
 export default {
   components: {
     SiteNav,
     RecommendedList,
     FollowControlButton,
+    UserProfileModal,
     UserNav
   },
   mixins: [emptyNameMethod, addPrefixFilter, numberFormatFilter],
@@ -134,11 +146,20 @@ export default {
         tweetAmount: 0,
         notification: false
       },
-      isLoading: true
+      isLoading: true,
+      show: false
     }
   },
   computed: {
     ...mapState(['currentUser'])
+  },
+  watch: {
+    '$store.state.currentUser': {
+      handler: function (newValue, oldValue) {
+        this.fetchUser(newValue.id)
+      },
+      deep: true
+    }
   },
   created () {
     const { id } = this.$route.params
@@ -188,6 +209,17 @@ export default {
     },
     unfollow () {
       this.user.follower = this.user.follower - 1
+    },
+    showModal () {
+      this.show = true
+    },
+    closeModal () {
+      this.show = false
+    },
+    // 在使用者Profile更新成功後，強制更新Vuex的state
+    updateProfile () {
+      this.show = false
+      store.dispatch('fetchCurrentUser')
     }
   }
 }
@@ -319,7 +351,7 @@ export default {
       margin-bottom: 20px;
 
       .user-follower {
-        margin-right: 20px;
+        margin-left: 20px;
       }
 
       .user-follower,
