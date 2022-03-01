@@ -185,6 +185,7 @@ section.input-group {
     font-weight: 500;
     line-height: 29px;
     padding-left: 10px;
+    padding-top: 25px;
     position: relative;
     word-spacing: -0.25rem;
 
@@ -233,10 +234,10 @@ section.input-group {
     background-color: inherit;
     border: none;
     flex-grow: 1;
-    height: 148px;;
+    height: 125px;;
     padding-bottom: 4px;
     padding-left: 0px;
-    padding-top: 20px;
+    padding-top: 4px;
     resize: none;
   }
   textarea:focus {
