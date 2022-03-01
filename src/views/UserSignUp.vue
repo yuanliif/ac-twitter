@@ -33,7 +33,7 @@
     </div>
     <div class="cancel">
       <router-link
-        to="router.go(-1)"
+        to="/signin"
         class="cancel"
       >
         取消
