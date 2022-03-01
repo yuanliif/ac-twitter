@@ -47,7 +47,10 @@
           </div>
         </router-link>
       </section>
-      <button class="btn-control btn-tweet">
+      <button
+        class="btn-control btn-tweet"
+        @click.stop.prevent="openModal"
+      >
         推文
       </button>
     </div>
@@ -63,13 +66,28 @@
         登出
       </div>
     </div>
+    <portal to="modals">
+      <TweetModal
+        :show="show"
+        @close="closeModal"
+      />
+    </portal>
   </section>
 </template>
 
 <script>
+import TweetModal from '@/components/TweetModal.vue'
 import { mapState } from 'vuex'
 
 export default {
+  components: {
+    TweetModal
+  },
+  data () {
+    return {
+      show: false
+    }
+  },
   computed: {
     ...mapState(['currentUser'])
   },
@@ -77,6 +95,12 @@ export default {
     logout () {
       this.$store.commit('revokeAuthentication')
       this.$router.push({ name: 'user-sign-in' })
+    },
+    openModal () {
+      this.show = true
+    },
+    closeModal () {
+      this.show = false
     }
   }
 }

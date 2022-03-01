@@ -242,6 +242,10 @@ export default {
     margin-top: 54px;
     max-width: 600px;
     width: 600px;
+
+    .modal-content {
+      border-radius: 14px;
+    }
   }
 }
 form.modal-content {

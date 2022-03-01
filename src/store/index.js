@@ -19,7 +19,10 @@ export default new Vuex.Store({
       following: -1
     },
     isAuthenticated: false,
-    token: ''
+    token: '',
+    messageQueue: {
+      tweet: {}
+    }
   },
   mutations: {
     setCurrentUser (state, currentUser) {
@@ -36,6 +39,12 @@ export default new Vuex.Store({
       state.isAuthenticated = false
       state.token = ''
       localStorage.removeItem('token')
+    },
+    produceTweet (state, tweet) {
+      state.messageQueue.tweet = tweet
+    },
+    consumeTweet (state) {
+      state.messageQueue.tweet = {}
     }
   },
   actions: {
