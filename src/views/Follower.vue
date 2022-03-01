@@ -37,7 +37,7 @@ export default {
   created () {
     const { id } = this.$route.params
     this.fetchUser(id)
-    this.fetchFollowers()
+    this.fetchFollowers(id)
   },
   methods: {
     async fetchUser (userId) {
@@ -45,7 +45,7 @@ export default {
         const response = await usersAPI.getUserData({ userId })
         console.log('fetchUser', response)
 
-        if (response.status !== 200) {
+        if (response.status === 'error') {
           throw new Error(response.statusText)
         }
 
@@ -62,7 +62,7 @@ export default {
         const response = await followshipsAPI.getFollowers({ userId })
         console.log('fetchFollowers', response)
 
-        if (response.status !== 200) {
+        if (response.status === 'error') {
           throw new Error(response.statusText)
         }
 
