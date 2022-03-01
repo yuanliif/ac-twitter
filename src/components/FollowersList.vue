@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="control-button">
-        <FollowControlButton :initial-user="user" />
+        <FollowControlButton :initial-user="{followers}" />
       </div>
     </div>
   </div>
