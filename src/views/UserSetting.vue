@@ -128,6 +128,16 @@ export default {
         let message
         let pass = true
 
+        // 清空錯誤
+        this.error = {
+          ...this.error,
+          account: '',
+          name: '',
+          email: '',
+          password: '',
+          passwordCheck: ''
+        }
+
         // 表單發送前的資料驗證
         // 表單資料全部驗證完後，再決定是否送出表單，或者把所有的錯誤顯示出來
         ;({ status, message } = this.checkAccount(this.data.account))

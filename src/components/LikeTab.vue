@@ -165,6 +165,14 @@ export default {
       isLoading: true
     }
   },
+  watch: {
+    '$store.state.currentUser': {
+      handler: function (newValue, oldValue) {
+        this.fetchTweets(newValue.id)
+      },
+      deep: true
+    }
+  },
   created () {
     const { id } = this.$route.params
     this.fetchTweets(id)
