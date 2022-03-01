@@ -46,6 +46,7 @@ import { Toast } from '@/utils/helpers'
 import { emptyNameMethod } from '@/utils/mixins'
 import UserThumbnail from '@/components/UserThumbnail.vue'
 import FollowControlButton from '@/components/FollowControlButton.vue'
+import store from '@/store'
 
 // 測試資料，請保留以供測試
 
@@ -179,8 +180,11 @@ export default {
     // 確保先有使用者資訊，再取得推薦使用者清單
     '$store.state.currentUser': {
       handler: function (newValue, oldValue) {
-        this.userId = newValue.id
-        this.fetchUserList()
+        // 僅在有token的情況下操作
+        if (store.state.token !== '') {
+          this.userId = newValue.id
+          this.fetchUserList()
+        }
       },
       deep: true,
       immediate: true
