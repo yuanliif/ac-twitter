@@ -176,7 +176,11 @@ export const inputValidationMethod = {
 export const addPrefixFilter = {
   filters: {
     addPrefix (account) {
-      return `@${account}`
+      if (!account) {
+        return '原推文對象資訊缺少'
+      } else {
+        return `@${account}`
+      }
     }
   }
 }
