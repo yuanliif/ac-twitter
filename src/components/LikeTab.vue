@@ -6,15 +6,15 @@
       class="tweet-list"
     >
       <!-- 推文顯示清單 -->
-      <template v-show="tweets.length > 0">
+      <template v-show="sortedTweets.length > 0">
         <Tweet
-          v-for="tweet in tweets"
+          v-for="tweet in sortedTweets"
           :key="tweet.id"
           :initial-tweet="tweet"
         />
       </template>
       <h1
-        v-show="isLoading === false && tweets.length === 0"
+        v-show="isLoading === false && sortedTweets.length === 0"
         class="default-text"
       >
         尚無喜歡的內容
@@ -170,6 +170,11 @@ export default {
     this.fetchTweets(id)
     next()
   },
+  computed: {
+    sortedTweets () {
+      return sortByTime(this.tweets, 'createdAt')
+    }
+  },
   created () {
     const { id } = this.$route.params
     this.fetchTweets(id)
@@ -179,7 +184,7 @@ export default {
     /*
     fetchTweets (userId) {
       console.log(userId)
-      this.tweets = sortByTime(dummyTweets, 'createdAt')
+      this.tweets = dummyTweets
       this.isLoading = false
     }
     */
@@ -192,7 +197,12 @@ export default {
           throw new Error(response.statusText)
         }
 
-        this.tweets = sortByTime(response.data)
+        let tweets = response.data
+        tweets = tweets.map(tweet => ({
+          ...tweet,
+          id: tweet.TweetId
+        }))
+        this.tweets = tweets
         this.isLoading = false
       } catch (error) {
         Toast.fire({

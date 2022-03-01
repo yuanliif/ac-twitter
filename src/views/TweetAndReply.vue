@@ -74,7 +74,7 @@
         <section class="reply-section">
           <div class="reply-list">
             <Reply
-              v-for="reply in replies"
+              v-for="reply in sortedReplies"
               :key="reply.id"
               :initial-reply="reply"
             />
@@ -125,6 +125,11 @@ export default {
       isProcessing: false
     }
   },
+  computed: {
+    sortedReplies () {
+      return sortByTime(this.replies, 'createdAt')
+    }
+  },
   created () {
     const { id } = this.$route.params
     this.fetchTweet(id)
@@ -169,7 +174,7 @@ export default {
           throw new Error(response.statusText)
         }
 
-        this.replies = sortByTime(response.data, 'createdAt')
+        this.replies = response.data
 
         this.isLoadingTweet = false
       } catch (error) {

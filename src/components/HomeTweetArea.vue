@@ -6,7 +6,7 @@
     <TweetBox @after-tweet="addTweetToList($event)" />
     <section class="tweet-list-container">
       <TweetList
-        :tweets="tweets"
+        :tweets="sortedTweets"
         :is-loading="isLoading"
       />
     </section>
@@ -159,13 +159,18 @@ export default {
       isLoading: true
     }
   },
+  computed: {
+    sortedTweets () {
+      return sortByTime(this.tweets, 'createdAt')
+    }
+  },
   created () {
     this.fetchTweets()
   },
   methods: {
     // 測試用
     // fetchTweets () {
-    //   this.tweets = sortByTime(dummyTweets, 'createdAt')
+    //   this.tweets = dummyTweets
     //   this.isLoading = false
     // }
     async fetchTweets () {
@@ -177,7 +182,7 @@ export default {
           throw new Error(response.statusText)
         }
 
-        this.tweets = sortByTime(response.data)
+        this.tweets = response.data
         this.isLoading = false
       } catch (error) {
         Toast.fire({
