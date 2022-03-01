@@ -155,14 +155,6 @@ export default {
     this.fetchTweets(id)
     next()
   },
-  watch: {
-    '$store.state.currentUser': {
-      handler: function (newValue, oldValue) {
-        this.fetchTweets(newValue.id)
-      },
-      deep: true
-    }
-  },
   created () {
     const { id } = this.$route.params
     this.fetchTweets(id)

@@ -106,7 +106,9 @@ const routes = [
     name: 'user-main',
     component: () => import('@/views/UserProfile'),
     beforeEnter: authorizeIsUser,
-    redirect: { name: 'user-tweets' },
+    redirect: to => {
+      return { name: 'user-tweets', params: { id: to.params.id } }
+    },
     children: [
       // 推文分頁
       {

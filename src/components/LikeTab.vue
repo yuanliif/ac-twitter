@@ -165,13 +165,10 @@ export default {
       isLoading: true
     }
   },
-  watch: {
-    '$store.state.currentUser': {
-      handler: function (newValue, oldValue) {
-        this.fetchTweets(newValue.id)
-      },
-      deep: true
-    }
+  beforeRouteUpdate (to, from, next) {
+    const { id } = to.params
+    this.fetchTweets(id)
+    next()
   },
   created () {
     const { id } = this.$route.params
