@@ -164,6 +164,17 @@ export default {
       return sortByTime(this.tweets, 'createdAt')
     }
   },
+  watch: {
+    // 把Vuex當作messageQueue，藉由監聽數值的改變，來將使用者從Modal輸入的推文加到顯示清單
+    '$store.state.messageQueue.tweet': {
+      handler: function (newValue, oldValue) {
+        if (newValue && newValue.id !== undefined) {
+          this.addTweetToList(newValue)
+          this.$store.commit('consumeTweet')
+        }
+      }
+    }
+  },
   created () {
     this.fetchTweets()
   },

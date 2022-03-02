@@ -40,6 +40,13 @@ export default {
     UserThumbnail
   },
   mixins: [inputValidationMethod],
+  props: {
+    errorMessage: {
+      type: String,
+      required: false,
+      default: ''
+    }
+  },
   data () {
     return {
       description: '',
@@ -50,15 +57,25 @@ export default {
   computed: {
     ...mapState(['currentUser'])
   },
+  watch: {
+    errorMessage (newValue) {
+      console.log(newValue)
+      this.error = newValue
+    }
+  },
   methods: {
     async tweet () {
       try {
         const { status, message } = this.checkTweet(this.description)
 
+        this.error = ''
         if (status === false) {
           this.error = message
+          this.$emit('update-error', this.error)
           return
         }
+
+        this.$emit('update-error', this.error)
 
         this.isProcessing = true
 
