@@ -94,7 +94,7 @@ export default {
           replyAmount: 0,
           likeAmount: 0,
           userLiked: false,
-          createdAt: tweetData.createdAt
+          createdAt: new Date()
         })
 
         this.description = ''

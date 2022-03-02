@@ -165,6 +165,10 @@ export default {
     '$store.state.messageQueue.tweet': {
       handler: function (newValue, oldValue) {
         if (newValue && newValue.id !== undefined) {
+          // 僅在使用者在自己的Profile頁時，才接受來自tweet messageQueue的更新
+          if (newValue.userData.id !== Number(this.$route.params.id)) {
+            return
+          }
           this.addTweetToList(newValue)
           this.$store.commit('consumeTweet')
         }
