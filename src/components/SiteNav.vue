@@ -68,6 +68,7 @@
     </div>
     <portal to="modals">
       <TweetModal
+        :order="1"
         :show="show"
         @close="closeModal"
       />

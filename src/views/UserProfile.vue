@@ -3,6 +3,7 @@
     <SiteNav />
     <portal to="modals">
       <UserProfileModal
+        :order="2"
         :show="show"
         @close="closeModal"
         @update="updateProfile"

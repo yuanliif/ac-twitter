@@ -21,7 +21,8 @@ export default new Vuex.Store({
     isAuthenticated: false,
     token: '',
     messageQueue: {
-      tweet: {}
+      tweet: {},
+      reply: {}
     }
   },
   mutations: {
@@ -45,6 +46,12 @@ export default new Vuex.Store({
     },
     consumeTweet (state) {
       state.messageQueue.tweet = {}
+    },
+    produceReply (state, reply) {
+      state.messageQueue.reply = reply
+    },
+    consumeReply (state) {
+      state.messageQueue.reply = {}
     }
   },
   actions: {
