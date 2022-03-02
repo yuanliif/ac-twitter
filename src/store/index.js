@@ -59,6 +59,10 @@ export default new Vuex.Store({
       try {
         const { data } = await usersAPI.getCurrentUser()
 
+        if (data.status === 'error') {
+          throw new Error(data.message)
+        }
+
         const { id, account, name, email, cover, avatar, role, introduction, follower, following } = data
 
         commit('setCurrentUser', {
@@ -80,6 +84,8 @@ export default new Vuex.Store({
         }
       } catch (error) {
         console.error(error.message)
+
+        commit('revokeAuthentication')
 
         return {
           isAuthenticated: false,

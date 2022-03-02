@@ -28,7 +28,7 @@
               class="account"
               :title="user.account"
             >
-              @{{ user.account }}
+              {{ user.account | addPrefix }}
             </div>
           </span>
           <span class="control">
@@ -43,7 +43,7 @@
 <script>
 import followshipsAPI from '@/apis/followships'
 import { Toast } from '@/utils/helpers'
-import { emptyNameMethod } from '@/utils/mixins'
+import { emptyNameMethod, addPrefixFilter } from '@/utils/mixins'
 import UserThumbnail from '@/components/UserThumbnail.vue'
 import FollowControlButton from '@/components/FollowControlButton.vue'
 import store from '@/store'
@@ -168,7 +168,7 @@ export default {
     UserThumbnail,
     FollowControlButton
   },
-  mixins: [emptyNameMethod],
+  mixins: [emptyNameMethod, addPrefixFilter],
   data () {
     return {
       userList: [],

@@ -321,7 +321,6 @@ section.reply-input-box {
     flex-grow: 1;
     flex-shrink: 1;
     flex-wrap: nowrap;
-    margin-left: 10px;
     overflow: hidden;
 
     textarea {
