@@ -11,18 +11,28 @@
         class="follow-avatar"
       />
       <div class="main-info">
-        <div class="name">
-          {{ emptyName(follow.name, follow.account) }}
-        </div>
-        <div class="account">
-          {{ follow.account | addPrefix }}
+        <div class="user-container">
+          <span class="info">
+            <div
+              class="name"
+              :title="emptyName(follow.name, follow.account)"
+            >
+              {{ emptyName(follow.name, follow.account) }}
+            </div>
+            <div
+              class="account"
+              :title="follow.account"
+            >
+              {{ follow.account | addPrefix }}
+            </div>
+          </span>
+          <span class="control">
+            <FollowControlButton :initial-user="follow" />
+          </span>
         </div>
         <div class="introduction">
           {{ follow.introduction }}
         </div>
-      </div>
-      <div class="control-button">
-        <FollowControlButton :initial-user="follow" />
       </div>
     </div>
   </div>
@@ -62,17 +72,40 @@ export default {
   position: relative;
 
   .follow-avatar {
+    flex-shrink: 0;
     margin-top: 3px;
     margin-right: 10px;
   }
 
   .main-info {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    flex-wrap: nowrap;
+    overflow: hidden;
+
+    .user-container {
+      display: flex;
+      flex-direction: row;
+      flex-grow: 1;
+      flex-wrap: nowrap;
+    }
+
+    .info {
+      flex-grow: 1;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
     .name {
       font-style: normal;
       font-weight: bold;
       font-size: 15px;
       line-height: 15px;
       color: #1c1c1c;
+      overflow-x: clip;
+      overflow-y: visible;
+      text-overflow: ellipsis;
     }
 
     .account {
@@ -82,6 +115,9 @@ export default {
       line-height: 15px;
       color: #657786;
       margin-top: 5px;
+      overflow-x: clip;
+      overflow-y: visible;
+      text-overflow: ellipsis;
     }
 
     .introduction {
@@ -93,13 +129,13 @@ export default {
     }
   }
 
-  .control-button {
+  .control {
+    flex-shrink: 0;
     font-size: 15px;
     font-weight: bold;
+    height: 25px;
     line-height: 15px;
-    position: absolute;
-    right: 15px;
-    top: 15px;
+    margin-left: 5px;
 
     .btn-control {
       padding: 5px 15px;

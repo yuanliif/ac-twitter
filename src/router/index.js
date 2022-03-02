@@ -130,6 +130,11 @@ const routes = [
       }
     ]
   },
+  {
+    path: '/test',
+    name: 'test',
+    component: () => import('@/views/BlankPage')
+  },
   // 未定義路由，導回至使用者登入頁
   {
     path: '*',
@@ -154,7 +159,7 @@ router.beforeEach(async (to, from, next) => {
   }
 
   // 對於不需要驗證 token 的頁面
-  const pathsWithoutAuthentication = ['user-sign-up', 'user-sign-in', 'admin-sign-in']
+  const pathsWithoutAuthentication = ['user-sign-up', 'user-sign-in', 'admin-sign-in', 'test']
   const adminPages = ['admin-tweets', 'admin-users']
 
   // 如果 token 無效則轉址到對應登入頁
