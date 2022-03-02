@@ -32,11 +32,12 @@
       </button>
     </div>
     <div class="cancel">
-      <a
-        href="#"
+      <router-link
+        to="/signin"
         class="cancel"
-        @click.prevent.stop="handleCancel"
-      > 取消</a>
+      >
+        取消
+      </router-link>
     </div>
   </form>
 </template>
@@ -218,9 +219,6 @@ export default {
           title: '目前無法註冊，請稍後再試'
         })
       }
-    },
-    handleCancel (e) {
-      this.$router.push({ name: 'user-sign-in' })
     }
   }
 }

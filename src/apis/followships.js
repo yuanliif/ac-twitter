@@ -9,5 +9,11 @@ export default {
   },
   getTopUsers () {
     return apiHelper.get('/followships/top10')
+  },
+  getFollowers ({ userId }) {
+    return apiHelper.get(`/users/${userId}/followers`)
+  },
+  getFollowings ({ userId }) {
+    return apiHelper.get(`users/${userId}/followings`)
   }
 }
