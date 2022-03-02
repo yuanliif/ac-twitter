@@ -95,7 +95,7 @@ export default {
           password: this.password
         })
 
-        if (data.status !== 'success') {
+        if (data.status === 'error') {
           throw new Error(data.message)
         }
 
@@ -110,12 +110,13 @@ export default {
         this.$store.commit('setCurrentUser', userData)
         this.$router.push('/admin/tweets')
       } catch (error) {
-        this.isProcessing = false
+        console.error(error)
         Toast.fire({
-          icon: 'warning',
+          icon: 'error',
           title: error.message
         })
-        console.dir(error)
+      } finally {
+        this.isProcessing = false
       }
     }
   }

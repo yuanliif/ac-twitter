@@ -120,8 +120,15 @@ export default {
         let status
         let message
         let pass = true
+        // 清空錯誤訊息
+        this.error.account = ''
+        this.error.name = ''
+        this.error.message = ''
+        this.error.email = ''
+        this.error.password = ''
+        this.error.passwordCheck = '';
 
-        ;({ status, message } = this.checkAccount(this.data.account))
+        ({ status, message } = this.checkAccount(this.data.account))
         if (status === false) {
           this.error.account = message
           pass = false
@@ -167,7 +174,7 @@ export default {
         })
 
         // 針對 http code 200 的處理流程
-        if (data.status !== 'success') {
+        if (data.status === 'error') {
           if (/帳號/.test(data.message)) {
             this.error.account = data.message
             return
@@ -190,29 +197,7 @@ export default {
 
         this.$router.push({ name: 'user-sign-in' })
       } catch (error) {
-        const { response } = error
-
-        // 針對 http code 不是 200 的處理流程
-        if (response) {
-          const { data } = response
-
-          if (/帳號/.test(data.message)) {
-            this.error.account = data.message
-            return
-          }
-          if (/名稱/.test(data.message)) {
-            this.error.name = data.message
-            return
-          }
-          if (/信箱/.test(data.message)) {
-            this.error.email = data.message
-            return
-          }
-          if (/密碼/.test(data.message)) {
-            this.error.password = data.message
-            return
-          }
-        }
+        console.error(error)
 
         Toast.fire({
           icon: 'error',
