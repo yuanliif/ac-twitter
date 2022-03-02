@@ -8,6 +8,7 @@
       <TweetList
         :tweets="sortedTweets"
         :is-loading="isLoading"
+        @after-reply="afterReplyHandler($event)"
       />
     </section>
   </div>
@@ -204,6 +205,14 @@ export default {
     },
     addTweetToList (tweet) {
       this.tweets = [tweet, ...this.tweets]
+    },
+    afterReplyHandler (tweetId) {
+      this.tweets = this.tweets.map(tweet => {
+        if (tweet.id === tweetId) {
+          tweet.replyAmount = tweet.replyAmount + 1
+        }
+        return tweet
+      })
     }
   }
 }

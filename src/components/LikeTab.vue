@@ -1,5 +1,14 @@
 <template>
   <div class="tab-container">
+    <portal to="modals">
+      <ReplyModal
+        :order="4"
+        :show="show"
+        :tweet="modalTweet"
+        @after-reply="afterReplyHandler($event)"
+        @close="closeModal"
+      />
+    </portal>
     <!-- 喜歡的內容列表 -->
     <div
       v-show="!isLoading"
@@ -11,6 +20,7 @@
           v-for="tweet in sortedTweets"
           :key="tweet.id"
           :initial-tweet="tweet"
+          @open-reply-modal="openReplyModal($event)"
         />
       </template>
       <h1
@@ -24,8 +34,9 @@
 </template>
 
 <script>
-import { sortByTime, Toast } from '@/utils/helpers'
 import Tweet from '@/components/Tweet.vue'
+import ReplyModal from '@/components/ReplyModal.vue'
+import { sortByTime, Toast } from '@/utils/helpers'
 import usersAPI from '@/apis/users'
 // import moment from 'moment' // 測試用
 
@@ -157,12 +168,15 @@ const dummyTweets = [
 
 export default {
   components: {
+    ReplyModal,
     Tweet
   },
   data () {
     return {
       tweets: [],
-      isLoading: true
+      isLoading: true,
+      show: false,
+      modalTweet: {}
     }
   },
   beforeRouteUpdate (to, from, next) {
@@ -210,6 +224,21 @@ export default {
           title: '無法取得推文，請稍後再試'
         })
       }
+    },
+    openReplyModal (tweet) {
+      this.show = true
+      this.modalTweet = tweet
+    },
+    closeModal () {
+      this.show = false
+    },
+    afterReplyHandler (tweetId) {
+      this.tweets = this.tweets.map(tweet => {
+        if (tweet.id === tweetId) {
+          tweet.replyAmount = tweet.replyAmount + 1
+        }
+        return tweet
+      })
     }
   }
 }

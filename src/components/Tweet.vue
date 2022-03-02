@@ -30,6 +30,7 @@
               <icon
                 icon-name="reply"
                 class="control-icon"
+                @click.native.stop.prevent="openReplyModal"
               />
               <span class="control-statistic">{{ tweet.replyAmount | numberFormat }}</span>
             </span>
@@ -76,6 +77,17 @@ export default {
     return {
       tweet: {},
       isProcessing: false
+    }
+  },
+  watch: {
+    initialTweet: {
+      handler: function (newValue, oldValue) {
+        this.tweet = {
+          ...this.tweet,
+          ...newValue
+        }
+      },
+      deep: true
     }
   },
   created () {
@@ -140,6 +152,9 @@ export default {
       } finally {
         this.isProcessing = false
       }
+    },
+    openReplyModal () {
+      this.$emit('open-reply-modal', this.tweet)
     }
   }
 }

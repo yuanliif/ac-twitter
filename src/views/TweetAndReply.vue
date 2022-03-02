@@ -1,5 +1,14 @@
 <template>
   <div class="page-container">
+    <portal to="modals">
+      <ReplyModal
+        :order="5"
+        :show="show"
+        :tweet="tweet"
+        @after-reply="afterReplyHandler($event)"
+        @close="closeModal"
+      />
+    </portal>
     <SiteNav />
     <section class="main">
       <section
@@ -56,6 +65,7 @@
             <icon
               class="control btn-reply cursor-pointer"
               icon-name="reply"
+              @click.native.stop.prevent="show = true"
             />
             <icon
               v-if="tweet.userLiked"
@@ -87,6 +97,7 @@
 </template>
 
 <script>
+import ReplyModal from '@/components/ReplyModal.vue'
 import SiteNav from '@/components/SiteNav.vue'
 import RecommendedList from '@/components/RecommendedList.vue'
 import UserThumbnail from '@/components/UserThumbnail.vue'
@@ -97,6 +108,7 @@ import tweetsAPI from '@/apis/tweets'
 
 export default {
   components: {
+    ReplyModal,
     SiteNav,
     RecommendedList,
     Reply,
@@ -122,12 +134,24 @@ export default {
       replies: [],
       isLoadingTweet: true,
       isLOadingReplies: true,
-      isProcessing: false
+      isProcessing: false,
+      show: false
     }
   },
   computed: {
     sortedReplies () {
       return sortByTime(this.replies, 'createdAt')
+    }
+  },
+  watch: {
+    // 把Vuex當作messageQueue，藉由監聽數值的改變，來將使用者從Modal輸入的回文加到顯示清單
+    '$store.state.messageQueue.reply': {
+      handler: function (newValue, oldValue) {
+        if (newValue && newValue.id !== undefined) {
+          this.addReplyToList(newValue)
+          this.$store.commit('consumeReply')
+        }
+      }
     }
   },
   created () {
@@ -239,6 +263,15 @@ export default {
       } finally {
         this.isProcessing = false
       }
+    },
+    closeModal () {
+      this.show = false
+    },
+    afterReplyHandler (tweetId) {
+      this.tweet.replyAmount = this.tweet.replyAmount + 1
+    },
+    addReplyToList (reply) {
+      this.replies = [reply, ...this.replies]
     }
   }
 }
