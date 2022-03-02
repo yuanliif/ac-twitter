@@ -66,8 +66,16 @@ export default {
       this.$emit('close')
     },
     handleNewTweet (tweet) {
-      this.$store.commit('produceTweet', tweet)
-      this.$emit('close')
+      const route = this.$route
+
+      // 使用者不是在首頁，或者不是在自己Profile推文頁的情況下，完成後跳轉到首頁
+      if (route.name === 'homepage' || (route.name === 'user-tweets' && tweet.userData.id === Number(route.params.id))) {
+        this.$store.commit('produceTweet', tweet)
+        this.close()
+      } else {
+        this.close()
+        this.$router.push({ name: 'homepage' })
+      }
     }
   }
 }
