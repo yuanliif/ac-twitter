@@ -1,31 +1,37 @@
 <template>
-  <div class="followers">
+  <div
+    v-if="!isLoadingUser"
+    class="followers"
+  >
     <div class="followers-header">
-      <router-link
+      <icon
         class="back-button cursor-pointer"
-        to="/user/:id"
+        icon-name="back-arrow"
+        @click.native.stop.prevent="$router.go(-1)"
+      />
+      <div
+        class="user-info"
       >
-        &larr;
-      </router-link>
-      <div class="user-info">
         <div class="user-name">
-          {{ users.name }}
+          {{ emptyName(user.name, user.account) }}
         </div>
         <div class="tweets-amount">
-          {{ users.tweetAmount }} 推文
+          {{ user.tweetAmount }} 推文
         </div>
       </div>
     </div>
-    <div class="switch-list">
+    <div
+      class="switch-list"
+    >
       <router-link
-        to="/user/:id/followers"
+        :to="{name: 'followers', params: {id: user.id}}"
         class="followers"
       >
         跟隨者
       </router-link>
 
       <router-link
-        to="/user/:id/followings"
+        :to="{name: 'followings', params: {id: user.id}}"
         class="followings"
       >
         正在跟隨
@@ -35,13 +41,21 @@
 </template>
 
 <script>
+import { emptyNameMethod } from '@/utils/mixins'
+
 export default {
   name: 'FollowerAndFollowingNav',
+  mixins: [emptyNameMethod],
   props: {
-    users: {
+    user: {
       type: Object,
-      require: true,
+      required: true,
       default: () => {}
+    },
+    isLoadingUser: {
+      type: Boolean,
+      required: true,
+      default: true
     }
   }
 }
@@ -50,29 +64,30 @@ export default {
 <style lang="scss" scoped>
 .followers-header {
   display: flex;
-  padding-left: 19px;
-  padding-top: 7px;
+  padding: 16px 15px 0px 15px;
 
   .back-button {
+    height: 24px;
+    width: 24px;
     margin: auto 0;
     color: #000000;
   }
 
   .user-info {
-    margin-left: 43px;
+    margin-left: 40px;
     .user-name {
-      font-family: Noto Sans TC;
       font-style: normal;
       font-weight: 900;
       font-size: 19px;
+      line-height: 28px;
       color: #1c1c1c;
     }
 
     .tweets-amount {
-      font-family: Noto Sans TC;
       font-style: normal;
       font-weight: 500;
       font-size: 13px;
+      line-height: 19px;
       color: #657786;
     }
   }
@@ -80,37 +95,21 @@ export default {
 
 .switch-list {
   display: flex;
-  height: 52px;
+  height: 54px;
   border-bottom: 1px solid #e6ecf0;
-  .followers {
-    width: 130px;
-    font-family: Noto Sans TC;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 15px;
-    color: #657786;
-    text-align: center;
-    padding: 15px;
-    &:hover {
-      text-decoration: none;
-    }
-    &.active {
-      color: #ff6600;
-      border-bottom: 2px solid #ff6600;
-    }
-  }
 
-  .followings {
+  & > * {
     width: 130px;
-    font-family: Noto Sans TC;
     font-style: normal;
     font-weight: bold;
     font-size: 15px;
     color: #657786;
     text-align: center;
     padding: 15px;
+
     &:hover {
       text-decoration: none;
+      opacity: 0.75;
     }
     &.active {
       color: #ff6600;

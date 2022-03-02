@@ -3,9 +3,15 @@
     <SiteNav />
     <!-- 正在跟隨者區域（待完成） -->
     <section class="main">
-      <FollowerAndFollowingNav :users="users" />
-      <div class="container">
-        <FollowingsList :followings="followings" />
+      <FollowerAndFollowingNav
+        :user="user"
+        :is-loading-user="isLoadingUser"
+      />
+      <div class="follow-list-container">
+        <FollowList
+          :follow-data="proccessedData"
+          :is-loading-follow-data="isLoadingFollowData"
+        />
       </div>
     </section>
     <RecommendedList />
@@ -16,7 +22,7 @@
 import SiteNav from '@/components/SiteNav.vue'
 import RecommendedList from '@/components/RecommendedList.vue'
 import FollowerAndFollowingNav from '@/components/FollowerAndFollowingNav.vue'
-import FollowingsList from './../components/FollowingsList.vue'
+import FollowList from '@/components/FollowList.vue'
 import followshipsAPI from './../apis/followships'
 import usersAPI from './../apis/users'
 import { Toast } from './../utils/helpers'
@@ -26,12 +32,28 @@ export default {
     SiteNav,
     RecommendedList,
     FollowerAndFollowingNav,
-    FollowingsList
+    FollowList
   },
   data () {
     return {
       followings: [],
-      users: {}
+      user: {},
+      isLoadingUser: true,
+      isLoadingFollowData: true
+    }
+  },
+  beforeRouteUpdate (to, from, next) {
+    const { id } = to.params
+    this.fetchUser(id)
+    this.fetchFollowings(id)
+    next()
+  },
+  computed: {
+    proccessedData () {
+      return this.followings.map(follow => ({
+        ...follow,
+        id: follow.followingId
+      }))
     }
   },
   created () {
@@ -42,30 +64,36 @@ export default {
   methods: {
     async fetchUser (userId) {
       try {
-        const response = await usersAPI.getUserData({ userId })
-        console.log('fetchUser', response)
+        this.isLoadingUser = true
+        const { data } = await usersAPI.getUserData({ userId })
 
-        if (response.status === 'error') {
-          throw new Error(response.statusText)
+        if (data.id === undefined) {
+          throw new Error(data.message)
         }
 
-        this.users = response.data
+        this.user = data
+        this.isLoadingUser = false
       } catch (error) {
         Toast.fire({
           icon: 'error',
-          title: '目前無法取得該使用者資訊，請稍後再試'
+          title: error.message
         })
       }
     },
     async fetchFollowings (userId) {
       try {
+        this.isLoadingFollowData = true
         const response = await followshipsAPI.getFollowings({ userId })
-        console.log(response)
 
-        if (response.status === 'error') {
+        if (response.statusText !== 'OK') {
           throw new Error(response.statusText)
         }
 
+        if (Array.isArray(response.data) === false) {
+          throw new Error(response.data.message)
+        }
+
+        this.isLoadingFollowData = false
         this.followings = response.data
       } catch (error) {
         Toast.fire({
@@ -79,16 +107,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-section.main {
-  width: 600px;
-  .container {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    flex-grow: 1;
-    flex-shrink: 1;
-    overflow-x: clip;
-    overflow-y: auto;
-  }
+.follow-list-container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  flex-grow: 1;
+  flex-shrink: 1;
+  overflow-x: clip;
+  overflow-y: auto;
 }
-</style>>
+</style>
