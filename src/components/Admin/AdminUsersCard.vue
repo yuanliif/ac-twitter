@@ -75,8 +75,8 @@
 </template>
 
 <script>
-import adminApi from './../apis/admin'
-import { Toast } from './../utils/helpers'
+import adminApi from '@/apis/admin'
+import { Toast } from '@/utils/helpers'
 import {
   emptyNameMethod,
   addPrefixFilter,
@@ -112,6 +112,11 @@ export default {
     async fetchUsers () {
       try {
         const { data } = await adminApi.getUsers()
+
+        if (Array.isArray(data) === false) {
+          throw new Error(data.message)
+        }
+
         this.users = data
       } catch (error) {
         Toast.fire({
@@ -151,7 +156,7 @@ a {
     height: 1147px;
     overflow-y: auto;
     .users-container {
-      padding: 0px 15px;
+      padding-left: 15px;
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
@@ -179,7 +184,8 @@ a {
           position: absolute;
           text-align: center;
           top: 68px;
-          left: 72.5px;
+          left: 15px;
+          right: 15px;
           font-size: 15px;
           line-height: 22px;
           .avatar {
@@ -188,6 +194,8 @@ a {
             border-radius: 50%;
             background-color: #c4c4c4;
             border: 4px solid #ffffff;
+            margin-left: auto;
+            margin-right: auto;
             img {
               border-radius: 50%;
               object-fit: cover;
@@ -198,11 +206,17 @@ a {
           .name {
             margin-top: 5px;
             font-weight: 900;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
           .account {
             margin-top: 2px;
             color: #657786;
             font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
           }
         }
         .tweet {

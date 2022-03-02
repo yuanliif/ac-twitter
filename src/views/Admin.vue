@@ -67,8 +67,9 @@
 </template>
 
 <script>
-import authorizationApi from './../apis/authorization'
-import { Toast } from './../utils/helpers'
+import authorizationApi from '@/apis/authorization'
+import { Toast } from '@/utils/helpers'
+
 export default {
   data () {
     return {

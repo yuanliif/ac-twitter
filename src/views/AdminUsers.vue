@@ -1,13 +1,13 @@
 <template>
-  <div class="container w-100 mx-0 px-0 d-flex">
+  <div class="w-100 mx-0 px-0 d-flex">
     <AdminSideBar />
     <AdminUsersCard />
   </div>
 </template>
 
 <script>
-import AdminSideBar from '../components/AdminSideBar.vue'
-import AdminUsersCard from '../components/AdminUsersCard.vue'
+import AdminSideBar from '@/components/Admin/AdminSideBar.vue'
+import AdminUsersCard from '@/components/Admin/AdminUsersCard.vue'
 
 export default {
   components: {

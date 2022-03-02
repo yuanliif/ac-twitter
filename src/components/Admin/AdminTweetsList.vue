@@ -1,5 +1,5 @@
 <template>
-  <div class="tweets">
+  <div class="tweets d-flex flex-column">
     <div class="navbar">
       <div class="title">
         推文清單
@@ -46,9 +46,10 @@
 </template>
 
 <script>
-import { Toast } from './../utils/helpers'
-import adminApi from './../apis/admin'
-import UserThumbnail from './UserThumbnail.vue'
+import UserThumbnail from '@/components/UserThumbnail.vue'
+import adminApi from '@/apis/admin'
+import { Toast } from '@/utils/helpers'
+
 import {
   emptyNameMethod,
   addPrefixFilter,
@@ -87,6 +88,11 @@ export default {
     async fetchTweets () {
       try {
         const { data } = await adminApi.getTweets()
+
+        if (Array.isArray(data) === false) {
+          throw new Error(data.message)
+        }
+
         this.tweets = data
       } catch (error) {
         Toast.fire({
@@ -104,12 +110,16 @@ export default {
           throw new Error(data.message)
         }
         this.tweets = this.tweets.filter((tweet) => tweet.id !== tweetId)
+        Toast.fire({
+          icon: 'success',
+          title: '成功刪除推文'
+        })
         this.isProcessing = false
       } catch (error) {
         this.isProcessing = false
         Toast.fire({
           icon: 'error',
-          title: '無法刪除篇推文'
+          title: '無法刪除推文'
         })
         console.dir(error)
       }
@@ -123,7 +133,7 @@ a {
   pointer-events: none;
 }
 .tweets {
-  min-width: 70vmax;
+  flex-grow: 1;
   .navbar {
     height: 55px;
     width: 100%;

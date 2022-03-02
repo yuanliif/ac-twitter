@@ -43,11 +43,12 @@
 </template>
 
 <script>
-import LogoImg from '../assets/images/Logo.png'
+import GeneralInput from '@/components/GeneralInput.vue'
+import LogoImg from '@/assets/images/Logo.png'
+import authorizationAPI from '@/apis/authorization'
 import { inputValidationMethod } from '@/utils/mixins'
-import authorizationAPI from '../apis/authorization'
-import { Toast } from '../utils/helpers'
-import GeneralInput from './../components/GeneralInput.vue'
+import { Toast } from '@/utils/helpers'
+
 const inputKeys = ['account', 'name', 'email', 'password', 'passwordCheck']
 const inputConfig = {
   account: {
