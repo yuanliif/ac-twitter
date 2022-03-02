@@ -18,6 +18,7 @@
         >{{ error }}</span>
         <button
           class="btn-control btn-tweet"
+          :disabled="isProcessing"
           @click.stop.prevent="tweet"
         >
           推文
@@ -67,14 +68,16 @@ export default {
           throw new Error(data.status)
         }
 
+        const { tweetData } = data
+
         this.$emit('after-tweet', {
-          id: new Date().valueOf(),
+          id: tweetData.id,
           userData: this.currentUser,
           description: this.description,
           replyAmount: 0,
           likeAmount: 0,
           userLiked: false,
-          createdAt: new Date()
+          createdAt: tweetData.createdAt
         })
 
         this.description = ''
@@ -90,7 +93,7 @@ export default {
     }
   }
 }
-</script>>
+</script>
 
 <style lang="scss" scoped>
 section.tweet-input-box {

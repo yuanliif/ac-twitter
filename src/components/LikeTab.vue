@@ -172,7 +172,7 @@ export default {
   },
   computed: {
     sortedTweets () {
-      return sortByTime(this.tweets, 'createdAt')
+      return sortByTime(this.tweets, 'relationshipCreatedAt')
     }
   },
   created () {
