@@ -99,9 +99,9 @@ export default {
         let message
         let pass = true
         this.error.account = ''
-        this.error.password = ''
+        this.error.password = '';
 
-        ;({ status, message } = this.checkAccount(this.data.account))
+        ({ status, message } = this.checkAccount(this.data.account))
         if (status === false) {
           this.error.account = message
           pass = false

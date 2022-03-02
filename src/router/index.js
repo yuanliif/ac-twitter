@@ -130,11 +130,6 @@ const routes = [
       }
     ]
   },
-  {
-    path: '/test',
-    name: 'test',
-    component: () => import('@/views/BlankPage')
-  },
   // 未定義路由，導回至使用者登入頁
   {
     path: '*',
@@ -153,7 +148,7 @@ router.beforeEach(async (to, from, next) => {
   let isAuthenticated = store.state.isAuthenticated
   let role = store.state.currentUser.role
 
-  // 比較 localStorage 和 store 中的 token 是否一樣
+  // 確認token是否有效
   if (tokenInLocalStorage && tokenInLocalStorage !== tokenInStore) {
     ({ isAuthenticated, role } = await store.dispatch('fetchCurrentUser'))
   }
