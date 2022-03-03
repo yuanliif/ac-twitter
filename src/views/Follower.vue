@@ -10,6 +10,7 @@
         <FollowList
           :follow-data="proccessedData"
           :is-loading-follow-data="isLoadingFollowData"
+          default-text="尚無跟隨者"
         />
       </div>
     </section>
