@@ -56,6 +56,19 @@ export default {
       }))
     }
   },
+  watch: {
+    '$store.state.messageQueue.follow': {
+      handler: function (newValue, oldValue) {
+        if (newValue.action === 'add') {
+          return this.followUser(newValue.userId)
+        }
+        if (newValue.action === 'remove') {
+          return this.unfollowUser(newValue.userId)
+        }
+      },
+      deep: true
+    }
+  },
   created () {
     const { id } = this.$route.params
     this.fetchUser(id)
@@ -101,6 +114,30 @@ export default {
           title: '目前無法取得跟隨者，請稍後再試'
         })
       }
+    },
+    followUser (userId) {
+      this.followers = this.followers.map(user => {
+        if (user.followerId === userId) {
+          return {
+            ...user,
+            followed: true
+          }
+        } else {
+          return user
+        }
+      })
+    },
+    unfollowUser (userId) {
+      this.followers = this.followers.map(user => {
+        if (user.followerId === userId) {
+          return {
+            ...user,
+            followed: false
+          }
+        } else {
+          return user
+        }
+      })
     }
   }
 }
