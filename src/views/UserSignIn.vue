@@ -47,11 +47,11 @@
 </template>
 
 <script>
-import LogoImg from '../assets/images/Logo.png'
-import authorizationAPI from './../apis/authorization'
-import { Toast } from './../utils/helpers'
-import GeneralInput from './../components/GeneralInput.vue'
-import { inputValidationMethod } from './../utils/mixins'
+import GeneralInput from '@/components/GeneralInput.vue'
+import LogoImg from '@/assets/images/Logo.png'
+import authorizationAPI from '@/apis/authorization'
+import { Toast } from '@/utils/helpers'
+import { inputValidationMethod } from '@/utils/mixins'
 const inputKeys = ['account', 'password']
 const inputConfig = {
   account: {
@@ -98,6 +98,7 @@ export default {
         let status
         let message
         let pass = true
+        // 清空錯誤訊息
         this.error.account = ''
         this.error.password = '';
 
@@ -123,7 +124,7 @@ export default {
         })
 
         // 針對 http code 200 的處理流程
-        if (data.status !== 'success') {
+        if (data.status === 'error') {
           if (/帳號/.test(data.message)) {
             this.error.account = data.message
             return
@@ -142,22 +143,7 @@ export default {
         this.$store.commit('setCurrentUser', data.userData)
         this.$router.push('/home')
       } catch (error) {
-        const { response } = error
-
-        // 針對 http code 不是 200 的處理流程
-        if (response) {
-          const { data } = response
-
-          if (/帳號/.test(data.message)) {
-            this.error.account = data.message
-            return
-          }
-
-          if (/密碼/.test(data.message)) {
-            this.error.password = data.message
-            return
-          }
-        }
+        console.error(error)
 
         Toast.fire({
           icon: 'error',
