@@ -126,6 +126,8 @@ export default {
       font-size: 15px;
       line-height: 22px;
       margin-top: 5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
