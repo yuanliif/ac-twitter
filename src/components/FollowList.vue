@@ -26,7 +26,10 @@
                 {{ follow.account | addPrefix }}
               </div>
             </span>
-            <span class="control">
+            <span
+              v-show="follow.showControl"
+              class="control"
+            >
               <FollowControlButton :initial-user="follow" />
             </span>
           </div>
