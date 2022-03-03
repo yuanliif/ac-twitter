@@ -29,7 +29,7 @@ jobs:
           API_URL: https://polar-bayou-05130.herokuapp.com/api
         run: |
           cat <<EOF > ./src/configs/api.js
-          export const API_URL = "$API_URL"
+          export const API_URL = '$API_URL'
           EOF
 
           echo "cat ./src/configs/api.js"
