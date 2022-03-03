@@ -23,6 +23,18 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
       
+      - name: Setup Config
+        env:
+          # 應當放到secret內
+          API_URL: https://polar-bayou-05130.herokuapp.com/api
+        run: |
+          cat <<EOF > ./src/configs/api.js
+          export const API_URL = "$API_URL"
+          EOF
+
+          echo "cat ./src/configs/api.js"
+          cat ./src/configs/api.js
+      
       - name: Install & Build # 執行指令
         run: |
           npm install
