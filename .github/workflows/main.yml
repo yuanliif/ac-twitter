@@ -25,8 +25,7 @@ jobs:
       
       - name: Setup Config
         env:
-          # 應當放到secret內
-          API_URL: https://polar-bayou-05130.herokuapp.com/api
+          API_URL: ${{ secrets.API_URL }}
         run: |
           cat <<EOF > ./src/configs/api.js
           export const API_URL = '$API_URL'
