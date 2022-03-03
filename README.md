@@ -83,19 +83,28 @@ npm install
 ```
 
 3. 安裝完畢後，增加或修改`./src/configs/`目錄下的設定，將後綴為`-sample`的檔案複製到該目錄底下，並寫刪除後綴的`-sample`後，對複製後的檔案的內容進行修改
+
 * 以`api.js-sample`為例，複製並更名為`api.js`，對裡面的`API_URL`的數值進行修改，調整前端網頁要接到的後端API服務的位址
+
 4. 完成設定後，在專案根目錄執行下述指令，跑起供開發使用的網頁服務
+
 ```
 npm run serve
 ```
+
 5. 成功跑起來的網頁服務，會有類似下面的畫面，使用`Local`或者`Network`的網址資訊在瀏覽器中開啟
 ![成功畫面](./covers/31.png)
-7. 開發完成後，在專案根目錄使用下述指令，來將程式碼輸出成Production環境使用的版本
+
+6. 開發完成後，在專案根目錄使用下述指令，來將程式碼輸出成Production環境使用的版本
+
 ```
 npm run build
 ```
-6. 專案部屬到Github Page請參考：[[Vue] 將Vue專案部署至Github Pages](https://dean34520.medium.com/vue%E7%B3%BB%E5%88%97%E6%96%87-%E5%B0%87vue%E6%AA%94%E6%A1%88%E9%83%A8%E7%BD%B2%E8%87%B3github-334951cadede)
-7. 另外，還可以使用下述指令來對程式碼進行程式碼風格檢查
+
+7. 專案部屬到Github Page請參考：[[Vue] 將Vue專案部署至Github Pages](https://dean34520.medium.com/vue%E7%B3%BB%E5%88%97%E6%96%87-%E5%B0%87vue%E6%AA%94%E6%A1%88%E9%83%A8%E7%BD%B2%E8%87%B3github-334951cadede)
+
+8. 另外，還可以使用下述指令來對程式碼進行程式碼風格檢查
+
 ```
 npm run lint
 ```
