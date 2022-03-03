@@ -11,6 +11,7 @@
         <FollowList
           :follow-data="proccessedData"
           :is-loading-follow-data="isLoadingFollowData"
+          default-text="尚無正在跟隨"
         />
       </div>
     </section>

@@ -1,40 +1,47 @@
 <template>
-  <div>
-    <div
-      v-for="follow in followData"
-      v-show="!isLoadingFollowData"
-      :key="follow.id"
-      class="follow-group"
-    >
-      <UserThumbnail
-        :initial-user="follow"
-        class="follow-avatar"
-      />
-      <div class="main-info">
-        <div class="user-container">
-          <span class="info">
-            <div
-              class="name"
-              :title="emptyName(follow.name, follow.account)"
-            >
-              {{ emptyName(follow.name, follow.account) }}
-            </div>
-            <div
-              class="account"
-              :title="follow.account"
-            >
-              {{ follow.account | addPrefix }}
-            </div>
-          </span>
-          <span class="control">
-            <FollowControlButton :initial-user="follow" />
-          </span>
-        </div>
-        <div class="introduction">
-          {{ follow.introduction }}
+  <div v-show="!isLoadingFollowData">
+    <div v-if="followData.length > 0">
+      <div
+        v-for="follow in followData"
+        :key="follow.id"
+        class="follow-group"
+      >
+        <UserThumbnail
+          :initial-user="follow"
+          class="follow-avatar"
+        />
+        <div class="main-info">
+          <div class="user-container">
+            <span class="info">
+              <div
+                class="name"
+                :title="emptyName(follow.name, follow.account)"
+              >
+                {{ emptyName(follow.name, follow.account) }}
+              </div>
+              <div
+                class="account"
+                :title="follow.account"
+              >
+                {{ follow.account | addPrefix }}
+              </div>
+            </span>
+            <span class="control">
+              <FollowControlButton :initial-user="follow" />
+            </span>
+          </div>
+          <div class="introduction">
+            {{ follow.introduction }}
+          </div>
         </div>
       </div>
     </div>
+    <h1
+      v-else
+      class="default-text"
+    >
+      {{ defaultText }}
+    </h1>
   </div>
 </template>
 
@@ -59,6 +66,11 @@ export default {
       type: Boolean,
       required: true,
       default: true
+    },
+    defaultText: {
+      type: String,
+      required: true,
+      default: ''
     }
   }
 }
@@ -126,6 +138,8 @@ export default {
       font-size: 15px;
       line-height: 22px;
       margin-top: 5px;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
@@ -144,5 +158,11 @@ export default {
       padding: 5px 15px;
     }
   }
+}
+
+h1.default-text {
+  font-weight: bold;
+  margin-top: 15px;
+  text-align: center;
 }
 </style>
