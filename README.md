@@ -7,26 +7,50 @@ ALPHA CAMP 學期三最後小組專案 - Simple Twitter - 的前端網頁。
 ## 小組成員
 
 ### 前端
+
 * [Tsuki](https://github.com/erase2004)
 * [Tony](https://github.com/yuanliif)
 * [Alison](https://github.com/AlisonLeng)
 
 ### 後端
+
 * [鰻魚燒](https://github.com/HUANG-SIH-MAN)
 * [Martin](https://github.com/martinchiu)
+
 ---
 
 ## 目錄
-----------------
 
-- [專案畫面預覽](#專案畫面預覽)
-- [專案使用技術](#專案使用技術)
-- [專案使用說明](#專案使用說明)
+----------------
+- [ALPHA Twitter Frontend Web](#alpha-twitter-frontend-web)
+  - [小組成員](#小組成員)
+    - [前端](#前端)
+    - [後端](#後端)
+  - [目錄](#目錄)
+  - [專案畫面預覽](#專案畫面預覽)
+  - [專案使用技術](#專案使用技術)
+  - [專案使用說明](#專案使用說明)
+  - [專案目錄結構說明](#專案目錄結構說明)
+
 ---
 
 ## 專案畫面預覽
 
-_預覽畫面準備中_
+![使用者登入頁](./covers/01.png)
+![使用者註冊頁](./covers/02.png)
+![前台首頁](./covers/03.png)
+![使用者推文資訊](./covers/04.png)
+![使用者推文與回覆資訊](./covers/05.png)
+![使用者喜歡的內容資訊](./covers/06.png)
+![使用者追隨者資訊](./covers/07.png)
+![使用者正在追隨資訊](./covers/08.png)
+![使用者設定頁](./covers/09.png)
+![發推Modal](./covers/10.png)
+![回推Modal](./covers/11.png)
+![使用者Profile設定Modal](./covers/12.png)
+![管理員登入頁](./covers/21.png)
+![後台推文列表](./covers/22.png)
+![後台使用者列表](./covers/23.png)
 
 ---
 
@@ -40,11 +64,17 @@ _預覽畫面準備中_
 - [npm](https://www.npmjs.com/)
 - [SASS/SCSS](https://sass-lang.com/)
 - [SVG](https://developer.mozilla.org/en-US/docs/Web/SVG)
+
 ---
 
 ## 專案使用說明
 
-* 使用git下載專案後，進到專案根目錄，操作以下指令安裝所需的套件
+* 使用git下載專案
+```
+git clone https://github.com/yuanliif/AC-twitter.git
+```
+
+* 下載完畢後，進到專案根目錄，操作以下指令安裝所需的套件
 
 ```
 npm install
@@ -64,4 +94,20 @@ npm run build
 * 另外，還可以使用下述指令來對程式碼進行程式碼風格檢查
 ```
 npm run lint
+```
+
+## 專案目錄結構說明
+
+```
+./src               - 程式碼根目錄
+./src/views         - 網頁頁面主體
+./src/componenets   - 網頁元件
+./src/router        - Vue Router設定
+./src/store         - Vuex設定
+./src/apis          - 與後端溝通的API
+./src/utils         - 共用Function
+./src/configs       - 專案設定檔
+./src/assets        - 靜態檔案根目錄
+./src/assets/icons  - SVG檔案
+./src/assets/images - 圖檔
 ```
