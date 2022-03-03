@@ -22,7 +22,8 @@ export default new Vuex.Store({
     token: '',
     messageQueue: {
       tweet: {},
-      reply: {}
+      reply: {},
+      follow: {}
     }
   },
   mutations: {
@@ -52,6 +53,9 @@ export default new Vuex.Store({
     },
     consumeReply (state) {
       state.messageQueue.reply = {}
+    },
+    produceFollow (state, follow) {
+      state.messageQueue.follow = follow
     }
   },
   actions: {

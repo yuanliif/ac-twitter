@@ -72,8 +72,6 @@
               <FollowControlButton
                 :initial-user="user"
                 class="btn-text"
-                @user-followed="follow"
-                @user-unfollowed="unfollow"
               />
             </template>
           </div>
@@ -160,6 +158,23 @@ export default {
         this.fetchUser(newValue.id)
       },
       deep: true
+    },
+    '$store.state.messageQueue.follow': {
+      handler: function (newValue, oldValue) {
+        const { id } = this.$route.params
+
+        if (newValue.userId !== Number(id)) {
+          return
+        }
+
+        if (newValue.action === 'add') {
+          return this.follow()
+        }
+        if (newValue.action === 'remove') {
+          return this.unfollow()
+        }
+      },
+      deep: true
     }
   },
   created () {
@@ -206,10 +221,18 @@ export default {
     },
     // 藉由FollowControlButton對上層的通知，來更新使用者的跟隨者數據
     follow () {
-      this.user.follower = this.user.follower + 1
+      this.user = {
+        ...this.user,
+        followed: true,
+        follower: this.user.follower + 1
+      }
     },
     unfollow () {
-      this.user.follower = this.user.follower - 1
+      this.user = {
+        ...this.user,
+        followed: false,
+        follower: this.user.follower - 1
+      }
     },
     showModal () {
       this.show = true

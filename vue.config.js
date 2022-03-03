@@ -27,7 +27,11 @@ module.exports = {
     config.module
       .rule('images')
       .exclude.add(path.resolve('src/assets/icons'))
-  }
+  },
+  // 部屬到Github Page設定
+  publicPath: process.env.NODE_ENV === 'production'
+    ? '/ac-twitter/'
+    : '/'
 //   },
 //   // 設定CSS全域變數: https://cli.vuejs.org/guide/css.html#passing-options-to-pre-processor-loaders
 //   css: {

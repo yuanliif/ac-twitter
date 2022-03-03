@@ -27,6 +27,7 @@ import FollowList from '@/components/FollowList.vue'
 import followshipsAPI from './../apis/followships'
 import usersAPI from './../apis/users'
 import { Toast } from './../utils/helpers'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -50,11 +51,51 @@ export default {
     next()
   },
   computed: {
+    ...mapState(['currentUser']),
     proccessedData () {
-      return this.followings.map(follow => ({
+      const { id } = this.$route.params
+      const userId = this.$store.state.currentUser.id
+
+      let result = this.followings.map(follow => ({
+        ...follow,
+        showControl: true
+      }))
+
+      if (userId === Number(id)) {
+        // 在自己的資訊頁時，不顯示自己
+
+        result = result.filter(follow => follow.followingId !== userId)
+      } else {
+        // 在別人的資訊頁時，不顯示按鈕
+
+        result = result.map(follow => {
+          if (follow.followingId === userId) {
+            return {
+              ...follow,
+              showControl: false
+            }
+          }
+          return follow
+        })
+      }
+
+      return result.map(follow => ({
         ...follow,
         id: follow.followingId
       }))
+    }
+  },
+  watch: {
+    '$store.state.messageQueue.follow': {
+      handler: function (newValue, oldValue) {
+        if (newValue.action === 'add') {
+          return this.followUser(newValue.userId)
+        }
+        if (newValue.action === 'remove') {
+          return this.unfollowUser(newValue.userId)
+        }
+      },
+      deep: true
     }
   },
   created () {
@@ -102,6 +143,30 @@ export default {
           title: '目前無法取得跟隨者，請稍後再試'
         })
       }
+    },
+    followUser (userId) {
+      this.followings = this.followings.map(user => {
+        if (user.followingId === userId) {
+          return {
+            ...user,
+            followed: true
+          }
+        } else {
+          return user
+        }
+      })
+    },
+    unfollowUser (userId) {
+      this.followings = this.followings.map(user => {
+        if (user.followingId === userId) {
+          return {
+            ...user,
+            followed: false
+          }
+        } else {
+          return user
+        }
+      })
     }
   }
 }

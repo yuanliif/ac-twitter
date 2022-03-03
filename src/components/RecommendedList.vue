@@ -9,7 +9,7 @@
         Popular
       </div>
       <section
-        v-for="user in userList"
+        v-for="user in filteredUserLIst"
         :key="user.id"
       >
         <div class="break" />
@@ -176,6 +176,11 @@ export default {
       userId: -1
     }
   },
+  computed: {
+    filteredUserLIst () {
+      return this.userList.filter(user => user.id !== this.userId).slice(0, 10)
+    }
+  },
   watch: {
     // 確保先有使用者資訊，再取得推薦使用者清單
     '$store.state.currentUser': {
@@ -188,6 +193,17 @@ export default {
       },
       deep: true,
       immediate: true
+    },
+    '$store.state.messageQueue.follow': {
+      handler: function (newValue, oldValue) {
+        if (newValue.action === 'add') {
+          return this.followUser(newValue.userId)
+        }
+        if (newValue.action === 'remove') {
+          return this.unfollowUser(newValue.userId)
+        }
+      },
+      deep: true
     }
   },
   methods: {
@@ -209,7 +225,7 @@ export default {
         const { data } = response
 
         // 避免推薦列表中，出現使用者自己
-        this.userList = data.filter(user => user.id !== this.userId).slice(0, 10)
+        this.userList = data
       } catch (error) {
         Toast.fire({
           icon: 'error',
@@ -218,6 +234,30 @@ export default {
       } finally {
         this.isLoading = false
       }
+    },
+    followUser (userId) {
+      this.userList = this.userList.map(user => {
+        if (user.id === userId) {
+          return {
+            ...user,
+            followed: true
+          }
+        } else {
+          return user
+        }
+      })
+    },
+    unfollowUser (userId) {
+      this.userList = this.userList.map(user => {
+        if (user.id === userId) {
+          return {
+            ...user,
+            followed: false
+          }
+        } else {
+          return user
+        }
+      })
     }
   }
 }

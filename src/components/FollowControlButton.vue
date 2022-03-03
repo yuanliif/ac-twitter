@@ -70,6 +70,11 @@ export default {
 
         this.user.followed = true
         this.$emit('user-followed')
+
+        this.$store.commit('produceFollow', {
+          action: 'add',
+          userId: userId
+        })
       } catch (error) {
         Toast.fire({
           icon: 'error',
@@ -91,6 +96,11 @@ export default {
 
         this.user.followed = false
         this.$emit('user-unfollowed')
+
+        this.$store.commit('produceFollow', {
+          action: 'remove',
+          userId: userId
+        })
       } catch (error) {
         Toast.fire({
           icon: 'error',
